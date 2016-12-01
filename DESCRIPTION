@@ -1,0 +1,24 @@
+Package: bdr
+Title: Resultattjeneste for Nasjonalt medisinsk kvalitetsregister for barne- og ungdomsdiabetes (BDR)
+Version: 0.0.1
+Date: 2016-12-01
+Authors@R: person("Yusman", "Kamaleri", email = "ybkamaleri@gmail.com", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+Depends:
+    R (>= 3.2.0)
+License: GPL2
+Encoding: UTF-8
+LazyData: true
+Imports:
+  ggplot2 (>= 2.0.0),
+  foreign,
+  dplyr (>= 0.4.0),
+  tidyr (>= 0.4.0),
+  lazyeval,
+  tibble,
+  tools
+Suggests:
+  grid,
+  knitr,
+  xtable
+RoxygenNote: 5.0.1.9000
