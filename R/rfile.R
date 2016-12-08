@@ -39,6 +39,7 @@ rfile <- function(filnavn = NULL) {
                             na.strings = "EMPTY") #indicate empty as NA
     }
 
-return(invisible(dataFile))
+    rData <- list(dataFile,filType)
+    return(invisible(rData))
 
 }
