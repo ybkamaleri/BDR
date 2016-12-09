@@ -8,11 +8,11 @@
 ##'
 ##' @export
 
-
 rfile <- function(filnavn = NULL) {
 
     ## Hente fil og konvertert til R data.frame
     if (is.null(filnavn)) { filnavn = Filnavn }
+
     filType <- tools::file_ext(filnavn)
 
     ## SPSS file
@@ -21,12 +21,13 @@ rfile <- function(filnavn = NULL) {
     }
 
     ## DAT file - tab-delimited
-    if (filType == "dat") {
+    if (filType %in% c("dat", "txt")) {
         dataFile <- read.table(filnavn,
                                header = TRUE,
                                encoding = 'UTF-8',
                                stringsAsFactors = TRUE,
-                               na.strings = "EMPTY")}
+                               na.strings = "EMPTY")
+    }
 
     ## CSV file
     if (filType == "csv") {
@@ -41,5 +42,4 @@ rfile <- function(filnavn = NULL) {
 
     rData <- list(dataFile,filType)
     return(invisible(rData))
-
 }
