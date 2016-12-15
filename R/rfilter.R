@@ -3,7 +3,7 @@
 ##' Produserer et datasett basert på utvalgte parametrer før videre analyser
 ##' eller visualisering.
 ##'
-##' @note \code{dbFile} og \code{dbClean} funksjoner er kjørt før datasettet
+##' @note \code{rfile} og \code{rclean} funksjoner er kjørt før datasettet
 ##' blir brukt på denne funksjonen
 ##'
 ##' @param minAlder Minimum alder
@@ -23,9 +23,16 @@
 ##'
 ##' @export
 
-rfilter <- function(minAlder = NULL, maxAlder = NULL, datoFra = NULL, datoTil = NULL,
+rfilter <- function(data = NULL, minAlder = NULL, maxAlder = NULL, datoFra = NULL, datoTil = NULL,
                      kjonn = NULL, dbType = NULL, dataValg = NULL) {
 
+
+    if (is.null(data)) {
+        data <- rclean()
+    } else {
+        if (!is.data.frame(data)) {stop (data, "Should be an R data.frame format!", call. = FALSE)}
+        data <- data
+    }
 
     ## Ifelse %||%
     "%||%" <- function(a,b) if (!is.null(a)) a else b
@@ -39,6 +46,10 @@ rfilter <- function(minAlder = NULL, maxAlder = NULL, datoFra = NULL, datoTil = 
     dbType <- dbType %||% DBType
     dataValg <- dataValg %||% DataValg
 
+    ##------------------
+    ## Filter
+    ##------------------
+
     ## Alder
     alderVec = minAlder:maxAlder
 
@@ -46,8 +57,10 @@ rfilter <- function(minAlder = NULL, maxAlder = NULL, datoFra = NULL, datoTil = 
     kjonnVec <- if (kjonn %in% 1:2) {kjonn} else { kjonnVec = 1:2 }
 
     ## Dato (datoFra, datoTil)
-    datoVec <- seq(as.Date(datoFra, format = "%Y-%m-%d", origin = "1899-12-30"),
-                   as.Date(datoTil, format = "%Y-%m-%d", origin = "2899-12-30"), "day")
+    ## datoVec <- seq(as.Date(datoFra, format = "%Y-%m-%d", origin = "1899-12-30"),
+    ##                as.Date(datoTil, format = "%Y-%m-%d", origin = "2899-12-30"), "day")
+    datoVec <- seq(as.Date(datoFra, format = "%Y-%m-%d"),
+                   as.Date(datoTil, format = "%Y-%m-%d"), "day")
 
     ## Diabetes type 1
     diaVec <- if (dbType == 1) {dbType} else {diaVec = 1:2}
@@ -66,8 +79,42 @@ rfilter <- function(minAlder = NULL, maxAlder = NULL, datoFra = NULL, datoTil = 
                                                   var4 = as.name("regValg"),
                                                   var5 = as.name("diaType1")))
 
-    utData <- list(alderVec = alderVec, kjonnVec = kjonnVec, datoVec = datoVec,
-                   diaVec = diaVec, regVec = regVec, fileSelect = fileSelect)
+    ## Filtret data
+    fdata <- dplyr::filter_(.data = data, .dots = fileSelect)
+    ndata <- dim(fdata)[1]
 
+    ##-------------------
+    ## Figurtekst
+    ##-------------------
+
+    ## For scale-x values
+    minX <- as.integer(if (min(fdata$Alder, na.rm = T) > minAlder) {min(fdata$Alder, na.rm = T)} else {minAlder})
+    maxX <- as.integer(if (max(fdata$Alder, na.rm = T) < maxAlder) {max(fdata$Alder, na.rm = T)} else {maxAlder})
+
+    ## Tekst
+    figTxt <- c(paste0('Data', if (dataValg %in% 1:4){paste0(': ', c('Førstegangsregistrering',
+                                                                     'Årskontroll',
+                                                                     'Poliklinisk',
+                                                                     'Alle type kontroller')[dataValg])}),
+                if ((minAlder>0) | (maxAlder<100))
+                {paste0('Pasienter fra ', minAlder, ' til ', maxAlder, ' år ')},
+
+                if (kjonn %in% 1:2)
+                {paste0('Kjønn: ', c('Gutter', 'Jenter')[kjonn])},
+
+                if (dbType %in% 1:2)
+                {paste0('Diabetes: ', c('Type 1', 'Alle typer')[dbType])},
+
+                if (ndata>0)
+                {paste0('Periode: ', if (min(fdata$innYear, na.rm = T) > datoFra) {
+                                         min(fdata$innYear, na.rm = T)
+                                     } else {datoFra}, ' til ',
+                        if (max(fdata$innYear, na.rm = T) < datoTil) {
+                            max(fdata$innYear, na.rm = T)
+                        } else {datoTil})}
+                )
+
+
+    utData <- list(fdata = fdata, figTxt = figTxt, minX = minX, maxX = maxX)
     return(invisible(utData))
 }

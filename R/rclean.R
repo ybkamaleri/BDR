@@ -11,16 +11,46 @@
 rclean <- function(data = NULL) {
 
     if (is.null(data)) {
-        RegData <- rfile()
+        impData <- rfile()
+        RegData <- impData$dataFile
+        filType <- impData$filType
     } else {
         if (!is.data.frame(data)) {stop (data, "Should be an R data.frame format!", call. = FALSE)}
         RegData <- data
+        filType <- 1
     }
 
 
     ## white space
     trim <- function( x ) {
         gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
+    }
+
+
+    ## Convert dates for different file format
+    if (filType == "sav") {
+
+        ## År
+        ## RegData$Year <- as.numeric(format(as.POSIXct(RegData$inn_Dato, format = "%Y-%m-%d %H:%M"), "%Y"))
+        RegData$Year <- as.numeric(format(as.POSIXct(RegData$inn_Dato, origin = "1899-12-30 0:00:00",
+                                                     format ="%Y-%m-%d %H:%M"), "%Y"))
+        RegData$innYear <- as.Date(format(as.POSIXct(RegData$inn_Dato, origin = "1899-12-30 0:00:00",
+                                                     format ="%Y-%m-%d %H:%M"), "%Y-%m-%d"))
+        RegData$diagYear <- as.Date(format(as.POSIXct(RegData$inn_DiagDato, origin = "1899-12-30 0:00:00",
+                                                      format ="%Y-%m-%d %H:%M"), "%Y-%m-%d"))
+
+        ## Fødselsdato
+        RegData$FDato1 <- as.POSIXct(RegData$FDato, origin = "1899-12-30 0:00:00")
+
+    } else {
+
+        RegData$Year <- as.numeric(format(as.POSIXct(RegData$inn_Dato, format ="%Y-%m-%d %H:%M"), "%Y"))
+        RegData$innYear <- as.Date(format(as.POSIXct(RegData$inn_Dato, format ="%Y-%m-%d %H:%M"), "%Y-%m-%d"))
+        RegData$diagYear <- as.Date(format(as.POSIXct(RegData$inn_DiagDato, format ="%Y-%m-%d %H:%M"), "%Y-%m-%d"))
+
+        ## Fødselsdato
+        RegData$FDato1 <- as.POSIXct(RegData$FDato)
+
     }
 
     ## Inn_Type = regValg
@@ -33,12 +63,6 @@ rclean <- function(data = NULL) {
 
     ## lab_HbA1cAkerVerdi = hba
     RegData$hba <- as.numeric(trim(RegData$lab_HbA1cAkerVerdi))
-
-    ## År
-    ## RegData$Year <- as.numeric(format(as.POSIXct(RegData$inn_Dato, format = "%Y-%m-%d %H:%M"), "%Y"))
-    RegData$Year <- as.numeric(format(as.POSIXct(RegData$inn_Dato, origin = "1899-12-30 0:00:00", format ="%Y-%m-%d %H:%M"), "%Y"))
-    RegData$innYear <- as.Date(format(as.POSIXct(RegData$inn_Dato, origin = "1899-12-30 0:00:00", format ="%Y-%m-%d %H:%M"), "%Y-%m-%d"))
-    RegData$diagYear <- as.Date(format(as.POSIXct(RegData$inn_DiagDato, origin = "1899-12-30 0:00:00", format ="%Y-%m-%d %H:%M"), "%Y-%m-%d"))
 
     ## Diabetes varighet
     RegData$diaVarighet <- floor(difftime(RegData$innYear, RegData$diagYear, units = "days")/365)
@@ -56,8 +80,9 @@ rclean <- function(data = NULL) {
     RegData$diaType1 <- ifelse(RegData$diabetes_Type1 == "Ja", 1, 2) #1:Type1 2:AndreType
 
     ## Alder
-    RegData$FDato1 <- as.POSIXct(RegData$FDato, origin = "1899-12-30 0:00:00")
-    RegData$Alder <- as.integer(floor(difftime(Sys.time(), as.POSIXct(RegData$FDato1, format = "%Y-%m-%d %H:%M"), units = "days")/365))
+    RegData$Alder <- as.integer(floor(difftime(Sys.time(),
+                                               as.POSIXct(RegData$FDato1,
+                                                          format = "%Y-%m-%d %H:%M"), units = "days")/365))
 
     ##  Alder del i kategorier
     alder.kat <- function(x, lower, upper, by,

@@ -1,7 +1,7 @@
 ##' Konvertering datasettet til R format
 ##'
 ##' Denne funksjon skal konvertere datafil fra forskjellige formater f.eks csv eller sav
-##' til en format som R kan behandle
+##' til en format som R kan håndtere
 ##'
 ##' @param filnavn Filnavn hentet fra register database
 ##' @return Et dataset i R data.frame format
@@ -20,7 +20,7 @@ rfile <- function(filnavn = NULL) {
         dataFile <- foreign::read.spss(filnavn, to.data.frame = TRUE, reencode = "UTF-8")
     }
 
-    ## DAT file - tab-delimited
+    ## DAT eller TXT fil - tab-delimited
     if (filType %in% c("dat", "txt")) {
         dataFile <- read.table(filnavn,
                                header = TRUE,
@@ -40,6 +40,11 @@ rfile <- function(filnavn = NULL) {
                             na.strings = "EMPTY") #indicate empty as NA
     }
 
-    rData <- list(dataFile,filType)
+    ## EXCEL file
+    if (filType %in% c("xlsx", "xls")) {
+        stop ("Data has wrong format. Only csv, sav, dat or txt format is accepted", call. = FALSE)
+    }
+
+    rData <- list(dataFile = dataFile, filType = filType)
     return(invisible(rData))
 }
