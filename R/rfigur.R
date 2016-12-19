@@ -30,6 +30,7 @@ rfigur <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
         xScale <- data$xScale
         figT <- data$figT
         figTxt <- data$figTxt
+        xLab <- data$xLab
         xBreaks <- data$xBreaks
     } else {
         RegData <- data
@@ -164,6 +165,7 @@ rfigur <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     figTitle <- c(figT, figTxt)
     figSubT = paste(figTitle, collapse = "\n")
     txtSpace = length(figTxt)
+    txtSpace1 = length(figTxt) + 2
 
     if (yAksen == 1) yLab="Prosent (%)"
     if (yAksen == 2) yLab="Antall pasienter"
@@ -209,7 +211,52 @@ rfigur <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     ## Figure - Kategorisk
     ## ===================
 
+    if (xScale == 2) {
 
+        if (yAksen==1) RegDataPA$yAksen=as.numeric(sprintf("%.1f", RegDataPA$yAksen))
+        if (yAksen==2) RegDataPA$yAksen=as.numeric(sprintf("%.f", RegDataPA$yAksen))
+
+        RegFig <- ggplot(RegDataPA, aes(x=Variabel, y=yAksen, fill = factor(samSyk))) +
+            geom_bar(stat = "identity") +
+            expand_limits(x = 0, y = 0) +
+            ylab(yLab) + xlab(xLab) +
+            scale_fill_manual(name="", values = "#6699CC", label=sykehusNavn) +
+        geom_text(aes(label=yAksen), vjust=-0.25, colour = "black") +
+            ggtitle(bquote(atop(.(titBlank),atop(.(figSubT), "")))) +
+
+    theme(plot.margin = unit(c(txtSpace,1,1,1), "lines"),
+          plot.title = element_text(hjust = 0, size=18),
+          axis.title = element_text(face = "bold", size = 12),
+          legend.position = 'top',
+          legend.text = element_text(size = 12),
+          legend.title = element_blank(),
+          axis.text = element_text(size = 11),
+          axis.line = element_line(size =.3, color = "#333333"),
+          panel.grid.major = element_line(color = "#CCCCCC",
+                                          linetype = 2),
+          panel.border = element_blank())
+
+
+
+        figtest <- ggplot(figdata, aes(x = Variabel, y = yAksen, fill = factor(samSyk))) +
+            geom_bar(stat = "identity") +
+            scale_fill_manual(name = "", values = col1, label = sykehusNavn) +
+            labs(x =xLab, y = yLab) +
+            ggtitle(bquote(atop(.(paste0(figT, "\n\n")),atop(.(figsub), "")))) +
+            theme(plot.margin = unit(c(txtSpace1, 1,1,1), "lines"),
+                  plot.title = element_text(hjust = 0, size=18),
+          axis.title = element_text(face = "bold", size = 12),
+          legend.position = 'top',
+          legend.text = element_text(size = 12),
+          legend.title = element_blank(),
+          axis.text = element_text(size = 11),
+          axis.line = element_line(size =.3, color = "#333333"),
+          panel.grid.major = element_line(color = "#CCCCCC",
+                                          linetype = 2),
+          panel.border = element_blank())
+
+
+    }
 
 
 
