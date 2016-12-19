@@ -115,6 +115,6 @@ rfilter <- function(data = NULL, minAlder = NULL, maxAlder = NULL, datoFra = NUL
                 )
 
 
-    utData <- list(fdata = fdata, figTxt = figTxt, minX = minX, maxX = maxX)
-    return(invisible(utData))
+    data <- list(fdata = fdata, figTxt = figTxt, minX = minX, maxX = maxX)
+    return(invisible(data))
 }

@@ -45,6 +45,6 @@ rfile <- function(filnavn = NULL) {
         stop ("Data has wrong format. Only csv, sav, dat or txt format is accepted", call. = FALSE)
     }
 
-    rData <- list(dataFile = dataFile, filType = filType)
-    return(invisible(rData))
+    data <- list(dataFile = dataFile, filType = filType)
+    return(invisible(data))
 }

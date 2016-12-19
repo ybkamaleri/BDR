@@ -4,41 +4,45 @@
 ##'
 ##' @param data Datasettet
 ##' @param valgtVar Utvalgte variabel til figuren
+##' @param figTx Tekst som beskriver data i figuren om funksjonen brukes direkte
+##' @param minx Minimum tall for x-aksen
+##' @param maxx Maksimum tall for x-aksen
 ##'
 ##' @import dplyr
 ##'
 ##' @export
 
 
-rselect <- function(data = NULL, valgtVar = NULL) {
+rselect <- function(data = NULL, valgtVar = NULL, figTx = "none", minx = 0, maxx = 99) {
 
     ##Hente data
     if (is.null(data)) {
-        utData <- rfilter()
+        data <- rfilter()
+        RegData <- data$fdata
+        figTxt <- data$figTxt
+        minX <- data$minX
+        maxX <- data$maxX
     } else {
         if (!is.data.frame(data)) {stop (data, "Should be an R data.frame format!", call. = FALSE)}
-        utData <- data
+        RegData <- data
+        figTxt <- figTx
+        minX <- minx
+        maxX <- maxx
     }
 
-    RegData <- utData$fdata
-    figTxt <- utData$figTxt
-    minX <- utData$minX
-    maxX <- utData$maxX
-
-    ## Ifelse %||%
-    "%||%" <- function(a,b) if (!is.null(a)) a else b
-
-    ## Omdefinere variablene
-    valgtVar    <- valgtVar %||% ValgtVar
-
+    if (is.null(valgtVar)) {
+        valgtVar <- ValgtVar
+    } else {
+        valgtVar <- valgtVar
+    }
 
 ################################
 ### Sammenligne sykehus funksjon
 ################################
 
-    sykSamlikFn <- function(valgtValg) {
+    sykSamlikFn <- function(x) {
         sykSamlik = c("SykehusKode", "SykehusNavn", "hba", "diaVarighet", "Variabel")
-        RegData$Variabel <- RegData[ , valgtValg]
+        RegData$Variabel <- RegData[,x]
         RegDataValg <- RegData %>%
             select_(.dots = sykSamlik)
         return(RegDataValg)
@@ -49,7 +53,7 @@ rselect <- function(data = NULL, valgtVar = NULL) {
 ### Valgt Variabel
 ##########################
 
-    ##--- Kontinuelle Variabler (xScale==1) ---##
+    ## === Kontinuelle Variabler (xScale==1) === ##
 
     if (valgtVar == "alder") {
         xScale = 1
@@ -61,7 +65,7 @@ rselect <- function(data = NULL, valgtVar = NULL) {
     }
 
 
-    ## --- Kategoriske Variabler (xScale==2) ---##
+    ## === Kategoriske Variabler (xScale==2) === ##
 
     if (valgtVar == "alderkat") {
         xScale = 2
@@ -81,19 +85,20 @@ rselect <- function(data = NULL, valgtVar = NULL) {
         figT <- "Fordeling av kjønn"
         xLab = "Kjønn"
         xBreaks = levels(RegDataValg$Variabel)
-
     }
-
 
 
 #############################
 ### Overføre nødvendige data
 #############################
 
+    data <- list(data = RegDataValg,
+                 xScale = xScale,
+                 figT = figT,
+                 figTxt = figTxt,
+                 xLab = xLab,
+                 xBreaks = xBreaks)
 
-    utData <- list(data = RegDataValg, xScale = xScale,
-                   figT = figT, figTxt = figTxt, xLab = xLab, xBreaks = xBreaks)
-
-    return(invisible(utData))
+    return(invisible(data))
 
 }
