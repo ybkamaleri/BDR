@@ -142,7 +142,7 @@ rfigur <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     ## =================
 
     if (rapvalg %in% c(1,3)) {
-        sykNavn <- rapdata$SykehusNavn[rapdata$SykehusKode == sykehus][1]
+        sykNavn <- rapdata1$SykehusNavn[rapdata1$SykehusKode == sykehus][1]
 
         N <- dim(rapdata1)[1]
         andreN <- dim(rapdata2)[1]
