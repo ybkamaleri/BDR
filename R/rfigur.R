@@ -162,10 +162,17 @@ rfigur <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     ## ===============
 
     titBlank <- ""
-    figTitle <- c(figT, figTxt)
-    figSubT = paste(figTitle, collapse = "\n")
+    ##figTitle <- c(figT, figTxt)
+    ##figSubT = paste(figTitle, collapse = "\n")
     txtSpace = length(figTxt)
-    txtSpace1 = length(figTxt) + 2
+    ##txtSpace1 = length(figTxt) + 1
+    figsub = paste(figTxt, collapse = "\n")
+
+    if (txtSpace < 4) {
+        figtt <- paste0(figT, "\n\n")
+    } else {
+        figtt <- paste0(figT, "\n\n\n" )
+    }
 
     if (yAksen == 1) yLab="Prosent (%)"
     if (yAksen == 2) yLab="Antall pasienter"
@@ -189,6 +196,7 @@ rfigur <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
 
     col1 <- "#6699CC"
     col2 <- "#000099"
+    coll <- "#999999" #line color
 
     ## theme uten sammenligne
     theme1 <- ggplot2::theme(
@@ -207,54 +215,88 @@ rfigur <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
 
 
 
-    ## ===================
-    ## Figure - Kategorisk
-    ## ===================
+    ## ============================
+    ## Figure for prosent og antall
+    ## ============================
 
-    if (xScale == 2) {
+    ## -- Kategoriske variabler --##
 
-        if (yAksen==1) RegDataPA$yAksen=as.numeric(sprintf("%.1f", RegDataPA$yAksen))
-        if (yAksen==2) RegDataPA$yAksen=as.numeric(sprintf("%.f", RegDataPA$yAksen))
-
-        RegFig <- ggplot(RegDataPA, aes(x=Variabel, y=yAksen, fill = factor(samSyk))) +
-            geom_bar(stat = "identity") +
-            expand_limits(x = 0, y = 0) +
-            ylab(yLab) + xlab(xLab) +
-            scale_fill_manual(name="", values = "#6699CC", label=sykehusNavn) +
-        geom_text(aes(label=yAksen), vjust=-0.25, colour = "black") +
-            ggtitle(bquote(atop(.(titBlank),atop(.(figSubT), "")))) +
-
-    theme(plot.margin = unit(c(txtSpace,1,1,1), "lines"),
-          plot.title = element_text(hjust = 0, size=18),
-          axis.title = element_text(face = "bold", size = 12),
-          legend.position = 'top',
-          legend.text = element_text(size = 12),
-          legend.title = element_blank(),
-          axis.text = element_text(size = 11),
-          axis.line = element_line(size =.3, color = "#333333"),
-          panel.grid.major = element_line(color = "#CCCCCC",
-                                          linetype = 2),
-          panel.border = element_blank())
+    if (yAksen %in% 1:2 & xScale == 2) {
 
 
+        if (yAksen==1) figdata$yAksen=as.numeric(sprintf("%.1f", figdata$yAksen))
+        if (yAksen==2) figdata$yAksen=as.numeric(sprintf("%.f", figdata$yAksen))
 
-        figtest <- ggplot(figdata, aes(x = Variabel, y = yAksen, fill = factor(samSyk))) +
-            geom_bar(stat = "identity") +
-            scale_fill_manual(name = "", values = col1, label = sykehusNavn) +
-            labs(x =xLab, y = yLab) +
-            ggtitle(bquote(atop(.(paste0(figT, "\n\n")),atop(.(figsub), "")))) +
-            theme(plot.margin = unit(c(txtSpace1, 1,1,1), "lines"),
-                  plot.title = element_text(hjust = 0, size=18),
-          axis.title = element_text(face = "bold", size = 12),
-          legend.position = 'top',
-          legend.text = element_text(size = 12),
-          legend.title = element_blank(),
-          axis.text = element_text(size = 11),
-          axis.line = element_line(size =.3, color = "#333333"),
-          panel.grid.major = element_line(color = "#CCCCCC",
-                                          linetype = 2),
-          panel.border = element_blank())
+        ## -- Lokal og Landet -- ##
+        if (rapvalg %in% 1:2) {
 
+            ym <- max(figdata$yAksen, na.rm = TRUE)/6
+            ymax <- max(figdata$yAksen, na.rm = TRUE) + ym
+
+            ggplot(figdata, aes(x = Variabel, y = yAksen, fill = factor(samSyk))) +
+                geom_bar(stat = "identity") +
+                geom_text(aes(label = yAksen, vjust = -0.25)) +
+                scale_fill_manual(values = col1, label = sykehusNavn) +
+                coord_cartesian(ylim = c(1,ymax)) +
+                scale_y_continuous(expand = c(0,0)) +
+                labs(x =xLab, y = yLab) +
+                ggtitle(bquote(atop(bold(.(figtt)),atop(.(figsub), "")))) +
+                theme(plot.margin = unit(c(txtSpace, 1,1,1), "lines"),
+                      plot.title = element_text(hjust = 0, size=13),
+                      legend.position = 'top',
+                      legend.text = element_text(size = 11),
+                      legend.title = element_blank(),
+                      panel.background = element_blank(),
+                      panel.border = element_blank(),
+                      panel.grid.major.y = element_line(color = coll, size = .3, linetype = "dashed"),
+                      axis.title = element_text(face = "bold", size = 11),
+                      axis.ticks.y = element_line(size = .3, color = coll),
+                      axis.ticks.x = element_blank(),
+                      axis.text = element_text(size = 10),
+                      axis.text.y = element_text(vjust = 0),
+                      axis.line.x = element_line(size =.5))
+        }
+
+        ## -- Lokal vs. Landet --##
+
+        if (rapvalg == 3) {
+
+        if (yAksen==1) figdata2$yAksen=as.numeric(sprintf("%.1f", figdata2$yAksen))
+        if (yAksen==2) figdata2$yAksen=as.numeric(sprintf("%.f", figdata2$yAksen))
+
+
+            gg <- ggplot2::ggplot(NULL, aes(x = Variabel, y = yAksen))
+
+            gg +
+                geom_bar(data = figdata, aes(fill = sykehusNavn), stat = "identity") +
+                geom_point(data = figdata2, aes(color = sykehusAndre), shape = 18, size = 5, stat = "identity" ) +
+                scale_fill_manual(" ", values = col1) +
+                scale_color_manual(" ", values = col2) +
+                coord_cartesian(ylim = c(1,ymax)) +
+                scale_y_continuous(expand = c(0,0)) +
+                labs(x =xLab, y = yLab) +
+                ggtitle(bquote(atop(bold(.(figtt)),atop(.(figsub), "")))) +
+                guides(color = guide_legend(order = 2, nrow = 1),
+                       fill = guide_legend(order = 1, nrow = 1)) +
+                theme(plot.margin = unit(c(txtSpace, 1,1,1), "lines"),
+                      plot.title = element_text(hjust = 0, size=13),
+                      legend.position = 'top',
+                      legend.text = element_text(size = 11),
+                      legend.title = element_blank(),
+                      legend.box = "horizontal",
+                      panel.background = element_blank(),
+                      panel.border = element_blank(),
+                      panel.grid.major.y = element_line(color = coll, size = .3, linetype = "dashed"),
+                      axis.title = element_text(face = "bold", size = 11),
+                      axis.ticks.y = element_line(size = .3, color = coll),
+                      axis.ticks.x = element_blank(),
+                      axis.text = element_text(size = 10),
+                      axis.text.y = element_text(vjust = 0),
+                      axis.line.x = element_line(size =.5))
+
+
+
+        }
 
     }
 
