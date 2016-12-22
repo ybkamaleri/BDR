@@ -59,7 +59,7 @@ rselect <- function(data = NULL, valgtVar = NULL, figTx = "none", minx = 0, maxx
         xScale = 1
         valgtVar = "Alder"
         RegDataValg <- sykSamlikFn(valgtVar)
-        figT <- "Fordeling av alder"
+        figT <- "Figur: Fordeling av alder"
         xLab = "Alder (år)"
         xBreaks = c(minX:maxX)
     }
@@ -71,7 +71,7 @@ rselect <- function(data = NULL, valgtVar = NULL, figTx = "none", minx = 0, maxx
         xScale = 2
         valgtVar = "AlderKat"
         RegDataValg <- sykSamlikFn(valgtVar)
-        figT <- "Fordeling av alder i kategorier"
+        figT <- "Figur: Fordeling av alder i kategorier"
         xLab = "Alderskategorier (år)"
         xBreaks = levels(RegDataValg$Variabel)
     }
@@ -82,7 +82,7 @@ rselect <- function(data = NULL, valgtVar = NULL, figTx = "none", minx = 0, maxx
         levels = 1:2
         labels = c("Gutt", "Jente")
         RegDataValg$Variabel <- factor(RegDataValg$Variabel, levels = levels, labels = labels)
-        figT <- "Fordeling av kjønn"
+        figT <- "Figur: Fordeling av kjønn"
         xLab = "Kjønn"
         xBreaks = levels(RegDataValg$Variabel)
     }
