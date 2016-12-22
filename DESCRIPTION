@@ -20,5 +20,6 @@ Imports:
 Suggests:
   grid,
   knitr,
-  xtable
+  xtable,
+    testthat
 RoxygenNote: 5.0.1.9000

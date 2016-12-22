@@ -77,7 +77,7 @@ rfigure <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     figdata2 <- NULL #for øvrige
 
 
-    if (rapvalg %in% c(1,3) & yAksen %in% 1:2) {
+    if (rapvalg %in% 2:3 & yAksen %in% 1:2) {
 
         ## -- LOKAL -- ##
         ## prosent
@@ -123,7 +123,7 @@ rfigure <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     ## Hele landet
     ## ===========
 
-    if (rapvalg == 2 & yAksen %in% 1:2) {
+    if (rapvalg == 1 & yAksen %in% 1:2) {
 
         ## prosent
         figdata <- rapdata %>%
@@ -146,7 +146,7 @@ rfigure <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     ## Sykehus navn og N
     ## =================
 
-    if (rapvalg %in% c(1,3)) {
+    if (rapvalg %in% 2:3) {
         sykNavn <- rapdata1$SykehusNavn[rapdata1$SykehusKode == sykehus][1]
 
         N <- dim(rapdata1)[1]
@@ -156,7 +156,7 @@ rfigure <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
         sykehusAndre <- paste0("Øvrige sykehus (N = ", andreN, ") ")
     }
 
-    if (rapvalg == 2) {
+    if (rapvalg == 1) {
         N <- dim(rapdata)[1]
         sykehusNavn <- paste0("Hele landet (N = ", N, ") ")
     }
@@ -219,33 +219,6 @@ rfigure <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     }
 
 
-    ## figur
-    ffig <- ggplot2::ggplot(NULL, aes(x = Variabel, y = yAksen)) +
-        ggplot2::geom_bar(data = figdata, aes(fill = sykehusNavn), stat = "identity") +
-        ggplot2::scale_fill_manual(name = " ", values = col1) +
-        ggplot2::coord_cartesian(ylim = c(1,ymax)) +
-        ggplot2::scale_y_continuous(expand = c(0,0)) +
-        ggplot2::labs( x =xLab, y = yLab) +
-        ggplot2::ggtitle(bquote(atop(.(""),atop(.(figsubT), ""))))
-
-    ## theme uten sammenligne
-    theme1 <- ggplot2::theme(plot.margin = unit(c(txtSpace, 1,1,1), "lines"),
-                             plot.title = element_text(hjust = 0, size=15),
-                             legend.position = 'top',
-                             legend.text = element_text(size = 11),
-                             legend.title = element_blank(),
-                             legend.box = "horizontal",
-                             panel.background = element_blank(),
-                             panel.border = element_blank(),
-                             panel.grid.major.y = element_line(color = coll, size = .3, linetype = "dashed"),
-                             axis.title = element_text(face = "bold", size = 11),
-                             axis.ticks.y = element_line(size = .3, color = coll),
-                             axis.ticks.x = element_blank(),
-                             axis.text = element_text(size = 10),
-                             axis.text.y = element_text(vjust = 0),
-                             axis.line.x = element_line(size =.5))
-
-
     ## ============================
     ## Figure for prosent og antall
     ## ============================
@@ -253,55 +226,135 @@ rfigure <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
 
     ## -- Kategoriske variabler --##
 
-    if (rapvalg %in% 1:2 & yAksen == 1 & xScale == 2) {
+    ## if (rapvalg %in% 1:2 & yAksen == 1 & xScale == 2) {
 
-        figdata$yAksen=as.numeric(sprintf("%.1f", figdata$yAksen))
+    ##     figdata$yAksen=as.numeric(sprintf("%.1f", figdata$yAksen))
 
-        regfig <- ffig +
-            ggplot2::geom_text(data = figdata, aes(label = yAksen, vjust = -0.25)) +
-            theme1
+    ##     regfig <- ffig +
+    ##         ggplot2::geom_text(data = figdata, aes(label = yAksen, vjust = -0.25)) +
+    ##         theme1
+    ## }
+
+    ## if (rapvalg %in% 1:2 & yAksen == 2 & xScale == 2) {
+
+    ##     figdata$yAksen=as.numeric(sprintf("%.f", figdata$yAksen))
+
+    ##     regfig <- ffig +
+    ##         ggplot2::geom_text(data = figdata, aes(label = yAksen, vjust = -0.25)) +
+    ##         theme1
+
+    ## }
+
+    ## if (rapvalg == 3 & yAksen == 1 & xScale == 2) {
+
+    ##     figdata2$yAksen=as.numeric(sprintf("%.1f", figdata2$yAksen))
+
+    ##     regfig <- ffig +
+    ##         ggplot2::geom_point(data = figdata2, aes(color = sykehusAndre),
+    ##                             shape = 18, size = 6, stat = "identity" ) +
+    ##         ggplot2::scale_color_manual(name = " ", values = col2) +
+    ##         ggplot2::guides(color = guide_legend(order = 2),
+    ##                         fill = guide_legend(order = 1)) +
+    ##         theme1
+
+    ## }
+
+    ## if (rapvalg == 3 & yAksen == 2 & xScale == 2) {
+
+    ##     figdata2$yAksen=as.numeric(sprintf("%.f", figdata2$yAksen))
+
+
+    ##     regfig <- ffig +
+    ##         ggplot2::geom_point(data = figdata2, aes(color = sykehusAndre),
+    ##                             shape = 18, size = 6, stat = "identity" ) +
+    ##         ggplot2::scale_color_manual(name = " ", values = col2) +
+    ##         ggplot2::guides(color = guide_legend(order = 2),
+    ##                         fill = guide_legend(order = 1)) +
+    ##         theme1
+
+    ## }
+
+
+    if (xScale == 2){
+
+        if (yAksen %in% 1:2 & rapvalg %in% 1:2) {
+
+
+            ## figur
+            ffig <- ggplot2::ggplot(NULL, aes(x = Variabel, y = yAksen)) +
+                ggplot2::geom_bar(data = figdata, aes(fill = sykehusNavn), stat = "identity") +
+                ggplot2::scale_fill_manual(name = " ", values = col1) +
+                ggplot2::coord_cartesian(ylim = c(1,ymax)) +
+                ggplot2::scale_y_continuous(expand = c(0,0)) +
+                ggplot2::labs( x =xLab, y = yLab) +
+                ggplot2::ggtitle(bquote(atop(.(""),atop(.(figsubT), ""))))
+
+            ## theme uten sammenligne
+            theme1 <- ggplot2::theme(plot.margin = unit(c(txtSpace, 1,1,1), "lines"),
+                                     plot.title = element_text(hjust = 0, size=15),
+                                     legend.position = 'top',
+                                     legend.text = element_text(size = 11),
+                                     legend.title = element_blank(),
+                                     legend.box = "horizontal",
+                                     panel.background = element_blank(),
+                                     panel.border = element_blank(),
+                                     panel.grid.major.y = element_line(color = coll, size = .3, linetype = "dashed"),
+                                     axis.title = element_text(face = "bold", size = 11),
+                                     axis.ticks.y = element_line(size = .3, color = coll),
+                                     axis.ticks.x = element_blank(),
+                                     axis.text = element_text(size = 10),
+                                     axis.text.y = element_text(vjust = 0),
+                                     axis.line.x = element_line(size =.5))
+
+
+
+            regfig <- ffig +
+                ggplot2::geom_text(data = figdata, aes(label = yAksen, vjust = -0.25)) +
+                theme1
+        }
+
+        if (yAksen %in% 1:2 & rapvalg == 3) {
+
+
+
+            ## figur
+            ffig <- ggplot2::ggplot(NULL, aes(x = Variabel, y = yAksen)) +
+                ggplot2::geom_bar(data = figdata, aes(fill = sykehusNavn), stat = "identity") +
+                ggplot2::scale_fill_manual(name = " ", values = col1) +
+                ggplot2::coord_cartesian(ylim = c(1,ymax)) +
+                ggplot2::scale_y_continuous(expand = c(0,0)) +
+                ggplot2::labs( x =xLab, y = yLab) +
+                ggplot2::ggtitle(bquote(atop(.(""),atop(.(figsubT), ""))))
+
+            ## theme uten sammenligne
+            theme1 <- ggplot2::theme(plot.margin = unit(c(txtSpace, 1,1,1), "lines"),
+                                     plot.title = element_text(hjust = 0, size=15),
+                                     legend.position = 'top',
+                                     legend.text = element_text(size = 11),
+                                     legend.title = element_blank(),
+                                     legend.box = "horizontal",
+                                     panel.background = element_blank(),
+                                     panel.border = element_blank(),
+                                     panel.grid.major.y = element_line(color = coll, size = .3, linetype = "dashed"),
+                                     axis.title = element_text(face = "bold", size = 11),
+                                     axis.ticks.y = element_line(size = .3, color = coll),
+                                     axis.ticks.x = element_blank(),
+                                     axis.text = element_text(size = 10),
+                                     axis.text.y = element_text(vjust = 0),
+                                     axis.line.x = element_line(size =.5))
+
+
+
+            regfig <- ffig +
+                ggplot2::geom_point(data = figdata2, aes(color = sykehusAndre),
+                                    shape = 18, size = 6, stat = "identity" ) +
+                ggplot2::scale_color_manual(name = " ", values = col2) +
+                ggplot2::guides(color = guide_legend(order = 2),
+                                fill = guide_legend(order = 1)) +
+                theme1
+
+        }
     }
-
-    if (rapvalg %in% 1:2 & yAksen == 2 & xScale == 2) {
-
-        figdata$yAksen=as.numeric(sprintf("%.f", figdata$yAksen))
-
-        regfig <- ffig +
-            ggplot2::geom_text(data = figdata, aes(label = yAksen, vjust = -0.25)) +
-            theme1
-
-    }
-
-    if (rapvalg == 3 & yAksen == 1 & xScale == 2) {
-
-        figdata2$yAksen=as.numeric(sprintf("%.1f", figdata2$yAksen))
-
-        regfig <- ffig +
-            ggplot2::geom_point(data = figdata2, aes(color = sykehusAndre),
-                                shape = 18, size = 6, stat = "identity" ) +
-            ggplot2::scale_color_manual(name = " ", values = col2) +
-            ggplot2::guides(color = guide_legend(order = 2),
-                            fill = guide_legend(order = 1)) +
-            theme1
-
-    }
-
-    if (rapvalg == 3 & yAksen == 2 & xScale == 2) {
-
-        figdata2$yAksen=as.numeric(sprintf("%.f", figdata2$yAksen))
-
-
-        regfig <- ffig +
-            ggplot2::geom_point(data = figdata2, aes(color = sykehusAndre),
-                                shape = 18, size = 6, stat = "identity" ) +
-            ggplot2::scale_color_manual(name = " ", values = col2) +
-            ggplot2::guides(color = guide_legend(order = 2),
-                            fill = guide_legend(order = 1)) +
-            theme1
-
-    }
-
-
 
     ## ================
     ## OUTPUT

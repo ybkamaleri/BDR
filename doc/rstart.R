@@ -32,7 +32,7 @@ DatoTil = "2016-12-31"  # YYYY-MM-DD
 #### Rapport ####
 
 Sykehus = 1
-RapportValg = 3 		# 1:Lokal 2:Landet 3:Lokal mot andre sykh.
+RapportValg = 1 		# 1:Landet 2:Lokal 3:Lokal mot andre sykh.
 
 YAksen = 2 			# 1:prosent, 2:antall, 3:hbalc 4:diabetesVarighet
 
