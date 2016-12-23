@@ -1,9 +1,8 @@
 ##' Clean dataset
 ##'
-##' Denne funksjonen skal filtrere datasettet som er spesifisert i datautvalget
+##' Denne funksjonen skal rense datasettet og lage nye variabler hvis nødvendig
 ##'
 ##' @param data Datasettet som er ferdig konvertert til R format
-##' @return Renset datasettet til videre behandling
 ##'
 ##' @export
 
@@ -11,13 +10,13 @@
 rclean <- function(data = NULL) {
 
     if (is.null(data)) {
-        impData <- rfile()
-        RegData <- impData$dataFile
-        filType <- impData$filType
+        data <- rfile()
+        RegData <- data$dataFile
+        filType <- data$filType
     } else {
         if (!is.data.frame(data)) {stop (data, "Should be an R data.frame format!", call. = FALSE)}
         RegData <- data
-        filType <- 1
+        filType <- NULL
     }
 
 
@@ -31,7 +30,6 @@ rclean <- function(data = NULL) {
     if (filType == "sav") {
 
         ## År
-        ## RegData$Year <- as.numeric(format(as.POSIXct(RegData$inn_Dato, format = "%Y-%m-%d %H:%M"), "%Y"))
         RegData$Year <- as.numeric(format(as.POSIXct(RegData$inn_Dato, origin = "1899-12-30 0:00:00",
                                                      format ="%Y-%m-%d %H:%M"), "%Y"))
         RegData$innYear <- as.Date(format(as.POSIXct(RegData$inn_Dato, origin = "1899-12-30 0:00:00",
@@ -55,7 +53,6 @@ rclean <- function(data = NULL) {
 
     ## Inn_Type = regValg
     RegData$ValgtData2 <- trim(RegData$inn_Type)
-    ## RegData$ValgtData <- gsub(" $", "", RegData$inn_Type, perl = T)
     RegData$regValg[RegData$ValgtData2=="Førstegangsregistrering"] <- 1
     RegData$regValg[RegData$ValgtData2=="Årskontroll"] <- 2
     RegData$regValg[RegData$ValgtData2=="Poliklinisk kontroll"] <- 3
