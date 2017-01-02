@@ -27,24 +27,28 @@ rclean <- function(data = NULL) {
 
 
     ## Convert dates for different file format
+
+    datoori <- "1899-12-30 0:00:00"
+    formatdt <- "%Y-%m-%d %H:%M"
+
     if (filType == "sav") {
 
         ## År
-        RegData$Year <- as.numeric(format(as.POSIXct(RegData$inn_Dato, origin = "1899-12-30 0:00:00",
-                                                     format ="%Y-%m-%d %H:%M"), "%Y"))
-        RegData$innYear <- as.Date(format(as.POSIXct(RegData$inn_Dato, origin = "1899-12-30 0:00:00",
-                                                     format ="%Y-%m-%d %H:%M"), "%Y-%m-%d"))
-        RegData$diagYear <- as.Date(format(as.POSIXct(RegData$inn_DiagDato, origin = "1899-12-30 0:00:00",
-                                                      format ="%Y-%m-%d %H:%M"), "%Y-%m-%d"))
+        RegData$Year <- as.numeric(format(as.POSIXct(RegData$inn_Dato, origin = datoori,
+                                                     format = formatdt), "%Y"))
+        RegData$innYear <- as.Date(format(as.POSIXct(RegData$inn_Dato, origin = datoori,
+                                                     format = formatdt), "%Y-%m-%d"))
+        RegData$diagYear <- as.Date(format(as.POSIXct(RegData$inn_DiagDato, origin = datoori,
+                                                      format = formatdt), "%Y-%m-%d"))
 
         ## Fødselsdato
-        RegData$FDato1 <- as.POSIXct(RegData$FDato, origin = "1899-12-30 0:00:00")
+        RegData$FDato1 <- as.POSIXct(RegData$FDato, origin = datoori)
 
     } else {
 
-        RegData$Year <- as.numeric(format(as.POSIXct(RegData$inn_Dato, format ="%Y-%m-%d %H:%M"), "%Y"))
-        RegData$innYear <- as.Date(format(as.POSIXct(RegData$inn_Dato, format ="%Y-%m-%d %H:%M"), "%Y-%m-%d"))
-        RegData$diagYear <- as.Date(format(as.POSIXct(RegData$inn_DiagDato, format ="%Y-%m-%d %H:%M"), "%Y-%m-%d"))
+        RegData$Year <- as.numeric(format(as.POSIXct(RegData$inn_Dato, format = formatdt), "%Y"))
+        RegData$innYear <- as.Date(format(as.POSIXct(RegData$inn_Dato, format = formatdt), "%Y-%m-%d"))
+        RegData$diagYear <- as.Date(format(as.POSIXct(RegData$inn_DiagDato, format = formatdt), "%Y-%m-%d"))
 
         ## Fødselsdato
         RegData$FDato1 <- as.POSIXct(RegData$FDato)
@@ -79,7 +83,7 @@ rclean <- function(data = NULL) {
     ## Alder
     RegData$Alder <- as.integer(floor(difftime(Sys.time(),
                                                as.POSIXct(RegData$FDato1,
-                                                          format = "%Y-%m-%d %H:%M"), units = "days")/365))
+                                                          format = formatdt), units = "days")/365))
 
     ##  Alder del i kategorier
     alder.kat <- function(x, lower, upper, by,
