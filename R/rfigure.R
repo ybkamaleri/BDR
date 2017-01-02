@@ -50,9 +50,9 @@ rfigure <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     yAksen      <- yAksen %||% YAksen
 
 
-##########################################################
-### Data utvalg for å sammenligne lokal sykehus mot andre
-##########################################################
+    ##-------------------------------------------------------##
+    ## Data utvalg for å sammenligne lokal sykehus mot andre ##
+    ##-------------------------------------------------------##
 
     ## Valg av sykehuset 1:Lokal 2:Andre
     samSyk <- lazyeval::interp(~f(var1 %in% sykehus, 1, 2),
@@ -62,15 +62,20 @@ rfigure <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     rapdata <- dplyr::mutate_(.data = RegData,
                               .dots = setNames(list(samSyk), group))
 
+    ## ##Base metode inkludere 0 for Variable som er ikke valgt eller utennom valgt området
+    ## rapdata$SykehusValg <- ifelse(rapdata$SykehusKode == sykehus, 1, 2)
+
 
     ## =======================
     ## Lokal og andre sykehus
     ## =======================
 
-
     ## Lokal vs. andre sykehus datasettet
     rapdata1 <- dplyr::filter(rapdata, SykehusValg == 1) #lokal
     rapdata2 <- dplyr::filter(rapdata, SykehusValg == 2) #andre
+
+    ## rapdata1 <- rapdata[rapdata$SykehusValg == 1, , drop = FALSE] #lokal
+    ## rapdata2 <- rapdata[rapdata$SykehusValg == 2, , drop = FALSE] #øvrige
 
     ## Dummy for figur data
     figdata  <- NULL #for lokal og land
@@ -203,6 +208,7 @@ rfigure <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     coll <- "#999999" #line color
 
     ## -- ymax for y-aksen -- ##
+    ## Gi god plass mellom legend og figuren
     maxx <-  max(figdata$yAksen, na.rm = TRUE)
     ym <- maxx/6
     ymax <- maxx + ym
@@ -224,7 +230,7 @@ rfigure <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     ## ============================
 
 
-    ## -- Kategoriske variabler --##
+    ## ## -- Kategoriske variabler --##
 
     ## if (rapvalg %in% 1:2 & yAksen == 1 & xScale == 2) {
 
@@ -275,9 +281,10 @@ rfigure <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
     ## }
 
 
-    if (xScale == 2){
+     if (xScale == 2){
 
-        if (yAksen %in% 1:2 & rapvalg %in% 1:2) {
+        if (yAksen %in% 1:2 && rapvalg == 2) {
+
 
 
             ## figur
@@ -313,7 +320,7 @@ rfigure <- function(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
                 theme1
         }
 
-        if (yAksen %in% 1:2 & rapvalg == 3) {
+        if (yAksen %in% 1:2 && rapvalg == 3) {
 
 
 

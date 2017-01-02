@@ -97,7 +97,7 @@ rfilter <- function(data = NULL, minAlder = NULL, maxAlder = NULL, datoFra = NUL
                                                                      'Poliklinisk',
                                                                      'Alle type kontroller')[dataValg])}),
                 if ((minAlder>0) | (maxAlder<100))
-                {paste0('Pasienter fra ', minAlder, ' til ', maxAlder, ' år ')},
+                {paste0('Alderskategori: ', minAlder, ' til ', maxAlder, ' år ')},
 
                 if (kjonn %in% 1:2)
                 {paste0('Kjønn: ', c('Gutter', 'Jenter')[kjonn])},
@@ -107,11 +107,11 @@ rfilter <- function(data = NULL, minAlder = NULL, maxAlder = NULL, datoFra = NUL
 
                 if (ndata>0)
                 {paste0('Periode: ', if (min(fdata$innYear, na.rm = T) > datoFra) {
-                                         min(fdata$innYear, na.rm = T)
-                                     } else {datoFra}, ' til ',
+                                         format(min(fdata$innYear, na.rm = T), "%d %b %Y")
+                                     } else {format(as.Date(datoFra), "%d %b %Y")}, ' - ',
                         if (max(fdata$innYear, na.rm = T) < datoTil) {
-                            max(fdata$innYear, na.rm = T)
-                        } else {datoTil})}
+                            format(max(fdata$innYear, na.rm = T), "%d %b %Y")
+                        } else {format(as.Date(datoTil), "%d %b %Y")})}
                 )
 
 

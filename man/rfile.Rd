@@ -2,7 +2,7 @@
 % Please edit documentation in R/rfile.R
 \name{rfile}
 \alias{rfile}
-\title{Konvertering datasettet til R format}
+\title{Konvertere datasettet til R format}
 \usage{
 rfile(filnavn = NULL)
 }
@@ -13,7 +13,7 @@ rfile(filnavn = NULL)
 Et dataset i R data.frame format
 }
 \description{
-Denne funksjon skal konvertere datafil fra forskjellige formater f.eks csv eller sav
-til en format som R kan håndtere
+Denne funksjon skal konvertere datafil fra forskjellige formater dvs. sav, dat, txt og csv
+til en format som R kan håndtere. Excel fil er ikke akseptert.
 }
 

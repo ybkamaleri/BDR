@@ -9,10 +9,7 @@ rclean(data = NULL)
 \arguments{
 \item{data}{Datasettet som er ferdig konvertert til R format}
 }
-\value{
-Renset datasettet til videre behandling
-}
 \description{
-Denne funksjonen skal filtrere datasettet som er spesifisert i datautvalget
+Denne funksjonen skal rense datasettet og lage nye variabler hvis nødvendig
 }
 
