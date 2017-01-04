@@ -8,10 +8,9 @@
 ##' @param conf.Int Konfidence nivå f.eks .95
 ##'
 ##' @import dplyr
-##' @import tidyr
-##' 
+##'
 ##' @export
-##' 
+##'
 
 sumCI <- function(data, maalvar, gpvars, conf.Int=.95) {
 
@@ -32,11 +31,11 @@ sumCI <- function(data, maalvar, gpvars, conf.Int=.95) {
     summ$CI = ciMult * summ$SE
 
     summ.na.zero <- data %>%
-       expand_(gpvars) %>%
-       left_join(summ)
+       tidyr::expand_(gpvars) %>%
+       dplyr::left_join(summ)
 
     summ.na.zero[is.na(summ.na.zero)] <- 0
 
     return(invisible(summ.na.zero))
-    
+
 }
