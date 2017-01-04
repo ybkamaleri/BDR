@@ -4,7 +4,7 @@
 \alias{rfigure}
 \title{Beregn og Figur}
 \usage{
-rfigure(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = 2,
+rfigure(data = NULL, sykehus = NULL, rapValg = NULL, yAksen = NULL,
   xScale = 2, figT = "none", figTxt = "none", xBreaks = NULL,
   fname = NULL, format = "pdf", path = NULL)
 }

@@ -1,7 +1,7 @@
 Package: bdr
 Title: Resultattjeneste for Nasjonalt medisinsk kvalitetsregister for barne- og ungdomsdiabetes (BDR)
-Version: 0.0.1
-Date: 2016-12-01
+Version: 0.0.2
+Date: 2017-01-03
 Authors@R: person("Yusman", "Kamaleri", email = "ybkamaleri@gmail.com", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
 Depends:
@@ -15,11 +15,12 @@ Imports:
   dplyr (>= 0.4.0),
   tidyr (>= 0.4.0),
   lazyeval,
+  magrittr,
   tibble,
   tools
 Suggests:
   grid,
   knitr,
   xtable,
-    testthat
+  testthat
 RoxygenNote: 5.0.1.9000
