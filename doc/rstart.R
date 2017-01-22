@@ -2,14 +2,14 @@
 #### Ctr+A og Ctr+R for første kjøring ##
 #########################################
 rm(list=ls())
-library(devtools)
-library(roxygen2)
+## library(devtools)
+## library(roxygen2)
 kode <- as.package("~/Git-work/bdr")
 load_all(kode)
-document(kode)
+## document(kode)
 
 ## Lage paken
-check(kode)
+## check(kode)
 ##build(kode, manual=TRUE, path = "~/Git-work/Packages")
 
 library(bdr)
@@ -34,7 +34,7 @@ DataValg = 4 		# 1:Førstegangsreg 2:Årskontroll 3:Poliklinisk 4:Alle
 #### Rapport ####
 
 Sykehus = 1         # finnes fra standard kode fra registeret kodebook
-RapportValg = 1 		# 1:Landet 2:Lokal 3:Lokal mot andre sykh.
+RapportValg = 3 		# 1:Landet 2:Lokal 3:Lokal mot andre sykh.
 
 YAksen = 2 			    # 1:prosent, 2:antall, 3:hbalc 4:diabetesVarighet
 
