@@ -4,7 +4,7 @@
 diaTabell <- function(x){
   
   ## Demografisk variabler
-  demoVar <-  c("PasientID", "Pnr", "hospital", "hospID", "hosKort", "alder", "Kjonn", "diagVar", "diagAlder")
+  demoVar <-  c("PasientID", "PasientID", "hospital", "hospID", "hosKort", "alder", "Kjonn", "diagVar", "diagAlder")
   
   ## diabetes variabler
   diabetesVar = c("diabetes_Type1", "diabetes_Type2", "diabetes_Mody", "diabetes_Kir62", "diabetes_SekDiabetes", "diabetes_AnnenDiabetes", "diabetes_UkjentDiabetes")
