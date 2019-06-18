@@ -46,3 +46,14 @@ diabetesVar = c("diabetes_Type1", "diabetes_Type2", "diabetes_Mody", "diabetes_K
 ars2018[Pnr %in% noDiaType, c(demoVar, diabetesVar), with=F] #liste uten diabetes type
 
 
+## Pasient karakteristika
+## ----------------------
+
+## Her er det bare pasienter med DT1. Datasettet er "dt1"
+dtKar <- subset(dt1, select = c("PasientID", "alder", "diagAlder", "diagVar", "bmi"))
+
+karLong <- melt(dtKar, id.vars = "PasientID", variable.name = "karakter", value.name = "verdi")
+
+ggplot(karLong, aes(karakter, verdi)) +
+  geom_boxplot() +
+  coord_flip()
