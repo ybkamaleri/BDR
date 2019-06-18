@@ -11,10 +11,11 @@ for (x in pkgs) pkgIn(x)
 
 ## if (!require("data.table")) install.packages("data.table"); library(data.table)
 
+setwd("~/avid/bdr")
 
 ## Hente data for årskontroll 2018
 ## --------------------------------
-# dt2018 <- readRDS(file.path("../.."), "validert_arskontroll2018.rds")
+## dt2018 <- readRDS(file.path("../.."), "validert_arskontroll2018.rds")
 ## ars2018 <- readRDS("validert_arskontroll2018.rds")
 ars2018 <- readRDS("annonym_dt2018.RDS")
 
