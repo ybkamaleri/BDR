@@ -1,5 +1,9 @@
+
+## Set working directory
+setwd("~/avid/bdr")
+
 ## kilde
-kilde <- "./valideringsrapport/analyse"
+kilde <- paste0(getwd(), "/valideringsrapport/analyse")
 
 ## Setup
 ## -------
