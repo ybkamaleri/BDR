@@ -1,10 +1,12 @@
 ## Pakker
-pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf")
+pkgs = c("data.table", "rreg", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf")
 ## sapply(pkgs, library, character.only = TRUE)[,1]
 
 pkgIn <- function(x){
-  if (!sapply(x, require, character.only = TRUE)) install.packages(x)
-  sapply(x, library, character.only = TRUE)
+  if (!sapply(x, require, character.only = TRUE)) {
+    sapply(x, install.packages, character.only = TRUE)
+  }
+  invisible(sapply(x, library, character.only = TRUE))
 }
 
 for (x in pkgs) pkgIn(x)
