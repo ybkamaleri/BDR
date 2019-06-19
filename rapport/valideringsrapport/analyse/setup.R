@@ -23,7 +23,11 @@ ars2018 <- readRDS("annonym_dt2018.RDS")
 
 ## Bare pasienter med DT1
 ## -----------------------
-dt1 <- subset(ars2018, diabetes_Type1 == "Ja")
+## Nasjonalt
+dt1nasj <- subset(ars2018, diabetes_Type1 == "Ja")
+
+## lokal
+## dt1lokal <- subset(hosp2018, diabetes_Type1 == "Ja")
 
 ## Spørsmål
 ## ----------

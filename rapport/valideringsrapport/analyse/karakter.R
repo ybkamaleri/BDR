@@ -4,7 +4,7 @@
 ## Pasient karakteristika
 
 varKar <- c("PasientID", "alder", "diagAlder", "diagVar", "bmi")
-
+## lokal sykehus
 dtKar <- subset(dt1, select = varKar)
 
 karLong <- melt(dtKar, id.vars = "PasientID", variable.name = "chr", value.name = "tall")

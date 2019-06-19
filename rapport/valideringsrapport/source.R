@@ -10,7 +10,8 @@ source(file.path(kilde, "setup.R"))
 samtykke
 
 ## Utvalgt sykehus
-hosp2018 <- ars2018[hospID == 1, ]
+## hosp2018 <- ars2018[hospID == 1, ]
+hosp2018 <- subset(ars2018, hospID == 1)
 
 
 ## Type diabetes
