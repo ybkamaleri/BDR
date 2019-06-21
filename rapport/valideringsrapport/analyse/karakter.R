@@ -13,10 +13,11 @@ karLong <- melt(dtKar, id.vars = "PasientID", variable.name = "chr", value.name 
 karTall <- karLong[!is.na(tall), .N, by = chr]
 
 ## Tabell
-karTab <- karLong[, list(mean = mean(tall, na.rm = T),
-               median = median(tall, na.rm = T),
-               min = min(tall, na.rm = T),
-               max = max(tall, na.rm = T)), by = .(chr)]
+karTab <- karLong[, list(
+  mean = mean(tall, na.rm = T),
+  median = median(tall, na.rm = T),
+  min = min(tall, na.rm = T),
+  max = max(tall, na.rm = T)), by = .(chr)]
 
 kar.tab <- karTall[karTab, on = "chr"]
 
