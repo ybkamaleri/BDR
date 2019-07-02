@@ -13,7 +13,6 @@ samtykke
 ## hosp2018 <- ars2018[hospID == 1, ]
 hosp2018 <- subset(ars2018, hospID == 1)
 
-
 ## Type diabetes
 ## ---------------
 source(file.path(kilde, "type_diabetes.R"))
