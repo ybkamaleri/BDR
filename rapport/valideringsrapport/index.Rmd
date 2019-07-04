@@ -8,12 +8,29 @@ date: "`r params$nyDate`"
 subtitle: "`r params$nySubTitle`"
 documentclass: book
 site: bookdown::bookdown_site
+header-includes:
+- \usepackage{booktabs}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage[table]{xcolor}
+- \usepackage{wrapfig}
+- \usepackage{float}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+- \usepackage{threeparttablex}
+- \usepackage[normalem]{ulem}
+- \usepackage{makecell}
+- \usepackage{titlesec}
 output:
   bookdown::gitbook:
     lib_dir: "html_ekstra"
     download: null
   bookdown::pdf_book:
-    keep_tex: yes
+    includes:
+      in_header: "preamble.tex"
 ---
 
 # Typer diabetes
@@ -22,6 +39,8 @@ Antall pasienter med forskjellige typer diabetes
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+options(tinytex.verbose = TRUE)
 # 
 # kilde <- "./analyse"
 # source(file.path(kilde, "setup.R"))
@@ -49,26 +68,34 @@ inspak(pkgs)
 dataSti <- "K:\\Sensitivt\\Forskning02\\Barnediabetesregisteret_2015-5739\\Barnediabetes og kvalitet\\Datafiler\\2018"
 ars2018 <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds", fsep = "\\"))
 
-## test lokal
-lokal2018 <- subset(ars2018, hospID == 4)
-
 ```
 
 
 
 ```{r diabetes, eval=T, echo=FALSE}
 
-
 source("./analyse/type_diabetes.R")
 
-knitr::kable(
-  list(
-    diab.lokal,
-    diab.nasj
-  ),
-  caption = 'Diabetes Type',
-  booktabs = TRUE
-) 
+if (knitr::is_html_output()){
+  kable(diab.lokal, format = "html") %>%
+    kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    row_spec(3, bold = T, color = "red")
+}
+
+## if (knitr::opts_knit$get('rmarkdown.pandoc.to') == "latex"){
+##   kable(diab.nasj)
+## }
+
+if (knitr::is_latex_output()){
+##   kable(diab.nasj, format = "latex", booktabs = T) %>%
+##     kable_styling(latex_options = "striped")
+
+  kable(mtcars[1:8, 1:4], "latex", booktabs = T) %>%
+    kable_styling(latex_options = "striped") %>%
+        row_spec(3, bold = T, color = "red")
+  
+    
+}
 
 ```
 
