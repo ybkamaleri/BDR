@@ -13,7 +13,6 @@ header-includes:
 - \usepackage{longtable}
 - \usepackage{array}
 - \usepackage{multirow}
-- \usepackage[table]{xcolor}
 - \usepackage{wrapfig}
 - \usepackage{float}
 - \usepackage{colortbl}
@@ -25,7 +24,8 @@ header-includes:
 - \usepackage{makecell}
 - \usepackage[T1]{fontenc}
 - \usepackage[utf8]{inputenc}
-- \renewcommand{\figurename}{Figur:}
+- \renewcommand{\figurename}{Figur}
+- \renewcommand{\tablename}{Tabell}
 
 output:
   bookdown::gitbook:
