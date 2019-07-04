@@ -29,27 +29,19 @@ header-includes:
 
 output:
   bookdown::gitbook:
-    lib_dir: "html_ekstra"
+    lib_dir: "ekstra"
     split_by: section
     download: ["pdf"]
   bookdown::pdf_document2:
     keep_tex: yes
     toc: no
-
 ---
 
-## Typer diabetes {-}
-
-Antall pasienter med forskjellige typer diabetes
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-options(tinytex.verbose = TRUE)
-# 
-# kilde <- "./analyse"
-# source(file.path(kilde, "setup.R"))
 ```
+
 
 ```{r test, eval=F, include=F }
 
@@ -77,14 +69,20 @@ ars2018 <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds", fsep = "\\
 
 
 
-```{r diabetes, eval=T, echo=FALSE}
+## Typer diabetes {-}
 
+```{r r diabtype, echo=FALSE}
 source("./analyse/type_diabetes.R")
+```
+Total pasienter med forskjellige typer diabetes er **`r antall.lokal`** pasienter, mens antall pasienter i hele landet som har tatt årskontroll i 2018 er **`r antall.nasj`** pasienter.
+
+
+```{r diabetes, eval=F, echo=FALSE}
 
 if (knitr::is_html_output()){
   kable(diab.lokal, format = "html") %>%
     kable_styling(bootstrap_options = c("striped", "hover")) %>%
-    row_spec(3, bold = T, color = "red")
+    row_spec(3, bold = T, color = "black", background = "#c0c0c0")
 }
 
 ## if (knitr::opts_knit$get('rmarkdown.pandoc.to') == "latex"){
@@ -95,9 +93,31 @@ if (knitr::is_latex_output()){
 ##   kable(diab.nasj, format = "latex", booktabs = T) %>%
 ##     kable_styling(latex_options = "striped")
 
-  kable(mtcars[1:8, 1:4], "latex", booktabs = T)
+  kable(diab.lokal, "latex", booktabs = T) %>%
+    kable_styling(latex_options = "striped") %>%
+    row_spec(3, bold = T, color = "black", background = "#c0c0c0")
   
     
+}
+
+```
+
+```{r r huxtabdt, eval=T, echo=F}
+library(huxtable)
+
+hTB <- as_hux(diab.lokal, add_colnames = TRUE)
+caption(hTB) <- "Antall pasienter med alle type diabetes"
+bold(hTB)[1, ]  <- TRUE
+bottom_border(hTB)[1, ] <- 1
+
+
+if (knitr::is_html_output()){
+  hTB
+ 
+}
+
+if (knitr::is_latex_output()){
+ hTB
 }
 
 ```
@@ -108,6 +128,8 @@ if (knitr::is_latex_output()){
 Antall samtykke
 
 ```{r data1}
-
+data(mtcars)
+car_ht <- as_hux(mtcars)
+car_ht
 ```
 
