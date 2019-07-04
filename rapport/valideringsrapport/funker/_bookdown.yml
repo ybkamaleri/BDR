@@ -1,0 +1,3 @@
+# rename _main.Rmd hvor alle filer slå sammen
+book_filename: "sykehus-rapport.Rmd" 
+output_dir: "book-output"

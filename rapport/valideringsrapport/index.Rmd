@@ -1,0 +1,83 @@
+---
+params:
+  nyTitle: "Sykehusnavn"
+  nyDate: !r Sys.Date()
+  nySubTitle: "Tidsperioden"
+title: "`r params$nyTitle`"
+date: "`r params$nyDate`"
+subtitle: "`r params$nySubTitle`"
+documentclass: book
+site: bookdown::bookdown_site
+output:
+  bookdown::gitbook:
+    lib_dir: "html_ekstra"
+    download: null
+  bookdown::pdf_book:
+    keep_tex: yes
+---
+
+# Typer diabetes
+
+Antall pasienter med forskjellige typer diabetes
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# 
+# kilde <- "./analyse"
+# source(file.path(kilde, "setup.R"))
+```
+
+```{r test, eval=F, include=F }
+
+inspak <- function(pkg){
+  nypkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(nypkg)) install.packages(nypkg, dependencies = TRUE, repos = "http://cran.rstudio.com")
+  sapply(pkg, require, character.only = TRUE)
+}
+
+pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf", "huxtable")
+
+inspak(pkgs)
+
+
+## Setup
+## -------
+# source(file.path(kilde, "setup.R", fsep = "\\"))
+## Hente data for årskontroll 2018
+## --------------------------------
+# dt2018 <- readRDS(file.path("../.."), "validert_arskontroll2018.rds")
+dataSti <- "K:\\Sensitivt\\Forskning02\\Barnediabetesregisteret_2015-5739\\Barnediabetes og kvalitet\\Datafiler\\2018"
+ars2018 <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds", fsep = "\\"))
+
+## test lokal
+lokal2018 <- subset(ars2018, hospID == 4)
+
+```
+
+
+
+```{r diabetes, eval=T, echo=FALSE}
+
+
+source("./analyse/type_diabetes.R")
+
+knitr::kable(
+  list(
+    diab.lokal,
+    diab.nasj
+  ),
+  caption = 'Diabetes Type',
+  booktabs = TRUE
+) 
+
+```
+
+
+# Samtykke
+
+Antall samtykke
+
+```{r data1}
+
+```
+

@@ -1,0 +1,31 @@
+---
+title: "Sykehus rapport"
+documentclass: book
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output:
+  bookdown::gitbook:
+    lib_dir: "html_ekstra"
+  bookdown::pdf_book:
+    keep_tex: yes
+---
+
+# Typer diabetes
+
+Antall pasienter med forskjellige typer diabetes
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+kilde <- "./analyse"
+source(file.path(kilde, "setup.R"))
+```
+
+# Samtykke
+
+Antall samtykke
+
+```{r data1}
+samtykke
+```
+

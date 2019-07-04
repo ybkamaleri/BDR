@@ -1,6 +1,5 @@
-
 ## kilde
-kilde <- "~/Git-work/bdr/rapport/valideringsrapport/analyse"
+kilde <- "./analyse"
 
 ## Setup
 ## -------
@@ -10,8 +9,8 @@ source(file.path(kilde, "setup.R"))
 samtykke
 
 ## Utvalgt sykehus
-## hosp2018 <- ars2018[hospID == 1, ]
-hosp2018 <- subset(ars2018, hospID == 1)
+hosp2018 <- ars2018[hospID == 1, ]
+
 
 ## Type diabetes
 ## ---------------
@@ -22,20 +21,21 @@ antall.lokal
 diab.nasj 
 antall.nasj
 
-## Sjekk pasienter som ikke blitt registeret på noe type diabetes
-## Pasienter som har diabetes type 
-saveRDS(diabJa, "diabJa2018.rds")
-diabJa <- readRDS("diabJa2018.rds")
-dim(diabJa)
+# ## Sjekk pasienter som ikke blitt registeret på noe type diabetes
+# ## Pasienter som har diabetes type 
+# saveRDS(diabJa, "diabJa2018.rds")
+# diabJa <- readRDS("diabJa2018.rds")
+# dim(diabJa)
+# 
+# saveRDS(diabLg, "diabAlleType.RDS") #alle med diabetes
+# diabLg <- readRDS("diabAlleType.RDS")
+# 
+# otherPnr <- diabLg[!(Pnr %in% diabJa$Pnr), .(Pnr)]
+# dim(otherPnr)
+# noDiaType <- unique(otherPnr)[["Pnr"]]
+# noDiaType
+# saveRDS(noDiaType, "noDiaType.RDS")
 
-saveRDS(diabLg, "diabAlleType.RDS") #alle med diabetes
-diabLg <- readRDS("diabAlleType.RDS")
-
-otherPnr <- diabLg[!(Pnr %in% diabJa$Pnr), .(Pnr)]
-dim(otherPnr)
-noDiaType <- unique(otherPnr)[["Pnr"]]
-noDiaType
-saveRDS(noDiaType, "noDiaType.RDS")
 
 ## Demografisk variabler
 demoVar <-  c("PasientID", "Pnr", "hospital", "hospID", "hosKort", "alder", "Kjonn", "diagVar", "diagAlder", "diagDato", "inn_Dato")
@@ -46,14 +46,4 @@ diabetesVar = c("diabetes_Type1", "diabetes_Type2", "diabetes_Mody", "diabetes_K
 ars2018[Pnr %in% noDiaType, c(demoVar, diabetesVar), with=F] #liste uten diabetes type
 
 
-## Pasient karakteristika
-## ----------------------
 
-## Her er det bare pasienter med DT1. Datasettet er "dt1"
-dtKar <- subset(dt1, select = c("PasientID", "alder", "diagAlder", "diagVar", "bmi"))
-
-karLong <- melt(dtKar, id.vars = "PasientID", variable.name = "karakter", value.name = "verdi")
-
-ggplot(karLong, aes(karakter, verdi)) +
-  geom_boxplot() +
-  coord_flip()

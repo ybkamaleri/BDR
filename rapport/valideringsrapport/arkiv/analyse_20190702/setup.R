@@ -1,11 +1,12 @@
 ## Pakker
 inspak <- function(pkg){
   nypkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
-  if (length(nypkg)) install.packages(nypkg, repos = "http://cran.rstudio.com")
+  if (length(nypkg))
+    install.packages(nypkg, dependencies = TRUE, repos = "http://cran.rstudio.com")
   sapply(pkg, require, character.only = TRUE)
 }
 
-pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf", "kableExtra")
+pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf")
 
 inspak(pkgs)
 
@@ -23,16 +24,8 @@ ars2018 <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds", fsep = "\\
 ## -----------------------
 dt1 <- subset(ars2018, diabetes_Type1 == "Ja")
 
-
-## Lokal sykehus
-## --------------
-
-lokal2018 <- subset(ars2018, hospID == 1)
-# lokal2018[ , .(hospital, hospID, hosKort)]
-
-
 ## Spørsmål
 ## ----------
 ## Hva med ikke Samtykke pasienter??
 
-# samtykke <- ars2018[, .N, by=.(Samtykke_Pasient)]
+samtykke <- ars2018[, .N, by=.(Samtykke_Pasient)]

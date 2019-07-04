@@ -87,24 +87,14 @@ diaTabell <- function(x){
 
 
 ## Lokal sykehus
-utLocal <- diaTabell(lokal2018)
+utLocal <- diaTabell(hosp2018)
 diab.lokal <- utLocal[["diab.tab"]][]
 antall.lokal <- utLocal[["diab.n"]]
-
 
 
 ## Legger Nasjonale tall
 utNasj <- diaTabell(ars2018)
 diab.nasj <- utNasj[["diab.tab"]][]
 antall.nasj <- utNasj[["diab.n"]]
-# 
-# knitr::kable(
-#   list(
-#     diab.lokal,
-#     diab.nasj
-#   ),
-#   caption = 'Diabetes Type',
-#   booktabs = TRUE
-# )
 
 
