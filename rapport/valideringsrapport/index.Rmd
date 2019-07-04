@@ -23,17 +23,22 @@ header-includes:
 - \usepackage{threeparttablex}
 - \usepackage[normalem]{ulem}
 - \usepackage{makecell}
-- \usepackage{titlesec}
+- \usepackage[T1]{fontenc}
+- \usepackage[utf8]{inputenc}
+- \renewcommand{\figurename}{Figur:}
+
 output:
   bookdown::gitbook:
     lib_dir: "html_ekstra"
-    download: null
-  bookdown::pdf_book:
-    includes:
-      in_header: "preamble.tex"
+    split_by: section
+    download: ["pdf"]
+  bookdown::pdf_document2:
+    keep_tex: yes
+    toc: no
+
 ---
 
-# Typer diabetes
+## Typer diabetes {-}
 
 Antall pasienter med forskjellige typer diabetes
 
@@ -90,9 +95,7 @@ if (knitr::is_latex_output()){
 ##   kable(diab.nasj, format = "latex", booktabs = T) %>%
 ##     kable_styling(latex_options = "striped")
 
-  kable(mtcars[1:8, 1:4], "latex", booktabs = T) %>%
-    kable_styling(latex_options = "striped") %>%
-        row_spec(3, bold = T, color = "red")
+  kable(mtcars[1:8, 1:4], "latex", booktabs = T)
   
     
 }
@@ -100,7 +103,7 @@ if (knitr::is_latex_output()){
 ```
 
 
-# Samtykke
+## Samtykke {-}
 
 Antall samtykke
 

@@ -71,7 +71,7 @@ for (hosp in hospKoder[5:6]) {
   outDir <- paste0("output_dir: '", pdfTitle, "'")
   write(bookFN, file = filBKD, append = TRUE)
   write(outDir, file = filBKD, append = TRUE)
-  
+
   bookdown::render_book(input = "index.Rmd",
                         output_format = "bookdown::gitbook",
                         params = list(
@@ -103,7 +103,7 @@ for (hosp in hospKoder[5:6]) {
   write(outDir, file = filBKD, append = TRUE)
   
   bookdown::render_book(input = "index.Rmd",
-                        output_format = "bookdown::pdf_book",
+                        output_format = "bookdown::pdf_document2",
                         params = list(
                           nyTitle = hospTitle,
                           nyDate =  format(Sys.Date(), '%d %B %Y'),
@@ -111,4 +111,3 @@ for (hosp in hospKoder[5:6]) {
                           )
                         )
   }
-
