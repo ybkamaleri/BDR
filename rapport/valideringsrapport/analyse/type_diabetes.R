@@ -20,7 +20,7 @@ diaTabell <- function(x){
                  value.name = "janei")
   
   
-  ## Omkode diabetes type
+  ## Omkode diabetes type til tall fra 1 til 7
   diabLg[.(janei = "Ja", diabType = diabetesVar, to = 1:7), on = c("janei", "diabType"), dbt := i.to]
   
   ## Beholder bare de som svarte Ja
