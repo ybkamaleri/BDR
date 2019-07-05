@@ -25,9 +25,9 @@ for (j in diabetesVar){
 ## Check whitespace er borte
 diabDT[Pnr == 7090197481, .(diabetes_Kir62)][[1]]
 
-## måtte gjøre det nesten manuelt siden trimws for alle kolonne i data.table ikke
-## funker som det bør være
-diabDT[!is.na(diabetes_Kir62), diabetes_Kir62  := trimws(diabetes_Kir62)]
+## ## måtte gjøre det nesten manuelt siden trimws for alle kolonne i data.table ikke
+## ## funker som det bør være
+## diabDT[!is.na(diabetes_Kir62), diabetes_Kir62  := trimws(diabetes_Kir62)]
 
 ## Lage en long dataset
 diabLg <- melt(data = diabDT,
@@ -95,3 +95,10 @@ for (j in dia2){
 
 dia2DTperson <- rbindlist(dia2DT)
 dia2DTperson
+
+diabVar1 = c("diabetes_Type2", "diabetes_Mody", "diabetes_Kir62", "diabetes_SekDiabetes", "diabetes_AnnenDiabetes", "diabetes_UkjentDiabetes")
+
+dia2DTperson[diabetes_Type1 == "Ja", (diabVar1)  := NA]
+## personer med flere diagnoser
+dt1person <- dia2DTperson[, Pnr]
+dt1person
