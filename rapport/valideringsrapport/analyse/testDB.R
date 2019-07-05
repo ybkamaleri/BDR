@@ -11,9 +11,19 @@ diabetesVar = c("diabetes_Type1", "diabetes_Type2", "diabetes_Mody", "diabetes_K
 diabDT <- ars2018[, c(demoVar, diabetesVar), with = F]
 
 ## trim whitespace
-for (j in names(diabDT)){
-  set(diabDT,  j = j, value = diabDT[[trimws(j)]])
+##-----------------------
+for (j in diabetesVar){
+  if(class(diabDT[[j]]) == 'character')
+    set(diabDT, j = j, value = trimws(diabDT[[j]]))
 }
+
+## vanlig loop for whitespace deletion
+for (j in diabetesVar){
+ diabDT[, (j) := trimws(get(j))]
+}
+
+## Check whitespace er borte
+diabDT[Pnr == 7090197481, .(diabetes_Kir62)][[1]]
 
 ## måtte gjøre det nesten manuelt siden trimws for alle kolonne i data.table ikke
 ## funker som det bør være
@@ -26,14 +36,7 @@ diabLg <- melt(data = diabDT,
   variable.name = "diabType",
   value.name = "janei")
 
-
-
 diabLL <- copy(diabLg)
-## trim whitespace
-for (j in names(diabLL)){
-  set(diabLL,  j = j, value = diabLL[[trimws(j)]])
-}
-
 
 ## omkode all som svarte Ja til diabetes Type til 1
 diabLL[.(janei = "Ja", diabType = diabetesVar, to = 1L),
