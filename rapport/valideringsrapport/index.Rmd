@@ -74,7 +74,7 @@ ars2018 <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds", fsep = "\\
 ```{r r diabtype, echo=FALSE}
 source("./analyse/type_diabetes.R")
 ```
-Total pasienter med forskjellige typer diabetes er **`r antall.lokal`** pasienter, mens antall pasienter i hele landet som har tatt årskontroll i 2018 er **`r antall.nasj`** pasienter.
+Antall registrerte pasienter med diabetes (alle typer ) for `r hospTitle` er **`r antall.lokal`** pasienter, mens antall registrerte pasienter i hele landet som har tatt årskontroll i 2018 er **`r antall.nasj`** pasienter.
 
 
 ```{r diabetes, eval=F, echo=FALSE}
@@ -103,25 +103,24 @@ if (knitr::is_latex_output()){
 ```
 
 ```{r r huxtabdt, eval=T, echo=F}
-library(huxtable)
-
 hTB <- as_hux(diab.lokal, add_colnames = TRUE)
-caption(hTB) <- "Antall pasienter med alle type diabetes"
-bold(hTB)[1, ]  <- TRUE
-bottom_border(hTB)[1, ] <- 1
+## caption(hTB) <- "Antall pasienter med alle type diabetes"
 
+hTB <- hTB %>%
+  set_bottom_border(1,, TRUE) %>%
+  set_bold(1,, TRUE) %>%
+  set_top_border(4,, TRUE) %>%
+  map_background_color(by_rows("grey95", "white"))
 
-if (knitr::is_html_output()){
-  hTB
- 
-}
-
-if (knitr::is_latex_output()){
- hTB
-}
+hTB
 
 ```
 
+**Videre analyser inkludere KUN pasienter med Type 1 diabetes** 
+
+```{r r dt1, echo=F}
+dt1 <- subset(ars2018, diabetes_Type1 == "Ja")
+```
 
 ## Samtykke {-}
 
