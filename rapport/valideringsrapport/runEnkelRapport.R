@@ -9,7 +9,7 @@ inspak <- function(pkg){
   sapply(pkg, require, character.only = TRUE)
 }
 
-pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf", "kableExtra", "bookdown")
+pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf","huxtable", "dplyr", "kableExtra", "bookdown")
 
 inspak(pkgs)
 
@@ -54,6 +54,36 @@ hospKoder <- unique(ars2018$hospID)
 
 
 
+## Kjør rapporten som PDF
+## ----------------------
+for (hosp in hospKoder[5:6]) {
+
+  hospTitle <- ars2018[hospID == hosp, .(hospital)][[1]][1]
+  pdfTitle <- ars2018[hospID == hosp, .(hosKort)][[1]][1]
+
+  ## lokal
+  lokal2018 <- subset(ars2018, hospID == hosp)
+
+  ## _bookdown.yml
+  filBKD <- "_bookdown.yml"
+  if (file.exists(filBKD)) file.remove(filBKD)
+  bookFN <- paste0("book_filename: '", pdfTitle, ".Rmd'")
+  outDir <- paste0("output_dir: '", pdfTitle, "'")
+  write(bookFN, file = filBKD, append = TRUE)
+  write(outDir, file = filBKD, append = TRUE)
+
+  bookdown::render_book(input = "index.Rmd",
+                        output_format = "bookdown::pdf_document2",
+                        params = list(
+                          nyTitle = hospTitle,
+                          nyDate =  format(Sys.Date(), '%d %B %Y'),
+                          nySubTitle = "Årskontroller i BDR for 2018 data"
+                          )
+                        )
+  }
+
+
+
 ## Kjør rapporten som HTML
 ## ------------------------
 for (hosp in hospKoder[5:6]) {
@@ -83,31 +113,3 @@ for (hosp in hospKoder[5:6]) {
   }
 
 
-
-## Kjør rapporten som PDF
-## ----------------------
-for (hosp in hospKoder[5:6]) {
-  
-  hospTitle <- ars2018[hospID == hosp, .(hospital)][[1]][1]
-  pdfTitle <- ars2018[hospID == hosp, .(hosKort)][[1]][1]
-  
-  ## lokal
-  lokal2018 <- subset(ars2018, hospID == hosp)
-  
-  ## _bookdown.yml
-  filBKD <- "_bookdown.yml"
-  if (file.exists(filBKD)) file.remove(filBKD)
-  bookFN <- paste0("book_filename: '", pdfTitle, ".Rmd'")
-  outDir <- paste0("output_dir: '", pdfTitle, "'")
-  write(bookFN, file = filBKD, append = TRUE)
-  write(outDir, file = filBKD, append = TRUE)
-  
-  bookdown::render_book(input = "index.Rmd",
-                        output_format = "bookdown::pdf_document2",
-                        params = list(
-                          nyTitle = hospTitle,
-                          nyDate =  format(Sys.Date(), '%d %B %Y'),
-                          nySubTitle = "Årskontroller i BDR for 2018 data"
-                          )
-                        )
-  }
