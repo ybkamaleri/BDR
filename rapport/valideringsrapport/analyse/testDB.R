@@ -11,10 +11,13 @@ diabetesVar = c("diabetes_Type1", "diabetes_Type2", "diabetes_Mody", "diabetes_K
 diabDT <- ars2018[, c(demoVar, diabetesVar), with = F]
 
 ## trim whitespace
-for (j in diabetesVar){
-  set(diabDT, j = j, value = diabDT[[trimws(j)]])
+for (j in names(diabDT)){
+  set(diabDT,  j = j, value = diabDT[[trimws(j)]])
 }
 
+## måtte gjøre det nesten manuelt siden trimws for alle kolonne i data.table ikke
+## funker som det bør være
+diabDT[!is.na(diabetes_Kir62), diabetes_Kir62  := trimws(diabetes_Kir62)]
 
 ## Lage en long dataset
 diabLg <- melt(data = diabDT,
@@ -26,6 +29,12 @@ diabLg <- melt(data = diabDT,
 
 
 diabLL <- copy(diabLg)
+## trim whitespace
+for (j in names(diabLL)){
+  set(diabLL,  j = j, value = diabLL[[trimws(j)]])
+}
+
+
 ## omkode all som svarte Ja til diabetes Type til 1
 diabLL[.(janei = "Ja", diabType = diabetesVar, to = 1L),
   on = c("janei", "diabType"), diab := i.to]
@@ -61,6 +70,7 @@ for (j in diaN){
 }
 
 diaNoNperson <- rbindlist(diaNoN)
+diaNoNperson
 diaNoNperson[, .(Pnr, hospID, hosKort, diabetes_Kir62)]
 
 
@@ -77,3 +87,4 @@ for (j in dia2){
 }
 
 dia2DTperson <- rbindlist(dia2DT)
+dia2DTperson
