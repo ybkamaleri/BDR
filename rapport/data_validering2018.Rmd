@@ -152,7 +152,6 @@ Lage objekt for hvert sykehus som en *LIST*.
 
 ```{r}
 # hospList <- unique(dt$hospital)
-
 hospObj <- function(x){
   listHos <- unique(x$hospID)
   

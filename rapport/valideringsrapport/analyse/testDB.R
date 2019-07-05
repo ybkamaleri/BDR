@@ -73,6 +73,10 @@ diaNoNperson <- rbindlist(diaNoN)
 diaNoNperson
 diaNoNperson[, .(Pnr, hospID, hosKort, diabetes_Kir62)]
 
+vetIkkeDiab <- diaNoNperson[[1]]
+
+
+
 
 
 ## pasienter med to type diabetes
