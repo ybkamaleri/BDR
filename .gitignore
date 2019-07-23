@@ -1,6 +1,8 @@
 .Rproj.user
 .Rhistory
 .RData
+.rds
+.xlsx
 /rapport/valideringsrapport/output/*
 /rapport/valideringsrapport/analyse/person.xlsx
 *.log
