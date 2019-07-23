@@ -17,10 +17,11 @@ for (j in diabetesVar){
     set(diabDT, j = j, value = trimws(diabDT[[j]]))
 }
 
-## vanlig loop for whitespace deletion
-for (j in diabetesVar){
- diabDT[, (j) := trimws(get(j))]
-}
+## ## vanlig loop for whitespace deletion. OBS!! Treggere enn loop set
+## for (j in diabetesVar){
+##  diabDT[, (j) := trimws(get(j))]
+## }
+
 
 ## Check whitespace er borte
 diabDT[Pnr == 7090197481, .(diabetes_Kir62)][[1]]
@@ -79,6 +80,18 @@ diaNoNperson[, .(Pnr, hospID, hosKort, diabetes_Kir62)]
 vetIkkeDiab <- diaNoNperson[[1]]
 
 
+## Siv Janne har kontrollet og disse er resultat som må rettes i datasettet
+vetdt1 <- vetIkkeDiab[c(1:2, 4:5, 8:12)] #DT1
+vetMody <- vetIkkeDiab[6] #Mody
+
+diaNoDiag <- copy(diaNoNperson)
+diaNoDiag[Pnr %in% vetdt1, diabetes_Type1 := "Ja"] #DT1
+diaNoDiag[Pnr == vetMody, diabetes_Mody := "Ja"]
+diaNoDiag
+
+## replace main datasets value with the corrected values
+diabVar1 <- paste0("i.", diabetesVar)
+ars2018[diaNoDiag, (diabetesVar) := mget(diabVar1), on = "Pnr"]
 
 
 
@@ -102,3 +115,20 @@ dia2DTperson[diabetes_Type1 == "Ja", (diabVar1)  := NA]
 ## personer med flere diagnoser
 dt1person <- dia2DTperson[, Pnr]
 dt1person
+
+## De som har DT1 og annen type blir bare med DT1.
+perdt1 <- dt1person[-c(1:2)] #DT1
+perkir <- dt1person[2] #kir62
+perann <- dt1person[1] #annen
+
+## Tømme alle verdie for de med minst to så legge tilbake det riktige etter at
+## Siv Janne har kontorllert
+dia2diag <- copy(dia2DTperson)
+dia2diag[, (diabetesVar) := NA]
+dia2diag[Pnr  %in% perdt1, diabetes_Type1 := "Ja"] #DT1
+dia2diag[Pnr == perkir, diabetes_Kir62 := "Ja"] #Kira62
+dia2diag[Pnr == perann, diabetes_AnnenDiabetes := "Ja"] #Annen
+dia2diag
+
+## bytte verdi i hoved datasettet med korrigert verdi
+ars2018[dia2diag, (diabetesVar) := mget(diabVar1), on = "Pnr"]
