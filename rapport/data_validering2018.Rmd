@@ -84,34 +84,6 @@ Lager alternativ ID til å bruke i *loop*.
 ```{r}
 listHosp <- unique(rawdt$hospital)
 hosDT <- data.table(hospital = sort(listHosp), hospID = 1:length(listHosp))
-# write.csv(hosDT, "sykehusID.csv")
-# 
-# hosDT[hospID == 1 , hosKort := "Akershus"][
-#   hospID == 2, hosKort := "Forde"][
-#     hospID == 3, hosKort := "Haugesund"][
-#       hospID == 4, hosKort := "Haukeland"][
-#         hospID == 5, hosKort := "Sandessjoen"][
-#           hospID == 6, hosKort := "Finnmark"][
-#             hospID == 7, hosKort := "Kristiansund"][
-#               hospID == 8, hosKort := "Molde"][
-#                 hospID == 9, hosKort := "Namsos"][
-#                   hospID == 10, hosKort := "Bodo"][
-#                     hospID == 11, hosKort := "Trondheim"][
-#                       hospID == 12, hosKort := "Stavanger"][
-#                         hospID == 13, hosKort := "Vestfold"][
-#                           hospID == 14, hosKort := "Gjovik"][
-#                             hospID == 15, hosKort := "Lillehammer"][
-#                               hospID == 16, hosKort := "Elverum"][
-#                                 hospID == 17, hosKort := "Levanger"][
-#                                   hospID == 18, hosKort := "Telemark"][
-#                                     hospID == 19, hosKort := "Ostfold"][
-#                                       hospID == 20, hosKort := "Arendal"][
-#                                         hospID == 21, hosKort := "Kristiansand"][
-#                                           hospID == 22, hosKort := "Ulleval"][
-#                                             hospID == 23, hosKort := "Nord_norge"][
-#                                               hospID == 24, hosKort := "Harstad"][
-#                                                 hospID == 25, hosKort := "Drammen"][
-#                                                   hospID == 26, hosKort := "Alesund"][]
 
 setkey(hosDT, hospID)
 # saveRDS(hosDT, "hospitalID.rds")
@@ -394,6 +366,7 @@ saveRDS(chk_hba1c, file.path(sti.vask, "chk_hba1c.rds"))
 
 Sjekk missing diabetes type inkludert insulinbehandling. Hvis det er Type 1 så må det være en av de insulinbehandlingene svart *JA*.
 
+
 ```{r}
 DTtype <- dt[is.na(diabetes_Type1) & is.na(diabetes_Type2) & is.na(diabetes_Mody) & is.na(diabetes_AnnenDiabetes), 
              c(person.var, 
@@ -421,6 +394,7 @@ saveRDS(chk_diabtype, file.path(sti.vask, "chk_diabtype.rds"))
 
 Hvis det er diett så kan det ikke være diabetes Type 1.
 
+
 ```{r}
 dt[beh_diett == "Ja", .N, by=.(diabetes_Type1)]
 diet1 <- dt[diabetes_Type1 == "Ja" & beh_diett == "Ja", c(person.var, "diabetes_Type1", "beh_anti_tab", "beh_diett"), with=F]
@@ -429,13 +403,16 @@ diet1
 
 Hvis bruker antidiabetes tabeletter kan ikke være diabetes Type 1.
 
+
 ```{r}
 dt[beh_anti_tab == "Ja", .N, by=.(diabetes_Type1)]
 diet2 <- dt[diabetes_Type1 == "Ja" & beh_anti_tab == "Ja", c(person.var, "diabetes_Type1", "beh_anti_tab", "beh_diett"), with=F]
 diet2
 ```
 
+
 Koble de to sammen
+
 
 ```{r}
 diet22 <- diet2[!diet1, on="Pnr"] #ekluderer den som finnes på begge
@@ -444,7 +421,9 @@ diet22
 diet12 <- rbindlist(list(diet1, diet22))
 ```
 
+
 Lager liste
+
 
 ```{r}
 chk_diet <- hospObj(diet12)
@@ -828,6 +807,34 @@ chk_pumpe <- hospObj(beh_pumpe)
 saveRDS(chk_pumpe, file.path(sti.vask, "chk_pumpe.rds"))
 ```
 
+## Pumpe annet
+
+Variabelnavn `beh_ins_pumpe_annet` er en fritekst. De må standardiseres.
+
+```{r}
+pumpsti = "./datavask"
+
+pumpny <- read.csv2(file.path(pumpsti, "pumpe.csv"))
+setDT(pumpny)
+
+pumpeDT <- subset(pumpny, select = 1:2)
+library(stringi)
+pumpeDT[, pumpe_all := stri_replace_all_fixed(pumpe_ny, "?", "")]
+
+pumpeDT
+pumpeOld <- pumpeDT[["beh_ins_pumpe_annet"]]
+pumpeNy <- pumpeDT[["pumpe_all"]]
+
+```
+
+Merge de nye standardiserte navnene til hele datasettet.
+
+```{r}
+dt[.(beh_ins_pumpe_annet = pumpeOld, to = pumpeNy), on = "beh_ins_pumpe_annet", pumpe_txt := i.to ]
+
+```
+
+
 ## Injeksjoner hurtigvirk
 
 Antall injeksjoner hurtigvirkende insulin per døgn. Den skal ikke være mer en 10
@@ -1118,6 +1125,7 @@ Noen pasienter har blitt registrert med flere diagnoser eller ingen. Hvem er dis
 Når liste av pasienter er laget så skal Siv Janne kontakter sykehusene for varifisering.
 
 ```{r dtype, eval=F}
+
 ## Demografisk variabler
 demoVar <-  c("PasientID", "Pnr", "hospital", "hospID", "hosKort", "alder", "Kjonn", "diagVar", "diagAlder")
 
@@ -1207,8 +1215,8 @@ diaNoDiag[Pnr == vetMody, diabetes_Mody := "Ja"]
 diaNoDiag
 
 ## replace main datasets value with the corrected values
-diabVar1 <- paste0("i.", diabetesVar)
-dt[diaNoDiag, (diabetesVar) := mget(diabVar1), on = "Pnr"]
+diabVar.i <- paste0("i.", diabetesVar)
+dt[diaNoDiag, (diabetesVar) := mget(diabVar.i), on = "Pnr"]
 
 ## pasienter med to type diabetes
 ## -----------------------------
@@ -1246,7 +1254,7 @@ dia2diag[Pnr == perann, diabetes_AnnenDiabetes := "Ja"] #Annen
 dia2diag
 
 ## bytte verdi i hoved datasettet med korrigert verdi
-dt[dia2diag, (diabetesVar) := mget(diabVar1), on = "Pnr"]
+dt[dia2diag, (diabetesVar) := mget(diabVar.i), on = "Pnr"]
 
 ```
 
@@ -1267,6 +1275,7 @@ Lager bearbeidet datasettet for validering. Datasettet inneholder alle nye lagde
 saveRDS(dt, "validert_arskontroll2018.rds")
 dt <- readRDS("validert_arskontroll2018.rds")
 ```
+
 # Excel per sykehus
 
 Lager Excel fil per Sykehus
@@ -1486,4 +1495,14 @@ anonymDT <- dt[, (anonymVar) := NULL]
 saveRDS(anonymDT, "annonym_dt2018.RDS")
 
 ```
+
+
+# Excel fil
+
+Lager Excelfil for datasom brukes til analyse for årsrapport.
+
+```{r, eval=F}
+rio::export(dt, "./Excelfiler/arskontroll2018.xlsx")
+```
+
 
