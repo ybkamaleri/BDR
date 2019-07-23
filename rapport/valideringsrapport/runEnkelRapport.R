@@ -38,6 +38,10 @@ ars2018 <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds"))
 ## hospital koder
 hospKoder <- unique(ars2018$hospID)
 
+## output directory
+outDir <- "output"
+if (!dir.exists(outDir)) {dir.create(outDir)} else {print("Output dir finnes allerede")}
+
 
 # ## Test to create file
 # hosp1 <- "Aker"
@@ -68,7 +72,7 @@ for (hosp in hospKoder[5:6]) {
   filBKD <- "_bookdown.yml"
   if (file.exists(filBKD)) file.remove(filBKD)
   bookFN <- paste0("book_filename: '", pdfTitle, ".Rmd'")
-  outDir <- paste0("output_dir: '", pdfTitle, "'")
+  outDir <- paste0("output_dir: './output/", pdfTitle, "'")
   write(bookFN, file = filBKD, append = TRUE)
   write(outDir, file = filBKD, append = TRUE)
 
@@ -98,7 +102,7 @@ for (hosp in hospKoder[5:6]) {
   filBKD <- "_bookdown.yml"
   if (file.exists(filBKD)) file.remove(filBKD)
   bookFN <- paste0("book_filename: '", pdfTitle, ".Rmd'")
-  outDir <- paste0("output_dir: '", pdfTitle, "'")
+  outDir <- paste0("output_dir: './output/", pdfTitle, "'")
   write(bookFN, file = filBKD, append = TRUE)
   write(outDir, file = filBKD, append = TRUE)
 
