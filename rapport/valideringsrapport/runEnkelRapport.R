@@ -77,14 +77,17 @@ for (hosp in hospKoder[5:6]) {
   write(outDir, file = filBKD, append = TRUE)
 
   bookdown::render_book(input = "index.Rmd",
-                        output_format = "bookdown::pdf_document2",
-                        params = list(
-                          nyTitle = hospTitle,
-                          nyDate =  format(Sys.Date(), '%d %B %Y'),
-                          nySubTitle = "Årskontroller i BDR for 2018 data"
-                          )
-                        )
-  }
+    output_format = "bookdown::pdf_document2",
+    params = list(
+      nyTitle = hospTitle,
+      nyDate =  format(Sys.Date(), '%d %B %Y'),
+      nySubTitle = "Årskontroller i BDR for 2018 data"
+    )
+  )
+
+  file.remove(filBKD)
+
+}
 
 
 
@@ -94,7 +97,7 @@ for (hosp in hospKoder[5:6]) {
 
   hospTitle <- ars2018[hospID == hosp, .(hospital)][[1]][1]
   pdfTitle <- ars2018[hospID == hosp, .(hosKort)][[1]][1]
- 
+
   ## lokal
   lokal2018 <- subset(ars2018, hospID == hosp)
   
@@ -107,13 +110,14 @@ for (hosp in hospKoder[5:6]) {
   write(outDir, file = filBKD, append = TRUE)
 
   bookdown::render_book(input = "index.Rmd",
-                        output_format = "bookdown::gitbook",
-                        params = list(
-                          nyTitle = hospTitle,
-                          nyDate =  format(Sys.Date(), '%d %B %Y'),
-                          nySubTitle = "Årskontroller i BDR for 2018 data"
-                          )
-                        )
-  }
+    output_format = "bookdown::gitbook",
+    params = list(
+      nyTitle = hospTitle,
+      nyDate =  format(Sys.Date(), '%d %B %Y'),
+      nySubTitle = "Årskontroller i BDR for 2018 data"
+    )
+  )
 
+  file.remove(filBKD)
 
+}
