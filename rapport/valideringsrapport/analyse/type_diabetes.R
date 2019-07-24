@@ -11,7 +11,17 @@ diaTabell <- function(x){
   
   ## lage subset
   diabDT <- x[, c(demoVar, diabetesVar), with = F]
-  
+
+  ## --- Pasienter uten diagnoser ----
+  diabDTx <- copy(diabDT)
+  diabDTx[, (diabetesVar) := lapply(.SD, function(x) ifelse(x == "Ja", 1, 0)), .SDcols = diabetesVar]
+
+  diabDTx[, diaSum := sum(.SD, na.rm = TRUE), .SDcols = diabetesVar, by = Pnr]
+
+  ## diabDTx[diaSum == 0, .(Pnr, hosKort)]
+
+
+
   ## Lage en long dataset
   diabLg <- melt(data = diabDT, 
                  id.vars = demoVar,
@@ -29,7 +39,8 @@ diaTabell <- function(x){
   ## rekode annen type diabetes
   ## 1 = DT1, 2 = DT2, 3 = Mody, 4 = Annen type
   diabJa[, dbtype := dbt][dbt > 3, dbtype := 4]
-  
+
+
   
   ## Tabell
   ## -------
