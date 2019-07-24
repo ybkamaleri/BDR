@@ -1200,14 +1200,16 @@ for (j in diaN){
 
 diaNoNperson <- rbindlist(diaNoN)
 diaNoNperson
-diaNoNperson[, .(Pnr, hospID, hosKort, diabetes_Kir62)]
+## diaNoNperson[, .(Pnr, hospID, hosKort, diabetes_Kir62)]
 
-vetIkkeDiab <- diaNoNperson[[1]]
+(vetIkkeDiab <- diaNoNperson[[1]])
 
 
-## Siv Janne har kontrollet og disse er resultat som må rettes i datasettet
-vetdt1 <- vetIkkeDiab[c(1:2, 4:5, 8:12)] #DT1
-vetMody <- vetIkkeDiab[6] #Mody
+## ## Siv Janne har kontrollet og disse er resultat som må rettes i datasettet
+## ## Kjøres bare en gang i begynnelse før de er rettes
+## ##------------------------------------------------------
+## vetdt1 <- vetIkkeDiab[c(1:2, 4:5, 8:12)] #DT1
+## vetMody <- vetIkkeDiab[6] #Mody
 
 diaNoDiag <- copy(diaNoNperson)
 diaNoDiag[Pnr %in% vetdt1, diabetes_Type1 := "Ja"] #DT1
@@ -1218,7 +1220,7 @@ diaNoDiag
 diabVar.i <- paste0("i.", diabetesVar)
 dt[diaNoDiag, (diabetesVar) := mget(diabVar.i), on = "Pnr"]
 
-## pasienter med to type diabetes
+## pasienter med to typer diabetes
 ## -----------------------------
 dia2 <- diabWide[hvem == 2, .(Pnr)][[1]]
 
@@ -1239,25 +1241,23 @@ dia2DTperson[diabetes_Type1 == "Ja", (diabVar1)  := NA]
 dt1person <- dia2DTperson[, Pnr]
 dt1person
 
-## De som har DT1 og annen type blir bare med DT1.
-perdt1 <- dt1person[-c(1:2)] #DT1
-perkir <- dt1person[2] #kir62
-perann <- dt1person[1] #annen
+## ## De som har DT1 og annen type blir bare med DT1.
+## perdt1 <- dt1person[-c(1:2)] #DT1
+## perkir <- dt1person[2] #kir62
+## perann <- dt1person[1] #annen
 
-## Tømme alle verdie for de med minst to så legge tilbake det riktige etter at
-## Siv Janne har kontorllert
-dia2diag <- copy(dia2DTperson)
-dia2diag[, (diabetesVar) := NA]
-dia2diag[Pnr  %in% perdt1, diabetes_Type1 := "Ja"] #DT1
-dia2diag[Pnr == perkir, diabetes_Kir62 := "Ja"] #Kira62
-dia2diag[Pnr == perann, diabetes_AnnenDiabetes := "Ja"] #Annen
-dia2diag
+## ## Tømme alle verdie for de med minst to så legge tilbake det riktige etter at
+## ## Siv Janne har kontorllert
+## dia2diag <- copy(dia2DTperson)
+## dia2diag[, (diabetesVar) := NA]
+## dia2diag[Pnr  %in% perdt1, diabetes_Type1 := "Ja"] #DT1
+## dia2diag[Pnr == perkir, diabetes_Kir62 := "Ja"] #Kira62
+## dia2diag[Pnr == perann, diabetes_AnnenDiabetes := "Ja"] #Annen
+## dia2diag
 
 ## bytte verdi i hoved datasettet med korrigert verdi
 dt[dia2diag, (diabetesVar) := mget(diabVar.i), on = "Pnr"]
-
 ```
-
 # Save Datasett
 
 Lager bearbeidet datasettet for validering. Datasettet inneholder alle nye lagde variablene som brukes til å gjøre validering og senere skal brukes i analysen bl.a
