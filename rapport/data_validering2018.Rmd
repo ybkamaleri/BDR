@@ -436,7 +436,7 @@ saveRDS(chk_diet, file.path(sti.vask, "chk_diet.rds"))
 
 Kontrollerer at **Høyde** under 2 meter og **Vekt** under 100 kg. Variabel `BMI` lages med formel: $$\frac{Vekt(kg)}{Høyde(m)^2}$$
 
-Lager __BMI_ variabel.
+Lager __BMI__ variabel.
 
 ```{r}
 ## BMI
