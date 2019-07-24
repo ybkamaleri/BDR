@@ -1262,13 +1262,14 @@ dt[dia2diag, (diabetesVar) := mget(diabVar.i), on = "Pnr"]
 
 Lager bearbeidet datasettet for validering. Datasettet inneholder alle nye lagde variablene som brukes til å gjøre validering og senere skal brukes i analysen bl.a
 
-- hospital     : Sykehus
-- dob          : Fødselsdato i dato format
-- alder        : Alder for pasienter
-- diagVar      : Diabetes varighet
-- alderArc     : Alder ved menarche
-- diagAlder    : Alder ved diagnose
-- diagDato     : Diagnose dato for årskontroll siden *inn_Diagdato* finnes bare i førstegangsregistrering
+- **hospital**     : Sykehus
+- **dob**          : Fødselsdato i dato format
+- **alder**        : Alder for pasienter
+- **diagVar**      : Diabetes varighet
+- **alderArc**     : Alder ved menarche
+- **diagAlder**    : Alder ved diagnose
+- **diagDato**     : Diagnose dato for årskontroll siden *inn_Diagdato* finnes bare i førstegangsregistrering, men for førstegangsregistrering bruker man *inn_DiagDato* som er registrert i eReg.
+- **pump_txt**     : Omkode *beh_ins_pumpe_annet* som er fritekst til et standardiserte liste etter at Siv Janne har gått gjennom listen.
 
 
 ```{r eval=FALSE}
