@@ -68,6 +68,9 @@ for (hosp in hospKoder[5:6]) {
   ## lokal
   lokal2018 <- subset(ars2018, hospID == hosp)
 
+  ## lokal diabetes Type 1
+  lok2018dt1 <- subset(ars2018, hospID == hosp &  diabetes_Type1 == "Ja")
+
   ## _bookdown.yml
   filBKD <- "_bookdown.yml"
   if (file.exists(filBKD)) file.remove(filBKD)
@@ -100,6 +103,9 @@ for (hosp in hospKoder[5:6]) {
 
   ## lokal
   lokal2018 <- subset(ars2018, hospID == hosp)
+
+  ## lokal diabetes Type 1
+  lok2018dt1 <- subset(ars2018, hospID == hosp &  diabetes_Type1 == "Ja")
   
   ## _bookdown.yml
   filBKD <- "_bookdown.yml"
