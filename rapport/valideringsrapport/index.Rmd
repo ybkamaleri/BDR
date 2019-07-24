@@ -33,18 +33,17 @@ output:
     split_by: section
     download: ["pdf"]
   bookdown::pdf_document2:
-    keep_tex: yes
+    keep_tex: no
     toc: no
 ---
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
-
 ```{r test, eval=F, include=F }
-
+## Tilgang til K sensitivt
 inspak <- function(pkg){
   nypkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
   if (length(nypkg)) install.packages(nypkg, dependencies = TRUE, repos = "http://cran.rstudio.com")
@@ -55,7 +54,6 @@ pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", 
 
 inspak(pkgs)
 
-
 ## Setup
 ## -------
 # source(file.path(kilde, "setup.R", fsep = "\\"))
@@ -64,21 +62,24 @@ inspak(pkgs)
 # dt2018 <- readRDS(file.path("../.."), "validert_arskontroll2018.rds")
 dataSti <- "K:\\Sensitivt\\Forskning02\\Barnediabetesregisteret_2015-5739\\Barnediabetes og kvalitet\\Datafiler\\2018"
 ars2018 <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds", fsep = "\\"))
-
 ```
 
+```{r key}
+antall.pas <- dim(ars2018)[1]
+```
 
 
 ## Typer diabetes {-}
 
-```{r r diabtype, echo=FALSE}
+```{r diabtype}
 source("./analyse/type_diabetes.R")
+pros.syk <- round((antall.lokal / antall.pas) * 100, digits = 1)
 ```
-Antall registrerte pasienter med diabetes (alle typer ) for `r hospTitle` er **`r antall.lokal`** pasienter, mens antall registrerte pasienter i hele landet som har tatt årskontroll i 2018 er **`r antall.nasj`** pasienter.
+Antall registrerte pasienter med diabetes (alle typer) for `r hospTitle` er **`r antall.lokal`** pasienter. Dette tilsvarer **`r pros.syk`** prosent av total
+antall registrerte pasienter i hele landet som har tatt årskontroll i 2018 dvs. **`r antall.pas`** pasienter. Foredelingen for de forskjellige typer diabetes er som følgende:
 
 
-```{r diabetes, eval=F, echo=FALSE}
-
+```{r diabetes, eval=F}
 if (knitr::is_html_output()){
   kable(diab.lokal, format = "html") %>%
     kable_styling(bootstrap_options = c("striped", "hover")) %>%
@@ -92,14 +93,10 @@ if (knitr::is_html_output()){
 if (knitr::is_latex_output()){
 ##   kable(diab.nasj, format = "latex", booktabs = T) %>%
 ##     kable_styling(latex_options = "striped")
-
   kable(diab.lokal, "latex", booktabs = T) %>%
     kable_styling(latex_options = "striped") %>%
     row_spec(3, bold = T, color = "black", background = "#c0c0c0")
-  
-    
 }
-
 ```
 
 ```{r r huxtabdt, eval=T, echo=F}
@@ -116,9 +113,10 @@ hTB
 
 ```
 
-**Videre analyser inkludere KUN pasienter med Type 1 diabetes** 
+*Videre analyser inkludere KUN pasienter med Type 1 diabetes*
 
-```{r r dt1, echo=F}
+
+```{r dt1, echo=F}
 dt1 <- subset(ars2018, diabetes_Type1 == "Ja")
 ```
 
@@ -131,4 +129,7 @@ data(mtcars)
 car_ht <- as_hux(mtcars)
 car_ht
 ```
+
+
+
 
