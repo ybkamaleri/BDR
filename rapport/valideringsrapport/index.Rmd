@@ -121,19 +121,41 @@ Pasient karakteristika for alle med diabetes type 1 (n = `r dim(lok2018dt1)[1]`)
 ```{r}
 source("./analyse/karakter.R")
 
-kar_htab<- as_hux(kar.tab, add_colnames = TRUE)
-## caption(hTB) <- "Antall pasienter med alle type diabetes"
+lastLine <- dim(kar.tab)[1] + 1
 
-kar_htab <- kar_htab %>%
+kar.htab <- as_hux(kar.tab, add_colnames = TRUE)
+
+kar.htab <- kar.htab %>%
   set_bottom_border(1,, TRUE) %>%
   set_bold(1,, TRUE) %>%
-  set_bottom_border(5,, TRUE) %>%
+  set_bottom_border(lastLine,, TRUE) %>%
   map_background_color(by_rows("grey95", "white")) %>%
   set_position("left")
 
-kar_htab
+kar.htab
 ```
+## Nasjonalitet
+Nasjonalitet er definert etter hvor barnets foreldre er født. Er en eller begge
+foreldrene født i et av de nordiske landene kategoriseres barnet som
+Nordisk. Manglende data om nasjonalitet blir kategorisert som *ukjent*. Antall og
+andel for nasjonalitet fordelt på kjønn er som følgende:
 
+```{r nasj}
+source("./analyse/nasjonal.R")
+
+lastLine <- dim(barnWt)[1] + 1
+
+nas.htab <- as_hux(barnWt, add_colnames = TRUE)
+
+nas.htab <- nas.htab %>%
+  set_bottom_border(1,, TRUE) %>%
+  set_bold(1,, TRUE) %>%
+  set_bottom_border(lastLine,, TRUE) %>%
+  map_background_color(by_rows("grey95", "white")) %>%
+  set_position("left")
+
+nas.htab
+```
 
 
 
