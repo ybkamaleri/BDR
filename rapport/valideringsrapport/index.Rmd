@@ -134,7 +134,8 @@ kar.htab <- kar.htab %>%
 
 kar.htab
 ```
-## Nasjonalitet
+
+## Nasjonalitet {-}
 Nasjonalitet er definert etter hvor barnets foreldre er født. Er en eller begge
 foreldrene født i et av de nordiske landene kategoriseres barnet som
 Nordisk. Manglende data om nasjonalitet blir kategorisert som *ukjent*. Antall og
