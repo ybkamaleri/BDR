@@ -29,7 +29,6 @@ header-includes:
 
 output:
   bookdown::gitbook:
-    lib_dir: "ekstra"
     split_by: section
     download: ["pdf"]
   bookdown::pdf_document2:
@@ -75,8 +74,8 @@ antall.pas <- dim(ars2018)[1]
 source("./analyse/type_diabetes.R")
 pros.syk <- round((antall.lokal / antall.pas) * 100, digits = 1)
 ```
-Antall registrerte pasienter med diabetes (alle typer) for `r hospTitle` er **`r antall.lokal`** pasienter. Dette tilsvarer **`r pros.syk`** prosent av total
-antall registrerte pasienter i hele landet som har tatt årskontroll i 2018 dvs. **`r antall.pas`** pasienter. Foredelingen for de forskjellige typer diabetes er som følgende:
+Antall registerte pasienter med diabetes (alle typer) for `r hospTitle` er **`r antall.lokal`** pasienter. Dette tilsvarer **`r pros.syk`** prosent av total
+antall registerte pasienter i hele landet som har tatt årskontroll i 2018 dvs. **`r antall.pas`** pasienter. Antall pasienter for de forskjellige diabetes typer fordelt på kjønn er som følgende:
 
 
 ```{r diabetes, eval=F}
@@ -113,21 +112,26 @@ hTB
 
 ```
 
-*Videre analyser inkludere KUN pasienter med Type 1 diabetes*
+***Videre analyser inkludere KUN pasienter med Type 1 diabetes***
 
+## Pasient-karakteristika {-}
 
-```{r dt1, echo=F}
-dt1 <- subset(ars2018, diabetes_Type1 == "Ja")
-```
+Pasient karakteristika for alle med diabetes type 1 (n = `r dim(lok2018dt1)[1]`) vises i tabellen nedenfor. Antall pasienter kan variere pga. manglende data.
 
-## Samtykke {-}
+```{r}
+source("./analyse/karakter.R")
 
-Antall samtykke
+kar_htab<- as_hux(kar.tab, add_colnames = TRUE)
+## caption(hTB) <- "Antall pasienter med alle type diabetes"
 
-```{r data1}
-data(mtcars)
-car_ht <- as_hux(mtcars)
-car_ht
+kar_htab <- kar_htab %>%
+  set_bottom_border(1,, TRUE) %>%
+  set_bold(1,, TRUE) %>%
+  set_bottom_border(5,, TRUE) %>%
+  map_background_color(by_rows("grey95", "white")) %>%
+  set_position("left")
+
+kar_htab
 ```
 
 
