@@ -83,7 +83,7 @@ undAll[, c("var", "pros", "id") := NULL]
 setcolorder(undAll, c("navn", "ja", "pros2", "n"))
 
 setnames(undAll, names(undAll),
-  c(" ", "Antall utført/tilfelle", "Andel utført/tilfelle", "Antall registrerte"))
+  c(" ", "Antall", "Andel", "Antall registrerte"))
 
 
 ## Tabell hux
@@ -92,7 +92,7 @@ lastLine <- dim(undAll)[1] + 1
 und.htab <- as_hux(undAll, add_colnames = TRUE)
 
 und.htab <- und.htab %>%
-  set_bottom_border(1,, TRUE) %>%
+  ## set_bottom_border(1,, TRUE) %>%
   set_bold(1,, TRUE) %>%
   set_bottom_border(lastLine,, TRUE) %>%
   map_background_color(by_rows("grey95", "white")) %>%
@@ -103,3 +103,10 @@ und.htab <- und.htab %>%
 col_width(und.htab) <- c(.4, .2, .2, .2)
 width(und.htab) <- 0.9
 wrap(und.htab) <- TRUE
+
+und.htab2 <- rbind(c("", "Utført undersøkelser", "", ""), und.htab)
+
+und.htab2 <- merge_cells(und.htab2, 1, 2:3)
+align(und.htab2)[1, 2] <- "center"
+bottom_border(und.htab2)[1, 2] <- 0.5
+bottom_border(und.htab2)[2, ] <- TRUE
