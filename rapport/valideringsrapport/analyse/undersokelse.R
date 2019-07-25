@@ -97,7 +97,8 @@ und.htab <- und.htab %>%
   set_bottom_border(lastLine,, TRUE) %>%
   map_background_color(by_rows("grey95", "white")) %>%
   set_position("left") %>%
-  set_align(, 3, "right")
+  set_align(, 3, "right") %>%
+  set_latex_float("h!")
 
 col_width(und.htab) <- c(.4, .2, .2, .2)
 width(und.htab) <- 0.9
