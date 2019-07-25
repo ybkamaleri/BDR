@@ -4,7 +4,7 @@
 nordLand <- c("Norge", "Danmark", "Finland", "Sverige", "Island")
 
 ## Data kilder
-nasDT <- lokal2018
+nasDT <- lok2018dt1
 
 nasDT[!is.na(fodelandMor) , nordiskMor := ifelse(fodelandMor %in% nordLand, 1L, 0L)]
 nasDT[!is.na(fodelandFar) , nordiskFar := ifelse(fodelandFar %in% nordLand, 1L, 0L)]

@@ -2,7 +2,7 @@
 ## -----------
 
 ## Datakilde
-useDT <- ars2018
+useDT <- lok2018dt1
 
 ## useDT[is.na(und_syk_col), .N]
 ## useDT[is.na(lab_HbA1cAkerVerdi), .N]
@@ -52,4 +52,4 @@ komNavn <- c("HbA1c eget lab",
 komAll[.(nr = 1:11, to = komNavn), on = "nr", var2 := i.to]
 ## komAll[, c("var", "nr") := NULL]
 
-regbar(komAll, y = pros, x = var2, num = n, ylab = "prosent")
+fig.komp <- regbar(komAll, y = pros, x = var2, num = n, ylab = "prosent")

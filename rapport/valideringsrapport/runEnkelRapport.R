@@ -1,6 +1,5 @@
 ## Run enkel rapport
 ## -----------------
-
 rm(list = ls())
 
 inspak <- function(pkg){

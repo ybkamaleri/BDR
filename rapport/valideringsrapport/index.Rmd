@@ -158,5 +158,22 @@ nas.htab <- nas.htab %>%
 nas.htab
 ```
 
+## Andel kompletthet {-}
 
+Figuren viser andel kompletthet av noen utvalgte variabler. For *fysisk aktivitet*
+regner vi kompletthet på alle pasienter fra og med 6 år.
+
+```{r komplett}
+source("./analyse/kompletthet.R")
+fig.komp
+```
+
+## Undersøkelser utført {-}
+
+Tabellen nedenfor viser antall og andel undersøkelser utført siste året.
+
+```{r undersk}
+source("./analyse/undersokelse.R")
+und.htab
+```
 

@@ -2,25 +2,25 @@
 ## -------------------
 
 ## Datakilde
-undDT <- ars2018
+undDT <- lok2018dt1
 
 ## variablene
 undVar <- c("und_Oye", "und_laser", "und_Retinopati", "und_fotter", "und_periferneu", "und_infiltrater", "und_hudforandring", "lab_res_persmikro")
 
-testDT <- subset(undDT, select = undVar)
+## testDT <- subset(undDT, select = undVar)
 
-## Sjekk variabelinnholdt
-varList <- list()
-for (i in undVar){
-  .l2 <- undDT[, .N, by = .(get(i))]
-  varList[[i]] <- .l2
-}
-varList
+## ## Sjekk variabelinnholdt
+## varList <- list()
+## for (i in undVar){
+##   .l2 <- undDT[, .N, by = .(get(i))]
+##   varList[[i]] <- .l2
+## }
+## varList
 
 
 ## Count missing og non-missing
 ## -----------------------------
-undVarMiss <- undDT[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = undVar]
+## undVarMiss <- undDT[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = undVar]
 undVarNon <- undDT[, lapply(.SD, function(x) sum(!is.na(x))), .SDcols = undVar]
 
 ## Non missing long table
@@ -76,14 +76,14 @@ nyNavn <- c("Øyeundersøkelse", "Laserbehandling", "Påvist retinopati",
 
 undAll[.(id = 1:9, to = nyNavn), on = "id", navn := i.to]
 
-undAll[, pros2 := ifelse(ja == 0, sprintf("%s(-)", ja), sprintf("%s(%s%%)", ja, pros))]
+undAll[, pros2 := ifelse(ja == 0, paste0("-"), pros)]
 
-undAll[, c("var", "ja", "pros", "id") := NULL]
+undAll[, c("var", "pros", "id") := NULL]
 
-setcolorder(undAll, c("navn", "pros2", "n"))
+setcolorder(undAll, c("navn", "ja", "pros2", "n"))
 
 setnames(undAll, names(undAll),
-  c(" ", "Antall og andel utført/tilfelle", "Antall registrerte"))
+  c(" ", "Antall utført/tilfelle", "Andel utførst/tilfelle", "Antall registrerte"))
 
 
 ## Tabell hux
@@ -96,4 +96,9 @@ und.htab <- und.htab %>%
   set_bold(1,, TRUE) %>%
   set_bottom_border(lastLine,, TRUE) %>%
   map_background_color(by_rows("grey95", "white")) %>%
-  set_position("left")
+  set_position("left") %>%
+  set_align(, 3, "right")
+
+col_width(und.htab) <- c(.4, .2, .2, .2)
+width(und.htab) <- 0.9
+wrap(und.htab) <- TRUE

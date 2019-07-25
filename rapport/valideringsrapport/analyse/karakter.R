@@ -3,12 +3,15 @@
 ## Datasettet som skal brukes er dt1
 ## for bare lokal sykehus bruker lokal2018
 
+## datakilde
+dtDiab1 <- lok2018dt1
+
 ## Pasient karakteristika
 
 varKar <- c("PasientID", "alder", "diagAlder", "diagVar", "bmi")
 
 ## dtKar <- subset(dt1, select = varKar)
-dtKar <- subset(lok2018dt1, select = varKar)
+dtKar <- subset(dtDiab1, select = varKar)
 
 karLong <- melt(dtKar, id.vars = "PasientID", variable.name = "chr", value.name = "tall")
 
