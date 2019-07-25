@@ -46,5 +46,7 @@ barnWt <- dcast(barnLg, kjonn ~ nordiskBarn, value.var = "n")
 ## reorder columns
 setcolorder(barnWt, c("kjonn", "1", "0", "3"))
 
+barnWt[.(kjonn = c("Gutt", "Jente"), to = c("Gutter", "Jenter")), on = "kjonn", kjonn := i.to]
+
 ## legger riktig colnavn
 setnames(barnWt, names(barnWt), c(" ", "Nordisk", "Ikke Nordisk", "Ukjent"))
