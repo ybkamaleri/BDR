@@ -83,7 +83,7 @@ undAll[, c("var", "pros", "id") := NULL]
 setcolorder(undAll, c("navn", "ja", "pros2", "n"))
 
 setnames(undAll, names(undAll),
-  c(" ", "Antall utført/tilfelle", "Andel utførst/tilfelle", "Antall registrerte"))
+  c(" ", "Antall utført/tilfelle", "Andel utført/tilfelle", "Antall registrerte"))
 
 
 ## Tabell hux
