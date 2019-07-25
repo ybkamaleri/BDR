@@ -8,7 +8,7 @@ inspak <- function(pkg){
   sapply(pkg, require, character.only = TRUE)
 }
 
-pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf","huxtable", "dplyr", "kableExtra", "bookdown")
+pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf","huxtable", "dplyr", "kableExtra", "bookdown", "rreg")
 
 inspak(pkgs)
 
