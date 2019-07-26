@@ -23,7 +23,8 @@ header-includes:
 - \usepackage[normalem]{ulem}
 - \usepackage{makecell}
 - \usepackage[T1]{fontenc}
-- \usepackage[a4paper, total={6in, 8in}]{geometry}
+- \usepackage{geometry}
+- \geometry{a4paper, total={6in,8in},}
 - \usepackage[utf8]{inputenc}
 - \renewcommand{\figurename}{Figur}
 - \renewcommand{\tablename}{Tabell}
@@ -113,7 +114,7 @@ hTB
 
 ```
 
-***Videre analyser inkludere KUN pasienter med Type 1 diabetes***
+***Videre analyser inkludere KUN pasienter med Type 1 diabetes (n = `r dim(lok2018dt1)[1]`)***
 
 ## Pasient-karakteristika {-}
 
