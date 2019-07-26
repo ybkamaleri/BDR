@@ -100,7 +100,7 @@ und.htab <- und.htab %>%
   set_align(, 3, "right") %>%
   set_latex_float("h!")
 
-col_width(und.htab) <- c(.4, .2, .2, .2)
+col_width(und.htab) <- c(.5, .15, .15, .2)
 width(und.htab) <- 0.9
 wrap(und.htab) <- TRUE
 
