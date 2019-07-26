@@ -37,7 +37,7 @@ isp.htab <- isp.htab %>%
   set_bold(1, everywhere, TRUE) %>%
   set_bottom_border(lastLine,, TRUE) %>%
   map_background_color(by_rows("grey95", "white")) %>%
-  ## set_position("left") %>%
+  set_position("left") %>%
   set_latex_float("h") %>%
   set_col_width(c(.4, .15, .15, 2))
 

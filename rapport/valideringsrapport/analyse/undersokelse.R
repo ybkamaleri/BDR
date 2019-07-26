@@ -96,7 +96,7 @@ und.htab <- und.htab %>%
   set_bold(1,, TRUE) %>%
   set_bottom_border(lastLine,, TRUE) %>%
   map_background_color(by_rows("grey95", "white")) %>%
-  ## set_position("left") %>%
+  set_position("left") %>%
   set_align(, 3, "right") %>%
   set_latex_float("h!")
 
@@ -110,5 +110,7 @@ und.htab <- merge_cells(und.htab, 1, 2:3)
 align(und.htab)[1, 2] <- "center"
 bottom_border(und.htab)[1, 2] <- 0.5
 bottom_border(und.htab)[2, ] <- TRUE
+
+
 
 ## und.htab <- add_footnote(und.htab, "N er antall registrert med informasjon")

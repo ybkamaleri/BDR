@@ -42,4 +42,5 @@ bp.htab <- bp.htab %>%
   set_bold(1,, TRUE) %>%
   set_bottom_border(1,, TRUE) %>%
   set_bottom_border(lastLine,, TRUE) %>%
+  set_position("left") %>%
   map_background_color(by_rows("grey95", "white"))
