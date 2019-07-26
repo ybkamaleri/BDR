@@ -32,14 +32,21 @@ inspak(pkgs)
 
 ## EMACS
 dataSti <- "~/avid/bdr"
-ars2018 <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds"))
+ars2018raw <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds"))
 
 ## hospital koder
-hospKoder <- unique(ars2018$hospID)
+hospKoder <- unique(ars2018raw$hospID)
+
+## Blodtrykk kobling
+bpp <- readRDS(file.path(dataSti,"bloodpressure.RDS"))
+bpSub <- subset(bpp, select = c("id", "stage"))
+ars2018 <- merge(ars2018raw, bpSub, by.x = "Pnr", by.y = "id", all.x = TRUE)
+
 
 ## output directory
 outDir <- "output"
 if (!dir.exists(outDir)) {dir.create(outDir)} else {print("Output dir finnes allerede")}
+
 
 
 # ## Test to create file
