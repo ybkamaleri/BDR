@@ -5,4 +5,5 @@
 .xlsx
 /rapport/valideringsrapport/output/*
 /rapport/valideringsrapport/analyse/person.xlsx
+/rapport/valideringsrapport/_bookdown_files/*
 *.log
