@@ -23,6 +23,7 @@ header-includes:
 - \usepackage[normalem]{ulem}
 - \usepackage{makecell}
 - \usepackage[T1]{fontenc}
+- \usepackage[a4paper, total={6in, 8in}]{geometry}
 - \usepackage[utf8]{inputenc}
 - \renewcommand{\figurename}{Figur}
 - \renewcommand{\tablename}{Tabell}
@@ -163,7 +164,7 @@ nas.htab
 Figuren viser andel kompletthet av noen utvalgte variabler. For *fysisk aktivitet*
 regner vi kompletthet på alle pasienter fra og med 6 år.
 
-```{r komplett}
+```{r komplett, fig.height=4}
 source("./analyse/kompletthet.R")
 fig.komp
 ```
