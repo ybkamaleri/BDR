@@ -178,4 +178,13 @@ source("./analyse/undersokelse.R")
 und.htab
 ```
 
+## ISPAD guidelines {-}
+
+Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelines
+(2014) som definerer at pasienter er eldre enn 10 år med 2 års diabetesvarighet eller yngre enn 10 år med 5 års diabetesvarighet.
+
+```{r ispad}
+source("./analyse/ispadguide.R")
+isp.htab
+```
 
