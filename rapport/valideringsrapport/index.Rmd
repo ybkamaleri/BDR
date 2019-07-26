@@ -110,6 +110,7 @@ hTB <- hTB %>%
   set_top_border(4,, TRUE) %>%
   map_background_color(by_rows("grey95", "white"))
 
+width(hTB) <- 0.6
 hTB
 
 ```
@@ -134,6 +135,7 @@ kar.htab <- kar.htab %>%
   map_background_color(by_rows("grey95", "white")) %>%
   set_position("left")
 
+width(kar.htab) <- 0.6
 kar.htab
 ```
 
@@ -154,9 +156,10 @@ nas.htab <- nas.htab %>%
   set_bottom_border(1,, TRUE) %>%
   set_bold(1,, TRUE) %>%
   set_bottom_border(lastLine,, TRUE) %>%
-  map_background_color(by_rows("grey95", "white"))
-  ## set_position("left")
+  map_background_color(by_rows("grey95", "white")) %>%
+  set_position("left")
 
+width(nas.htab) <- 0.7
 nas.htab
 ```
 
@@ -186,6 +189,7 @@ Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelin
 
 ```{r ispad}
 source("./analyse/ispadguide.R")
+width(isp.htab) <- 0.7
 isp.htab
 ```
 
@@ -200,6 +204,7 @@ systolisk* og *blodtrykk diastolisk*. Tabellen nedenfor viser fordelingen for
 pasienter med blodtrykk mellom 90 og 94 persentil og pasienter med blodtrykk mer eller lik 95 persentil. Analysen inkluderer bare pasienter fra og med 2 år.
 
 ```{r bp}
+width(bp.htab) <- 0.8
 bp.htab
 ```
 
