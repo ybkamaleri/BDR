@@ -153,8 +153,8 @@ nas.htab <- nas.htab %>%
   set_bottom_border(1,, TRUE) %>%
   set_bold(1,, TRUE) %>%
   set_bottom_border(lastLine,, TRUE) %>%
-  map_background_color(by_rows("grey95", "white")) %>%
-  set_position("left")
+  map_background_color(by_rows("grey95", "white"))
+  ## set_position("left")
 
 nas.htab
 ```
@@ -187,4 +187,21 @@ Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelin
 source("./analyse/ispadguide.R")
 isp.htab
 ```
+
+## Blodtrykk {-}
+
+```{r bp-data}
+source("./analyse/blodtrykk.R")
+```
+
+Det er **`r pbValid`** pasienter har komplett data for *alder, høyde, vekt, blodtrykk
+systolisk* og *blodtrykk diastolisk*. Tabellen nedenfor viser fordelingen for
+pasienter med blodtrykk mellom 90 og 94 persentil og pasienter med blodtrykk mer eller lik 95 persentil. Analysen inkluderer bare pasienter fra og med 2 år.
+
+```{r bp}
+bp.htab
+```
+
+
+
 
