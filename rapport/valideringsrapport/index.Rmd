@@ -107,6 +107,7 @@ hTB <- as_hux(diab.lokal, add_colnames = TRUE)
 hTB <- hTB %>%
   set_bottom_border(1,, TRUE) %>%
   set_bold(1,, TRUE) %>%
+  set_bold(4,, TRUE) %>%
   set_top_border(4,, TRUE) %>%
   map_background_color(by_rows("grey95", "white"))
 
