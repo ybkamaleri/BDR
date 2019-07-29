@@ -38,7 +38,7 @@ barnLg <- nordBarn[, .N, by = .(nordiskBarn, kjonn)]
 barnLg[, pros := round(N / sum(N, na.rm = T) * 100, digits = 1)]
 
 ## Mix antall og prosent
-barnLg[, n := sprintf("%s (%06.1f%%)", N, pros)]
+barnLg[, n := sprintf("%s (%0.1f%%)", N, pros)]
 
 ## Snu til wide
 barnWt <- dcast(barnLg, kjonn ~ nordiskBarn, value.var = "n")
