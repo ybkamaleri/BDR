@@ -47,7 +47,7 @@ komNavn <- c("HbA1c eget lab",
   "Infiltrater",
   "Høyde",
   "Vekt",
-  "Aktivitet")
+  "Fysisk aktivitet")
 
 komAll[.(nr = 1:11, to = komNavn), on = "nr", var2 := i.to]
 ## komAll[, c("var", "nr") := NULL]

@@ -27,7 +27,7 @@ pbValid <- valgDT[alder > 1.999 & !is.na(stage), .N]
 bpTab[, tot := pbValid]
 bpTab[, pros := round(n / tot * 100, digits = 1)]
 
-bpNavn <- c("90-94 perc.", ">= 95 perc.")
+bpNavn <- c("90-94 persentil", ">= 95 persentil")
 
 bpTab[.(var = 1:2, to = bpNavn), on = "var", bt := i.to]
 bpTab[, c("var", "tot") := NULL]
