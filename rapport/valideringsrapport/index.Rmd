@@ -236,7 +236,9 @@ lip.htab <- lip.htab %>%
   set_top_border(lastLine,, TRUE) %>%
   map_background_color(by_rows("grey95", "white")) %>%
   set_position("left") %>%
-  set_latex_float("h")
+  set_latex_float("h") %>%
+  set_col_width(value = c(2.5, 1.5, 1.5, 1.5, 1.5, 1.5)) %>%
+  set_width(0.8)
 
 lip.htab
 
