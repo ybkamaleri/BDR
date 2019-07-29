@@ -2,7 +2,7 @@
 ## ------------------
 
 ## Kilderdata
-dt <- ars2018
+dt <- lok2018dt1
 
 ## Total kolesterol. Bruk ikke fastende, hvis missing bruk fastende
 dt[, tkl2 := lab_lip_totkol_2] %>%
@@ -48,7 +48,10 @@ lipTab[, `:=`(tkl_P_ = tkl / tklN * 100,
 lipVar2 <- grep("_P_$", names(lipTab), value = TRUE)
 lipTab[, (lipVar2) := round(.SD, digits = 1), .SDcols = lipVar2]
 
+## sortere rad hvor Gutter er første rader som alle andre tabeller i dokumenten
+lipTab <- lipTab[order(Kjonn, na.last = TRUE)]
 lipTab[is.na(Kjonn), Kjonn  := "Totalt"]
+lipTab[.(Kjonn = c("Gutt", "Jente"), to = c("Gutter", "Jenter")), on = "Kjonn", Kjonn := i.to]
 
 ## ubrukte variabler
 lipVarbort <- grep("N$", names(lipTab), value = TRUE)
@@ -66,30 +69,5 @@ lipVarTab <- grep("F$", names(valgTab), value = TRUE)
 lipTabell <- valgTab[, c("Kjonn", lipVarTab), with = F]
 
 ## Gir ny colnames
-tabNavn <- c("Total", "HDL", "LDL 2", "LDL 3", "Triglycerider")
-setnames(lipTabell, names(lipTabell)[-1], tabNavn)
-
-
-
-
-
-
-
-lipLg <- melt(lipTab, measure.vars = c("tkl", "hdl", "ldl", "trig"))
-
-
-
-
-
-
-
-
-
-
-
-## Grand Total og sub total
-cube(dt, sum(!is.na(ldl2)), by = "Kjonn")
-rollup(dt, j = lapply(.SD, function(x) sum(!is.na(x))),
-  by = c("Kjonn"), .SDcols = c("tkl2", "ldl2"), id = FALSE)
-cube(dt, j = lapply(.SD, function(x) sum(!is.na(x))),
-  by = c("Kjonn"), .SDcols = c("tkl2", "ldl2"), id = FALSE)
+tabNavn <- c(" ", "Total kol.", "HDL", "LDL 2", "LDL 3", "Triglycerider")
+setnames(lipTabell, names(lipTabell), tabNavn)

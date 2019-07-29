@@ -212,6 +212,34 @@ width(bp.htab) <- 0.8
 bp.htab
 ```
 
+## Lipider {-}
 
+```{r lipdata}
+source("./analyse/lipider.R")
+```
+Tabellen nedenfor gir antall og andel over følgende spesifisert grense hvor N er antall registrerte pasienter:
+
+- **Total kol.** (N = `r lipTab$tklN[1]`) referer til total kolesterol f.o.m 5 mmol/l eller mer.
+- **HDL** (N = `r lipTab$hdlN[1]`) referer til HDL-kolesterol mindre enn 1 mmol/l
+- **LDL 2** (N = `r lipTab$ldlN[1]`) referer til LDL-kolesterol f.o.m 2.6 mmol/l eller mer.
+- **LDL 3** (N = `r lipTab$ldlN[1]`) referer til LDL-kolesterol mer enn 3 mmol/l
+- **Triglycerider** (N = `r lipTab$trigN[1]`) referer til triglycerider mer enn 2.5 mmol/l
+
+```{r liptabell}
+lastLine <- nrow(lipTabell) + 1
+lip.htab <- as_hux(lipTabell, add_colnames = TRUE)
+
+lip.htab <- lip.htab %>%
+  set_bold(1,, TRUE) %>%
+  set_bold(lastLine,, TRUE) %>%
+  set_bottom_border(1,, TRUE) %>%
+  set_top_border(lastLine,, TRUE) %>%
+  map_background_color(by_rows("grey95", "white")) %>%
+  set_position("left") %>%
+  set_latex_float("h")
+
+lip.htab
+
+```
 
 
