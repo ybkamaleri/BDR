@@ -164,10 +164,10 @@ width(nas.htab) <- 0.7
 nas.htab
 ```
 
-## Andel kompletthet {-}
+## Kompletthet {-}
 
-Figuren viser andel kompletthet av noen utvalgte variabler. For *fysisk aktivitet*
-regner vi kompletthet på alle pasienter fra og med 6 år.
+Figuren viser antall og andel kompletthet av noen utvalgte variabler. For *fysisk
+aktivitet* regner vi kompletthet på alle pasienter fra og med 6 år.
 
 ```{r komplett, fig.height=4}
 source("./analyse/kompletthet.R")
@@ -185,11 +185,14 @@ und.htab
 
 ## ISPAD guidelines {-}
 
-Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelines
-(2014) som definerer at pasienter er eldre enn 10 år med 2 års diabetesvarighet eller yngre enn 10 år med 5 års diabetesvarighet.
-
-```{r ispad}
+```{r ispad1}
 source("./analyse/ispadguide.R")
+```
+
+Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelines
+(2014) som spesifiserer at pasienter er 10 år eller eldre med 2 års diabetesvarighet eller yngre enn 10 år med 5 års diabetesvarighet (N = `r ispadN`).
+
+```{r ispad2}
 width(isp.htab) <- 0.7
 isp.htab
 ```

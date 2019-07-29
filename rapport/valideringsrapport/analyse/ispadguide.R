@@ -4,11 +4,12 @@
 ## Datakilde
 ispDT <- lok2018dt1
 
-ispDT[, ispad := 0]
-ispDT[, ispad := ifelse(alder >=10 & diagVar >=2, 1, 0)]
-ispDT[, ispad := ifelse(alder < 10 & diagVar >=5, 1, ispad)]
+ispDT[, ispad := 0] %>%
+  .[alder >= 10 & diagVar >= 2, ispad  := 1] %>%
+  .[alder < 10 & diagVar >= 5, ispad := 1]
 
-ispDT[, .N, by=ispad]
+## Antall kvalifisert til ISPAD definisjon
+ispadN <- ispDT[ispad == 1, .N]
 
 ## Øye undersøkelse
 oye <- ispDT[ispad == 1 & und_Oye == "Ja", .(var = "oye", ja = .N)]
@@ -17,12 +18,11 @@ ispDT[ispad == 1, .N, by=.(und_Oye)] #sjekk tallene er riktig
 ## Urin
 urin.isp <- ispDT[ispad == 1, sum(!is.na(lab_res_1prove))] #utført
 ## ispDT[ispad == 1, sum(is.na(lab_res_1prove))]
-
 urin <- data.table(var = "urin", ja = urin.isp)
 
 ## ispad tabell
 ispTab <- rbindlist(list(oye, urin))
-ispTab[, tot := nrow(ispDT)]
+ispTab[, tot := ispadN]
 ispTab[, pros := round(ja / tot * 100, digits = 1)]
 
 ispTab[.(var = c("oye", "urin"), to = c("Øye", "Urin")), on = "var", var := i.to]
