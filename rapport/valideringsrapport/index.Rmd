@@ -244,4 +244,9 @@ lip.htab
 
 ```
 
+## Hbaic {-}
 
+```{r hba1c, echo=F}
+source("./analyse/mean_hba1c.R")
+plotHbc
+```

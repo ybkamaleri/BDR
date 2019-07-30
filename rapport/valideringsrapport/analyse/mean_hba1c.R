@@ -2,27 +2,27 @@
 ## --------------------------------
 
 ## ## Datakilder
-## ## gamle data "bdrB4" uploaded fra runEnkelRapport
-## bdrold <- subset(bdrB4, select = c("hba1c", "yr", "hospid", "age", "gender"))
-## bdrold
+## gamle data "bdrB4" uploaded fra runEnkelRapport
+bdrold <- subset(bdrB4, select = c("hba1c", "yr", "hospid", "age", "gender"))
+bdrold
 
-## ## Lokal data
-## dtlokal <- ars2018
+## Lokal data
+dtlokal <- lok2018dt1
 
-## valgVar <- c("lab_HbA1cAkerVerdi", "Kjonn", "yr", "hospID", "alder")
+valgVar <- c("lab_HbA1cAkerVerdi", "Kjonn", "yr", "hospID", "alder")
 ## dtlokal[, str(.SD), .SDcols = valgVar]
 
-## valgDT <- subset(dtlokal, select = valgVar)
-## valgDT[.(Kjonn = c("Gutt", "Jente"), to = 1:2), on = "Kjonn", gender := i.to]
-## valgDT[, Kjonn := NULL]
+valgDT <- subset(dtlokal, select = valgVar)
+valgDT[.(Kjonn = c("Gutt", "Jente"), to = 1:2), on = "Kjonn", gender := i.to]
+valgDT[, Kjonn := NULL]
 
-## ## gir standard navn
-## stdNavn <- c("hba1c", "yr", "hospid", "alder", "kjonn")
-## setnames(valgDT, names(valgDT), stdNavn)
-## setnames(bdrold, names(bdrold), stdNavn)
+## gir standard navn
+stdNavn <- c("hba1c", "yr", "hospid", "alder", "kjonn")
+setnames(valgDT, names(valgDT), stdNavn)
+setnames(bdrold, names(bdrold), stdNavn)
 
-## ## Merge begge
-## alldt <- rbindlist(list(bdrold, valgDT), use.names = TRUE)
+## Merge begge
+alldt <- rbindlist(list(bdrold, valgDT), use.names = TRUE)
 
 ## ## Lage file til raskere upload
 ## saveRDS(alldt, file.path(dataSti, "all07til18.rds"))
@@ -30,8 +30,8 @@
 
 ## - - - - - - -ANALYSE - - - - - - -
 
-## upload data
-alldt <- readRDS(file.path(dataSti, "all07til18.rds"))
+## ## upload data
+## alldt <- readRDS(file.path(dataSti, "all07til18.rds"))
 
 ## Tar bort attributes inherits fra SPSS
 alldt[] <- lapply(alldt, function(x) {attributes(x) <- NULL; x})
@@ -45,7 +45,7 @@ dtvalg[, meanhbc  := round(mean(hba1c, na.rm = TRUE), digits = 1), by = yr]
 
 ## antall per år
 dtvalg[, N := .N, by = yr]
-dtvalg[, .N, by = yr]
+## dtvalg[, .N, by = yr]
 
 dtplot <- dtvalg[dtvalg[, .I[1], by = yr]$V1]
 ## dtplot <- dtvalg[, head(.SD, 1), yr] #alternativ med litt treg
@@ -94,6 +94,6 @@ plotHbc <- ggplot(dbaggr, aes(yr, hba, group = sex)) +
   geom_point(aes(shape = sex), size = 3.5) +
   scale_x_continuous(breaks = unique(dbaggr$yr)) +
   scale_shape_manual(values = c(17, 1, 16)) +
-  scale_y_continuous(breaks = seq(miny, maxy, by = 0.2), limits = c(7, 9.5)) +
+  scale_y_continuous(breaks = seq(miny, maxy, by = 0.2), limits = c(7.3, 9.5)) +
   labs(title = "Gjennomsnitt HbA1c", x = " ", y = "HbA1c verdi i %") +
   ptheme
