@@ -4,6 +4,10 @@
 bdr.all <- readRDS(file.path(dataSti,"BDR_all_yr.rds")) #all files in list
 bdr.raw <- readRDS(file.path(dataSti,"Allebdr_utvalg.RDS"))
 
+
+## Unlist all data to Global env.
+list2env(bdr.all, envir = .GlobalEnv)
+
 ## Felles kode for sykehus
 hoskode <- rio::import(file.path(dataSti, "sykehus_felles.xlsx"))
 ## Sykehus brukte navn
