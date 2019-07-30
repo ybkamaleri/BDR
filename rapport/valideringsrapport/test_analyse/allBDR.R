@@ -4,9 +4,8 @@
 bdr.all <- readRDS(file.path(dataSti,"BDR_all_yr.rds")) #all files in list
 bdr.raw <- readRDS(file.path(dataSti,"Allebdr_utvalg.RDS"))
 
-
-## Unlist all data to Global env.
-list2env(bdr.all, envir = .GlobalEnv)
+## ## Unlist all data to Global env.
+## list2env(bdr.all, envir = .GlobalEnv)
 
 ## Felles kode for sykehus
 hoskode <- rio::import(file.path(dataSti, "sykehus_felles.xlsx"))
@@ -33,6 +32,7 @@ bdr[dbtype == 1, .N, by = yr]
 bdr1 <- subset(bdr, dbtype == 1)
 bdr1[, .N, by = dbtype]
 
+## Lager data for bare de med type 1
 saveRDS(bdr1, file.path(dataSti, "allBDRtype1.rds"))
 
 

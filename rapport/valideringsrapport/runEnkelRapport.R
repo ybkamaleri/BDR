@@ -45,7 +45,6 @@ ars2018 <- merge(ars2018raw, bpSub, by.x = "Pnr", by.y = "id", all.x = TRUE)
 ## data type1 fra 2007 - 2017
 bdrB4 <- readRDS(file.path(dataSti, "allBDRtype1.rds"))
 
-
 ## output directory
 outDir <- "output"
 if (!dir.exists(outDir)) {dir.create(outDir)} else {print("Output dir finnes allerede")}
