@@ -28,8 +28,13 @@
 ## saveRDS(alldt, file.path(dataSti, "all07til18.rds"))
 
 
+## - - - - - - -ANALYSE - - - - - - -
+
 ## upload data
 alldt <- readRDS(file.path(dataSti, "all07til18.rds"))
+
+## Tar bort attributes inherits fra SPSS
+alldt[] <- lapply(alldt, function(x) {attributes(x) <- NULL; x})
 
 ## subset fra loop data
 dtvalg <- subset(alldt, hospid == hosp)
@@ -52,6 +57,7 @@ dbaggr <- rollup(dtvalg, j = .(hba = mean(hba1c, na.rm = TRUE),
 ## 2 = Jenter
 ## 3 = Totalt
 dbaggr[is.na(kjonn), kjonn := 3]
+dbaggr[.(kjonn = 1:3, to = c("Gutter", "Jenter", "Alle")), on = "kjonn", sex := i.to]
 
 ## tar bort Grand Total
 dbaggr <- dbaggr[!is.na(yr), ]
@@ -59,9 +65,31 @@ dbaggr <- dbaggr[!is.na(yr), ]
 ## konverterer yr til nummeric ellers må bruke group=1
 dbaggr[, yr := as.numeric(yr)]
 
+
 ## Plotting
-ggplot(dbaggr, aes(yr, hba, group = kjonn)) +
-  geom_line(aes(color = factor(kjonn))) +
-  geom_point(aes(shape = factor(kjonn)), stroke = 0) +
+## ---------
+
+## Theme
+
+ptheme <- theme(legend.title = element_blank(),
+                  legend.text = element_text(size = 9),
+                  legend.key = element_rect(fill = "white"),
+                  axis.text = element_text(size = 9, color = "black"), #text for x og y axis
+                  axis.ticks.y = element_blank(),
+                  axis.line.x = element_line(size = 0.5),
+                  axis.line.y = element_blank(),
+                  axis.title.y = element_text(size = 11),
+                  axis.title.x = element_text(size = 11),
+                  panel.background = element_rect(fill = "white"),
+                  panel.border = element_rect(linetype = 1, fill = NA, color = "white"),
+                  panel.grid.minor.x = element_blank(),
+                  panel.grid.major.y = element_line(linetype = 2, color = "grey"))
+
+
+ggplot(dbaggr, aes(yr, hba, group = sex)) +
+  geom_line(aes(color = sex), size = 1) +
+  geom_point(aes(shape = sex), size = 3.5) +
   scale_x_continuous(breaks = unique(dbaggr$yr)) +
-  labs(title = "Gjennomsnitt HbA1c", x = " ", y = "HbA1c verdi i %")
+  ## scale_shape_manual(values = c(0, 5, 8)) +
+  labs(title = "Gjennomsnitt HbA1c", x = " ", y = "HbA1c verdi i %") +
+  ptheme
