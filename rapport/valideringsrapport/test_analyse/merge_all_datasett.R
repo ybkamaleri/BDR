@@ -110,14 +110,14 @@ for (i in dt.filer[hbaTRUE2]){
 
 ## type diabetes
 sapply(dt.filer, function(x) grep("type", names(get(x)), ignore.case = T, value = T ), USE.NAMES = TRUE)
-sapply(dt.filer, function(x) grep("type_diab", names(get(x)), ignore.case = T, value = T ), USE.NAMES = TRUE) #2016 og 2017
+sapply(dt.filer, function(x) grep("type_diab", names(get(x)), ignore.case = T, value = T ), USE.NAMES = TRUE) #2017
 sapply(dt.filer, function(x) grep("Diabetestype", names(get(x)), ignore.case = T, value = T ), USE.NAMES = TRUE)
 
-for( i in dt.filer[-c(1:4, 14:15)]){
+for( i in dt.filer[-c(1:4, 15)]){
   assign(i, get(i)[, dbtype := Diabetestype])
 }
 
-for( i in dt.filer[c(14:15)]){
+for( i in dt.filer[c(15)]){
   assign(i, get(i)[, dbtype := type_diab])
 }
 
