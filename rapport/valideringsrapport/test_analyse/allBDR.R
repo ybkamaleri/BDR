@@ -21,7 +21,15 @@ setnames(bdr, c("Felles", "hospital"), c("hospid", "hosp"))
 
 ### Diabetestype
 ## Ingen info om diabetes type i 2006, derfor alle data fra 2003 til 2006 eksludert
+names(bdr)
+bdr[, .N, by = dbtype]
+bdr[dbtype == 1, .N, by = yr]
 
+## Bare pasienter med Type 1
+bdr1 <- subset(bdr, dbtype == 1)
+bdr1[, .N, by = dbtype]
+
+saveRDS(bdr1, file.path(dataSti, "allBDRtype1.rds"))
 
 
 

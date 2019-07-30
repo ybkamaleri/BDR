@@ -2,6 +2,6 @@
 ## --------------------------------
 
 ## all data
-alldt <- readRDS("../Allebdr_utvalg.RDS")
+alldt <- readRDS("/Allebdr_utvalg.RDS")
 
 ## OBS! kombling av sykehus først
