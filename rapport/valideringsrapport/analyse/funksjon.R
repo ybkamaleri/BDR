@@ -17,17 +17,18 @@ ageCat <- function(x, lower, upper, by, sep = "-") {
 
 
 ## Lager tabell med 4 kolonner
-tabFun <- function(dt, navn, total = FALSE){
+tabFun <- function(dt, navn, size = 0.7, total = FALSE){
 
   lastLine <- nrow(dt) + 1
   tabhx <- as_hux(dt, add_colnames = TRUE)
 
   tabhx <- tabhx %>%
     set_bold(1,, TRUE) %>%
-    set_bottom_border(lastLine,, TRUE) %>%
     map_background_color(by_rows("grey95", "white")) %>%
     set_position("left") %>%
-    set_latex_float("h")
+    set_latex_float("h") %>%
+    set_align(, 3, "right") %>%
+    set_col_width(c(.5, .15, .15, .2))
 
   tabhx <- rbind(c("", navn, "", ""), tabhx)
 
@@ -39,11 +40,13 @@ tabFun <- function(dt, navn, total = FALSE){
     set_top_border(3,, TRUE)
 
   if (total){
-    bold(tabhx)[lastLine, ] <- TRUE
-    bottom_border(tabhx)[lastLine,] <- FALSE
-    top_border(tabhx)[lastLine, ] <- TRUE
+    bold(tabhx)[lastLine + 1, ] <- TRUE
+    top_border(tabhx)[lastLine + 1, ] <- TRUE
+  } else {
+    bottom_border(tabhx)[lastLine,] <- TRUE
   }
 
+  width(tabhx) <- size
   return(tabhx)
 
 }
