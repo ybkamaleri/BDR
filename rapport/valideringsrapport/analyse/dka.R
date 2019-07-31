@@ -3,8 +3,6 @@
 ## Datakilde
 lokalDT <- lok2018dt1
 
-lokalDT[, .N, by = und_ketoacidose]
-
 ## Aggrigerer
 dkaTab <- groupingsets(lokalDT,
   j = .(N = sum(!is.na(und_ketoacidose)),
