@@ -6,9 +6,6 @@ nordLand <- c("Norge", "Danmark", "Finland", "Sverige", "Island")
 ## Data kilder
 nasDT <- lok2018dt1
 
-## nasDT3 <- copy(nasDT)
-## nasDT <- copy(nasDT2)
-
 nasDT[!is.na(fodelandMor) , nordiskMor := ifelse(fodelandMor %in% nordLand, 1L, 0L)]
 nasDT[!is.na(fodelandFar) , nordiskFar := ifelse(fodelandFar %in% nordLand, 1L, 0L)]
 
@@ -63,7 +60,7 @@ if (colN == 4) {
   setcolorder(barnWt, c(kol1, kol2, kol3, kol4))
 
   ## legger riktig colnavn
-  setnames(barnWt, names(barnWt), c(" ", "Nordisk", "Ikke Nordisk", "Ukjent"))
+  setnames(barnWt, names(barnWt), c("kjonn", "Nordisk", "Ikke Nordisk", "Ukjent"))
 }
 
 if (colN == 3){
@@ -71,6 +68,15 @@ if (colN == 3){
   setcolorder(barnWt, c(kol1, kol2, kol3))
 
   ## legger riktig colnavn
-  setnames(barnWt, names(barnWt), c(" ", "Nordisk", "Ikke Nordisk"))
+  setnames(barnWt, names(barnWt), c("kjonn", "Nordisk", "Ikke Nordisk"))
 
 }
+
+## Antall kjønn
+guttNr <- barnLg[kjonn == "Gutt", sum(N, na.rm = T)]
+jenteNr <- barnLg[kjonn == "Jente", sum(N, na.rm = T)]
+
+barnWt[kjonn == "Gutter", Totalt := guttNr]
+barnWt[kjonn == "Jenter", Totalt := jenteNr]
+
+setnames(barnWt, "kjonn", "")
