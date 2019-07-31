@@ -4,7 +4,7 @@
 ## ## Datakilder
 ## gamle data "bdrB4" uploaded fra runEnkelRapport
 bdrold <- subset(bdrB4, select = c("hba1c", "yr", "hospid", "age", "gender"))
-bdrold
+## bdrold
 
 ## Lokal data
 dtlokal <- lok2018dt1
@@ -88,8 +88,8 @@ ptheme <- theme(legend.title = element_blank(),
   panel.grid.minor.x = element_blank(),
   panel.grid.major.y = element_line(linetype = 2, color = "grey"))
 
-miny <- round(min(dbaggr$hba), digits = 1)
-maxy <- round(max(dbaggr$hba), digits = 1)
+miny <- round(min(dbaggr$hba, na.rm = TRUE), digits = 1)
+maxy <- round(max(dbaggr$hba, na.rm = TRUE), digits = 1)
 exty <- (maxy - miny) * .2
 
 plotHbc <- ggplot(dbaggr, aes(yr, hba, group = sex)) +
