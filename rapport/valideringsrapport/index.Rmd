@@ -158,11 +158,12 @@ kar.htab
 
 ## Nasjonalitet {-}
 Nasjonalitet er definert etter hvor barnets foreldre er født. Er en eller begge
-foreldrene født i et av de nordiske landene kategoriseres barnet som
-Nordisk. Manglende data om nasjonalitet blir kategorisert som *ukjent*. Antall og
-andel for nasjonalitet fordelt på kjønn er som følgende:
+foreldrene født i et av de nordiske landene kategoriseres barnet som Nordisk. I det
+tilfelle hvor informasjon om nasjonalitet ikke finnes blir dette kategorisert som
+*ukjent*. Antall og andel for nasjonalitet fordelt på kjønn er som følgende:
 
-```{r nasj}
+
+```{r nasjonal, warning=FALSE, message=FALSE}
 source("./analyse/nasjonal.R")
 
 lastLine <- dim(barnWt)[1] + 1
@@ -266,7 +267,7 @@ lip.htab
 
 Antall og andel for akutt komplikasjoner i 2018 fordelt på alder. N er antall pasienter med data.
 
-```{r dka, warnings=F}
+```{r dka, warning=F}
 source("./analyse/dka.R")
 
 latex_float(dkaTabell) <- "!h"
@@ -277,7 +278,7 @@ dkaTabell
 
 Antall og andel pasienter som har hatt insulinsjokk i 2018 fordelt på alder. N er antall pasienter med data.
 
-```{r insj, warnings=F}
+```{r insj, warning=F}
 source("./analyse/insulinsjokk.R")
 insjTabell
 ```
@@ -286,7 +287,7 @@ insjTabell
 
 Antall og andel pasienter f.o.m 5 år og eldre som har hatt føling med behov for hjelp siste 4 uker. N er antall pasienter med data.
 
-```{r foling, warnings=F}
+```{r foling, warning=F}
 source("./analyse/foling.R")
 folTabell
 ```
