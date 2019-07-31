@@ -281,3 +281,12 @@ Antall og andel pasienter som har hatt insulinsjokk i 2018 fordelt på alder. N 
 source("./analyse/insulinsjokk.R")
 insjTabell
 ```
+
+## Føling {-}
+
+Antall og andel pasienter f.o.m 5 år som har hatt føling med behov for hjelp siste 4 uker. N er antall pasienter med data.
+
+```{r foling, warnings=F}
+source("./analyse/foling.R")
+folTabell
+```
