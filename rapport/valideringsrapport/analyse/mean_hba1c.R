@@ -70,8 +70,10 @@ dbaggr[, yr := as.numeric(yr)]
 ## Plotting
 ## ---------
 
-## Theme
+## Farge
+col3 <- valgCol[1:3]
 
+## Theme
 ptheme <- theme(legend.title = element_blank(),
                   legend.text = element_text(size = 9),
                   legend.key = element_rect(fill = "white"),
@@ -86,14 +88,17 @@ ptheme <- theme(legend.title = element_blank(),
                   panel.grid.minor.x = element_blank(),
                   panel.grid.major.y = element_line(linetype = 2, color = "grey"))
 
-miny <- formatC(min(dbaggr$hba), format = "f", digits = 1)
-maxy <- formatC(max(dbaggr$hba), format = "f", digits = 1)
+miny <- round(min(dbaggr$hba), digits = 1)
+maxy <- round(max(dbaggr$hba), digits = 1)
+exty <- (maxy - miny) * .2
 
 plotHbc <- ggplot(dbaggr, aes(yr, hba, group = sex)) +
   geom_line(aes(color = sex), size = 1) +
   geom_point(aes(shape = sex), size = 3.5) +
   scale_x_continuous(breaks = unique(dbaggr$yr)) +
-  scale_shape_manual(values = c(17, 1, 16)) +
-  scale_y_continuous(breaks = seq(miny, maxy, by = 0.2), limits = c(7.3, 9.5)) +
-  labs(title = "Gjennomsnitt HbA1c", x = " ", y = "HbA1c verdi i %") +
+  scale_shape_manual(values = c(17, 1, 16), breaks = c("Gutter", "Jenter", "Alle")) +
+  scale_color_manual(values = col3, breaks = c("Gutter", "Jenter", "Alle")) +
+  scale_y_continuous(breaks = seq(miny, maxy, by = 0.2),
+    limits = c(miny - exty, maxy + exty)) +
+  ylab( "HbA1c verdi i %") +
   ptheme

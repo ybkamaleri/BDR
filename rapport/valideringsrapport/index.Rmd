@@ -69,6 +69,15 @@ ars2018 <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds", fsep = "\\
 antall.pas <- dim(ars2018)[1]
 ```
 
+## HbA1c {-}
+
+Gjennomsnitts HbA1c målt sentralt på Aker, OUS fordelt på kjønn for perioden fra 2007 til 2018. Figuren inkluderer kun Type 1 diabetes.
+
+```{r hba1c, echo=F}
+source("./analyse/mean_hba1c.R")
+plotHbc
+```
+
 
 ## Typer diabetes {-}
 
@@ -242,11 +251,4 @@ lip.htab <- lip.htab %>%
 
 lip.htab
 
-```
-
-## Hbaic {-}
-
-```{r hba1c, echo=F}
-source("./analyse/mean_hba1c.R")
-plotHbc
 ```
