@@ -77,6 +77,10 @@ for (hosp in hospKoder[5:6]) {
   hospTitle <- ars2018[hospID == hosp, .(hospital)][[1]][1]
   pdfTitle <- ars2018[hospID == hosp, .(hosKort)][[1]][1]
 
+  ## file delete if exists pga. error fra førrige kompilering
+  filehosp <- paste0(pdfTitle, ".Rmd")
+  if (file.exists(filehosp)) file.remove(filehosp)
+
   ## lokal
   lokal2018 <- subset(ars2018, hospID == hosp)
 
@@ -112,6 +116,10 @@ for (hosp in hospKoder[5:6]) {
 
   hospTitle <- ars2018[hospID == hosp, .(hospital)][[1]][1]
   pdfTitle <- ars2018[hospID == hosp, .(hosKort)][[1]][1]
+
+  ## file delete if exists pga. error fra førrige kompilering
+  filehosp <- paste0(pdfTitle, ".Rmd")
+  if (file.exists(filehosp)) file.remove(filehosp)
 
   ## lokal
   lokal2018 <- subset(ars2018, hospID == hosp)
