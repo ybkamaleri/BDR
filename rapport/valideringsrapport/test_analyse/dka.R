@@ -30,4 +30,4 @@ setorder(dkaTab, -id)
 dkaTab[is.na(agecat), agecat := "Totalt"]
 dkaTab[, id := NULL]
 
-tabFun(dkaTab, "Har hatt ketoacidose")
+dkaTabell <- tabFun(dkaTab, "Har hatt ketoacidose", total = TRUE)

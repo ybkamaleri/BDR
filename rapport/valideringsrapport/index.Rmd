@@ -41,6 +41,9 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+
+## upload functions
+source("./analyse/funksjon.R")
 ```
 
 ```{r test, eval=F, include=F }
@@ -255,4 +258,17 @@ lip.htab <- lip.htab %>%
 
 lip.htab
 
+```
+
+\newpage
+
+## Diabetes ketoacidose (DKA) {-}
+
+Antall og andel for akutt komplikasjoner i 2018 fordelt på alder. N er antall pasienter med data.
+
+```{r dka, warnings=F}
+source("./analyse/dka.R")
+
+latex_float(dkaTabell) <- "!h"
+dkaTabell
 ```
