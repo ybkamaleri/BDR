@@ -183,7 +183,7 @@ nas.htab
 ## Kompletthet {-}
 
 Figuren viser antall og andel kompletthet av noen utvalgte variabler. For *fysisk
-aktivitet* regner vi kompletthet på alle pasienter fra og med 6 år.
+aktivitet* regner vi kompletthet på alle pasienter fra og med 6 år og eldre.
 
 ```{r komplett, fig.height=4}
 source("./analyse/kompletthet.R")
@@ -221,7 +221,7 @@ source("./analyse/blodtrykk.R")
 
 Det er **`r pbValid`** pasienter har komplett data for *alder, høyde, vekt, blodtrykk
 systolisk* og *blodtrykk diastolisk*. Tabellen nedenfor viser fordelingen for
-pasienter med blodtrykk mellom 90 og 94 persentil og pasienter med blodtrykk mer eller lik 95 persentil. Analysen inkluderer bare pasienter fra og med 2 år.
+pasienter med blodtrykk mellom 90 og 94 persentil og pasienter med blodtrykk mer eller lik 95 persentil. Analysen inkluderer bare pasienter f.o.m 2 år og eldre.
 
 ```{r bp}
 width(bp.htab) <- 0.8
@@ -284,7 +284,7 @@ insjTabell
 
 ## Føling {-}
 
-Antall og andel pasienter f.o.m 5 år som har hatt føling med behov for hjelp siste 4 uker. N er antall pasienter med data.
+Antall og andel pasienter f.o.m 5 år og eldre som har hatt føling med behov for hjelp siste 4 uker. N er antall pasienter med data.
 
 ```{r foling, warnings=F}
 source("./analyse/foling.R")
