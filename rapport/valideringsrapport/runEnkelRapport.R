@@ -80,7 +80,7 @@ valgCol <- sequential_hcl(4, "Blues 3")
 
 ## Kjør rapporten som PDF
 ## ----------------------
-for (hosp in hospKoder[5:6]) {
+for (hosp in hospKoder) {
 
   hospTitle <- ars2018[hospID == hosp, .(hospital)][[1]][1]
   pdfTitle <- ars2018[hospID == hosp, .(hosKort)][[1]][1]
@@ -120,7 +120,7 @@ for (hosp in hospKoder[5:6]) {
 
 ## Kjør rapporten som HTML
 ## ------------------------
-for (hosp in hospKoder[5:6]) {
+for (hosp in hospKoder) {
 
   hospTitle <- ars2018[hospID == hosp, .(hospital)][[1]][1]
   pdfTitle <- ars2018[hospID == hosp, .(hosKort)][[1]][1]
