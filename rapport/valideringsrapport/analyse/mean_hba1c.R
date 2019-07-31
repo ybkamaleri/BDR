@@ -93,7 +93,8 @@ maxy <- round(max(dbaggr$hba, na.rm = TRUE), digits = 1)
 exty <- (maxy - miny) * .2
 
 plotHbc <- ggplot(dbaggr, aes(yr, hba, group = sex)) +
-  geom_line(aes(color = sex), size = 1) +
+  ## linje skal ikke kuttes hvis det er NA
+  geom_line(data = dbaggr[!is.na(hba), ], aes(color = sex), size = 1) +
   geom_point(aes(shape = sex), size = 3.5) +
   scale_x_continuous(breaks = unique(dbaggr$yr)) +
   scale_shape_manual(values = c(17, 1, 16), breaks = c("Gutter", "Jenter", "Alle")) +
