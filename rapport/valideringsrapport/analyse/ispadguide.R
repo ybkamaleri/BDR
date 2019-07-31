@@ -39,7 +39,7 @@ isp.htab <- isp.htab %>%
   map_background_color(by_rows("grey95", "white")) %>%
   set_position("left") %>%
   set_latex_float("h") %>%
-  set_col_width(c(.4, .15, .15, 2))
+  set_col_width(c(.4, .15, .15, .2))
 
 isp.htab <- rbind(c("Type", "Undersøkelser utført", "", ""), isp.htab)
 
