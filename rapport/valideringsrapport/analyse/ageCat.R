@@ -1,6 +1,6 @@
 ## Lager kategorisering for alder
 
-alder.kat <- function(x, lower, upper, by, sep = "-") {
+ageCat <- function(x, lower, upper, by, sep = "-") {
   ## Finne høyeste kategori
   kat <- paste0(seq(lower + by - 1, upper - 1, by = by))
   indTop <- max(length(kat))
