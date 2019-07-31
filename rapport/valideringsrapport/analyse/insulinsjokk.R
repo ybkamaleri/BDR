@@ -1,7 +1,7 @@
 ## Insulinsjokk med kramper og eller bevisstløshet
 
 ## Datakilde
-lokalDT <- ars2018
+lokalDT <- lok2018dt1
 
 ## lokalDT[, .N, by = und_inssjokk]
 
