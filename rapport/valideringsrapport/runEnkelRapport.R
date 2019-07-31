@@ -8,7 +8,7 @@ inspak <- function(pkg){
   sapply(pkg, require, character.only = TRUE)
 }
 
-pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf","huxtable", "dplyr", "kableExtra", "bookdown", "rreg")
+pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf","huxtable", "dplyr", "kableExtra", "bookdown", "rreg", "colorspace")
 
 inspak(pkgs)
 
@@ -48,6 +48,10 @@ bdrB4 <- readRDS(file.path(dataSti, "allBDRtype1.rds"))
 ## output directory
 outDir <- "output"
 if (!dir.exists(outDir)) {dir.create(outDir)} else {print("Output dir finnes allerede")}
+
+## Farge valg
+## hcl_palettes(plot = TRUE) #får å se mulige fargevalg pallettes
+valgCol <- sequential_hcl(4, "Blues 3")
 
 
 
