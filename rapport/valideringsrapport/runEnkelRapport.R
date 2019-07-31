@@ -53,6 +53,8 @@ if (!dir.exists(outDir)) {dir.create(outDir)} else {print("Output dir finnes all
 ## hcl_palettes(plot = TRUE) #får å se mulige fargevalg pallettes
 valgCol <- sequential_hcl(4, "Blues 3")
 
+## Alder kategoriseringen
+source("./analyse/ageCat.R")
 
 
 # ## Test to create file
