@@ -100,7 +100,8 @@ plotHbc <- ggplot(dbaggr, aes(yr, hba, group = sex)) +
   scale_color_manual(values = col3, breaks = c("Gutter", "Jenter", "Alle")) +
   scale_y_continuous(breaks = seq(miny, maxy, by = 0.2),
     limits = c(miny - exty, maxy + exty)) +
-  ylab( "HbA1c verdi i %") +
+  ylab("HbA1c verdi i %") +
+  xlab(" ") +
   ptheme
 
 
