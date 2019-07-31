@@ -75,18 +75,18 @@ col3 <- valgCol[1:3]
 
 ## Theme
 ptheme <- theme(legend.title = element_blank(),
-                  legend.text = element_text(size = 9),
-                  legend.key = element_rect(fill = "white"),
-                  axis.text = element_text(size = 9, color = "black"), #text for x og y axis
-                  axis.ticks.y = element_blank(),
-                  axis.line.x = element_line(size = 0.5),
-                  axis.line.y = element_blank(),
-                  axis.title.y = element_text(size = 11),
-                  axis.title.x = element_text(size = 11),
-                  panel.background = element_rect(fill = "white"),
-                  panel.border = element_rect(linetype = 1, fill = NA, color = "white"),
-                  panel.grid.minor.x = element_blank(),
-                  panel.grid.major.y = element_line(linetype = 2, color = "grey"))
+  legend.text = element_text(size = 9),
+  legend.key = element_rect(fill = "white"),
+  axis.text = element_text(size = 9, color = "black"), #text for x og y axis
+  axis.ticks.y = element_blank(),
+  axis.line.x = element_line(size = 0.5),
+  axis.line.y = element_blank(),
+  axis.title.y = element_text(size = 11),
+  axis.title.x = element_text(size = 11),
+  panel.background = element_rect(fill = "white"),
+  panel.border = element_rect(linetype = 1, fill = NA, color = "white"),
+  panel.grid.minor.x = element_blank(),
+  panel.grid.major.y = element_line(linetype = 2, color = "grey"))
 
 miny <- round(min(dbaggr$hba), digits = 1)
 maxy <- round(max(dbaggr$hba), digits = 1)
@@ -102,3 +102,11 @@ plotHbc <- ggplot(dbaggr, aes(yr, hba, group = sex)) +
     limits = c(miny - exty, maxy + exty)) +
   ylab( "HbA1c verdi i %") +
   ptheme
+
+
+guttHb <- round(dbaggr[yr == 2018 & kjonn == 1, hba], digits = 1)
+guttN <- round(dbaggr[yr == 2018 & kjonn == 1, n])
+jenteHb <- round(dbaggr[yr == 2018 & kjonn == 2, hba], digits = 1)
+jenteN <- round(dbaggr[yr == 2018 & kjonn == 2, n])
+alleHb <- round(dbaggr[yr == 2018 & kjonn == 3, hba], digits = 1)
+alleN <- round(dbaggr[yr == 2018 & kjonn == 3, n])
