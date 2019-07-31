@@ -17,7 +17,7 @@ ageCat <- function(x, lower, upper, by, sep = "-") {
 
 
 ## Lager tabell med 4 kolonner
-tabFun <- function(dt, navn, size = 0.7, total = FALSE){
+tabFun <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE){
 
   lastLine <- nrow(dt) + 1
   tabhx <- as_hux(dt, add_colnames = TRUE)
@@ -28,7 +28,7 @@ tabFun <- function(dt, navn, size = 0.7, total = FALSE){
     set_position("left") %>%
     set_latex_float("h") %>%
     set_align(, 3, "right") %>%
-    set_col_width(c(.5, .15, .15, .2))
+    set_col_width(c(.4, .2, .2, .3))
 
   tabhx <- rbind(c("", navn, "", ""), tabhx)
 
@@ -47,6 +47,12 @@ tabFun <- function(dt, navn, size = 0.7, total = FALSE){
   }
 
   width(tabhx) <- size
+
+  if (rap){
+  ## for at width funker i PDF så må 'wrap' være TRUE
+  wrap(tabhx) <- TRUE
+  }
+
   return(tabhx)
 
 }
