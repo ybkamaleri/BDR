@@ -272,3 +272,12 @@ source("./analyse/dka.R")
 latex_float(dkaTabell) <- "!h"
 dkaTabell
 ```
+
+## Insulinsjokk {-}
+
+Antall og andel pasienter som har hatt insulinsjokk i 2018 fordelt på alder. N er antall pasienter med data.
+
+```{r insj, warnings=F}
+source("./analyse/insulinsjokk.R")
+insjTabell
+```
