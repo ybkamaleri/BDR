@@ -46,7 +46,7 @@ barnWt <- dcast(barnLg, kjonn ~ nordiskBarn, value.var = "n")
 
 ## bytt NA med strekk
 for (j in seq_len(ncol(barnWt))){
-  set(barnWt, which(is.na(barnWt[[j]])), j = j, value = "-")
+  set(barnWt, which(is.na(barnWt[[j]])), j = j, value = " -")
 }
 
 ## Sjekk antall kolonner fordi ikke alle har annen nasjonaltitet

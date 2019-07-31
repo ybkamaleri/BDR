@@ -76,7 +76,7 @@ nyNavn <- c("Øyeundersøkelse", "Laserbehandling", "Påvist retinopati",
 
 undAll[.(id = 1:9, to = nyNavn), on = "id", navn := i.to]
 
-undAll[, pros2 := ifelse(ja == 0, paste0("-"), pros)]
+undAll[, pros2 := ifelse(ja == 0, paste0("- "), pros)]
 
 undAll[, c("var", "pros", "id") := NULL]
 

@@ -14,7 +14,7 @@ insjTab <- groupingsets(lokalDT,
 )
 
 insjTab[, pros := as.character(round(ja / N * 100, digits = 1))]
-insjTab[ja == 0, pros := "-"]
+insjTab[ja == 0, pros := "- "]
 insjTab[is.na(agecat), agecat := "Totalt"]
 
 ## lager id til sortering

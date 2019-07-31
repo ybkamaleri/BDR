@@ -14,7 +14,7 @@ folTab <- groupingsets(lokalDT,
 )
 
 folTab[, pros := as.character(round(ja / N * 100, digits = 1))]
-folTab[ja == 0, pros := "-"]
+folTab[ja == 0, pros := "- "]
 folTab[is.na(agecat), agecat := "Totalt"]
 
 ## lager id til sortering

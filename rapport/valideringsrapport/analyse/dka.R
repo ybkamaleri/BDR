@@ -12,7 +12,7 @@ dkaTab <- groupingsets(lokalDT,
 )
 
 dkaTab[, pros := as.character(round(ja / N * 100, digits = 1))]
-dkaTab[ja == 0, pros := "-"]
+dkaTab[ja == 0, pros := "- "]
 dkaTab[is.na(agecat), agecat := "Totalt"]
 
 ## lager id til sortering
