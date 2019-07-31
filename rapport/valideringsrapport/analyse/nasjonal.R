@@ -40,8 +40,14 @@ barnLg[, pros := round(N / sum(N, na.rm = T) * 100, digits = 1)]
 ## Mix antall og prosent
 barnLg[, n := sprintf("%s (%0.1f%%)", N, pros)]
 
+
 ## Snu til wide
 barnWt <- dcast(barnLg, kjonn ~ nordiskBarn, value.var = "n")
+
+## bytt NA med strekk
+for (j in seq_len(ncol(barnWt))){
+  set(barnWt, which(is.na(barnWt[[j]])), j = j, value = "-")
+}
 
 ## Sjekk antall kolonner fordi ikke alle har annen nasjonaltitet
 colN <- ncol(barnWt)
