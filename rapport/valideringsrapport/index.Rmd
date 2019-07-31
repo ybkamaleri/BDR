@@ -90,7 +90,7 @@ source("./analyse/type_diabetes.R")
 pros.syk <- round((antall.lokal / antall.pas) * 100, digits = 1)
 ```
 Antall registerte pasienter med diabetes (alle typer) for `r hospTitle` er **`r antall.lokal`** pasienter. Dette tilsvarer **`r pros.syk`** prosent av total
-antall registerte pasienter i hele landet som har tatt årskontroll i 2018 dvs. **`r antall.pas`** pasienter. Antall pasienter for de forskjellige diabetes typer fordelt på kjønn er som følgende:
+antall registerte pasienter i hele landet som har tatt årskontroll i 2018 dvs. **`r antall.pas`** pasienter. Antall pasienter for de forskjellige diabetes typer fordelt på kjønn for `r hospTitle` er som følgende:
 
 
 ```{r diabetes, eval=F}
