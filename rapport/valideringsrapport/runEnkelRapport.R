@@ -32,7 +32,16 @@ inspak(pkgs)
 
 ## EMACS
 dataSti <- "~/avid/bdr"
-ars2018raw <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds"))
+ars2018raw <- readRDS(file.path(dataSti, "validert_arskontroll2018_yb.rds"))
+
+## ## Lage alder kategori med 5 interval
+## source("./analyse/ageCat.R")
+## ars2018raw[!is.na(alder), agecat := ageCat(alder, 0, 15, by = 5)]
+## gpAge <- unique(as.character(ars2018raw$agecat))
+## ## agecat er for factor mens agekat er contineous
+## ars2018raw[.(agecat = gpAge, to = 4:1), on = "agecat", agekat := i.to]
+##
+## saveRDS(ars2018raw, file.path(dataSti, "validert_arskontroll2018_yb.rds"))
 
 ## hospital koder
 hospKoder <- unique(ars2018raw$hospID)
@@ -52,9 +61,6 @@ if (!dir.exists(outDir)) {dir.create(outDir)} else {print("Output dir finnes all
 ## Farge valg
 ## hcl_palettes(plot = TRUE) #får å se mulige fargevalg pallettes
 valgCol <- sequential_hcl(4, "Blues 3")
-
-## upload functions
-source("./analyse/funksjon.R")
 
 
 # ## Test to create file
