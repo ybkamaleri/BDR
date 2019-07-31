@@ -19,7 +19,7 @@ folTab[is.na(agecat), agecat := "Totalt"]
 
 ## lager id til sortering
 ## folTab[, id := .I]
-folTab[is.na(agekat), agekat := nrow(folTab)]
+folTab[is.na(agekat), agekat := nrow(folTab) * 2]
 setorder(folTab, agekat) #reorder rows
 
 ## Justeringer

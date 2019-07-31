@@ -72,6 +72,16 @@ if (colN == 3){
 
 }
 
+if (colN == 2){
+  ## reorder columns
+  setcolorder(barnWt, c(kol1, kol2))
+
+  ## legger riktig colnavn
+  setnames(barnWt, names(barnWt), c("kjonn", "Nordisk"))
+}
+
+
+
 ## Antall kjønn
 guttNr <- barnLg[kjonn == "Gutt", sum(N, na.rm = T)]
 jenteNr <- barnLg[kjonn == "Jente", sum(N, na.rm = T)]

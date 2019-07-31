@@ -19,7 +19,7 @@ insjTab[is.na(agecat), agecat := "Totalt"]
 
 ## lager id til sortering
 ## insjTab[, id := .I]
-insjTab[is.na(agekat), agekat := nrow(insjTab)]
+insjTab[is.na(agekat), agekat := nrow(insjTab) * 2] #for å sikre det høyeste tall så ligger nedest
 setorder(insjTab, agekat) #reorder rows
 
 ## Justeringer

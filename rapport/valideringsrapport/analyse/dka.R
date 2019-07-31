@@ -16,8 +16,7 @@ dkaTab[ja == 0, pros := "-"]
 dkaTab[is.na(agecat), agecat := "Totalt"]
 
 ## lager id til sortering
-## dkaTab[, id := .I]
-dkaTab[is.na(agekat), agekat := nrow(dkaTab)]
+dkaTab[is.na(agekat), agekat := nrow(dkaTab) * 2] #gir høyeste tall så det ligger altid nedest
 setorder(dkaTab, agekat) #reorder rows
 
 ## Justeringer
