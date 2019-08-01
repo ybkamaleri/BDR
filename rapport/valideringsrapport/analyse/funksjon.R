@@ -59,7 +59,7 @@ tabFun <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE){
 
 
 ## Lager tabell med 5 kolonner
-tabHux <- function(dt, size = 0.7, rap = FALSE, total = FALSE, del = FALSE){
+tabHux <- function(dt, size = 0.7, rap = FALSE, total = FALSE, del = NULL){
 
   lastLine <- nrow(dt) + 1
   tabhx <- as_hux(dt, add_colnames = TRUE)
@@ -70,24 +70,27 @@ tabHux <- function(dt, size = 0.7, rap = FALSE, total = FALSE, del = FALSE){
     map_background_color(by_rows("grey95", "white")) %>%
     set_position("left") %>%
     set_latex_float("h")
-    ## set_col_width(c(., .1, .1, .1, .1))
 
-  if (del){
-    col_width(tabhx) <- del
-  }
+
 
   if (total){
-    bold(tabhx)[lastLine + 1, ] <- TRUE
-    top_border(tabhx)[lastLine + 1, ] <- TRUE
+    bold(tabhx)[lastLine, ] <- TRUE
+    top_border(tabhx)[lastLine, ] <- TRUE
   } else {
     bottom_border(tabhx)[lastLine,] <- TRUE
+  }
+
+  if (!is.null(del)){
+    tabhx <- tabhx %>%
+      set_col_width(del)
+    ## col_width(tabhx) <- del
   }
 
   width(tabhx) <- size
 
   if (rap){
-  ## for at width funker i PDF så må 'wrap' være TRUE
-  wrap(tabhx) <- TRUE
+    ## for at width funker i PDF så må 'wrap' være TRUE
+    wrap(tabhx) <- TRUE
   }
 
   return(tabhx)
