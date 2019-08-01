@@ -64,6 +64,14 @@ valgTab[, `:=`(tklF = sprintf("%s (%0.1f %%)", tkl, tkl_P_),
   ldl02F = sprintf("%s (%0.1f %%)", ldl02, ldl02_P_),
   trigF = sprintf("%s (%0.1f %%)", trig, trig_P_))]
 
+
+## Bytt 0 i antall til "-"
+valgTab[tkl == 0, tklF := "--   "]
+valgTab[hdl == 0, hdlF := "--   "]
+valgTab[ldl == 0, ldlF := "--   "]
+valgTab[ldl02 == 0, ldl02F := "--   "]
+valgTab[trig == 0, trigF := "--   "]
+
 ## valg variabler for tabell
 lipVarTab <- grep("F$", names(valgTab), value = TRUE)
 lipTabell <- valgTab[, c("Kjonn", lipVarTab), with = F]

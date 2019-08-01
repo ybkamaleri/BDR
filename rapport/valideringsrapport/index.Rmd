@@ -251,6 +251,7 @@ lip.htab <- lip.htab %>%
   set_bold(lastLine,, TRUE) %>%
   set_bottom_border(1,, TRUE) %>%
   set_top_border(lastLine,, TRUE) %>%
+  set_align(, 2:5, "right") %>%
   map_background_color(by_rows("grey95", "white")) %>%
   set_position("left") %>%
   set_latex_float("h") %>%
