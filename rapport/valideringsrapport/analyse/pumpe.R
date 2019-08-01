@@ -33,7 +33,7 @@ mispump <- length(which(is.na(lokalDT$pumpeType)))
 
 ## Tabell
 setnames(innTab, names(innTab), c("Pumpe type", "Antall", "Andel"))
-outTab <- tabHux(innTab)
+outTab <- tabHux(innTab, rap = TRUE, del = c(.6, .2, .2))
 
 
 
