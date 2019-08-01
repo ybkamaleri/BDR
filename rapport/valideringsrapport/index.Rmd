@@ -160,7 +160,7 @@ kar.htab
 Nasjonalitet er definert etter hvor barnets foreldre er født. Er en eller begge
 foreldrene født i et av de nordiske landene kategoriseres barnet som Nordisk. I det
 tilfelle hvor informasjon om nasjonalitet ikke finnes blir dette kategorisert som
-*ukjent*. Antall og andel for nasjonalitet fordelt på kjønn er som følgende:
+*ukjent*. Antall og andel for nasjonalitet del på kjønn er som følgende:
 
 
 ```{r nasjonal, warning=FALSE, message=FALSE}
@@ -266,7 +266,7 @@ lip.htab
 
 ## Diabetes ketoacidose (DKA) {-}
 
-Antall og andel for akutt komplikasjoner i 2018 fordelt på alder. N er antall pasienter med data.
+Antall og andel for akutt komplikasjoner i 2018 del på alder. N er antall pasienter med data.
 
 ```{r dka, warning=F}
 source("./analyse/dka.R")
@@ -277,7 +277,7 @@ dkaTabell
 
 ## Insulinsjokk {-}
 
-Antall og andel pasienter som har hatt insulinsjokk i 2018 fordelt på alder. N er antall pasienter med data.
+Antall og andel pasienter som har hatt insulinsjokk i 2018 del på alder. N er antall pasienter med data.
 
 ```{r insj, warning=F}
 source("./analyse/insulinsjokk.R")
@@ -304,3 +304,11 @@ source("./analyse/helsetjeneste.R")
 utTabell
 ```
 
+## Insulinbehandling {-}
+
+Tabell for type av insulinbehandling viser gjennomsnittlig antall enheter per. kg/døgn del på aldersgrupper.
+
+```{r insbeh}
+source("./analyse/behandling.R")
+outTab
+```
