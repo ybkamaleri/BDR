@@ -321,7 +321,7 @@ outTab
 source("./analyse/pumpe.R")
 ```
 
-Tabell som viser antall og andel av type pumpe som blir brukt. Total pasienter med registerte data er `r nPump`, mens det manger data for `r mispump` pasienter.
+Tabell som viser antall og andel av type pumpe som blir brukt. Total pasienter med registerte data er `r nPump`, mens det mangler data fra `r mispump` pasienter.
 
 ```{r pumpe_tab}
 latex_float(outTab) <- "!h"
