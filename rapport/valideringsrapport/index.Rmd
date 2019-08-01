@@ -292,3 +292,15 @@ Antall og andel pasienter f.o.m 5 år og eldre som har hatt føling med behov fo
 source("./analyse/foling.R")
 folTabell
 ```
+
+\newpage
+
+## Helsetjenester {-}
+
+Tabellen viser gjennomsnittlig bruk av helsetjenester i 2018. I tillegg viser det også medianen og maksimal bruk av helsetjenester. Missing data antas som pasienter hadde ingen konsultasjon det siste året. Antall missing vises under *ubesvart*. 
+
+```{r helse}
+source("./analyse/helsetjeneste.R")
+utTabell
+```
+

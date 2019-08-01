@@ -77,7 +77,7 @@ valgCol <- sequential_hcl(4, "Blues 3")
 # 
 
 ## ## For testing
-## hospKoder = 2
+hospKoder = c(8, 14, 22)
 
 ## Kjør rapporten som PDF
 ## ----------------------
