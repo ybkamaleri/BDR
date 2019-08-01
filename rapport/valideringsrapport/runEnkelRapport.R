@@ -76,10 +76,12 @@ valgCol <- sequential_hcl(4, "Blues 3")
 # close(testFil)
 # 
 
-
+## ## For testing
+## hospKoder = 2
 
 ## Kjør rapporten som PDF
 ## ----------------------
+
 for (hosp in hospKoder) {
 
   hospTitle <- ars2018[hospID == hosp, .(hospital)][[1]][1]
