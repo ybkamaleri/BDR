@@ -313,6 +313,8 @@ source("./analyse/behandling.R")
 outTab
 ```
 
+\newpage
+
 ## Type pumpe {-}
 
 ```{r pump_data}
@@ -322,5 +324,16 @@ source("./analyse/pumpe.R")
 Tabell som viser antall og andel av type pumpe som blir brukt. Total pasienter med registerte data er `r nPump`, mens det manger data for `r mispump` pasienter.
 
 ```{r pumpe_tab}
+latex_float(outTab) <- "!h"
+outTab
+```
+
+## Boluskalkulator {-}
+
+Tabell viser antall og andel pasienter som bruker og ikke bruker boluskalkulator. For pasienter som bruker boluskalkulator blir det også delt til brukfrekvenser. Gjennomsnitt og medianen for HbA1c er også sammenliknes til disse.
+
+```{r bolus}
+source("./analyse/bolus.R")
+latex_float(outTab) <- "!h"
 outTab
 ```
