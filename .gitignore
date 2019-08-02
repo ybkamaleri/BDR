@@ -4,6 +4,7 @@
 .rds
 .xlsx
 /rapport/valideringsrapport/output/*
+/rapport/valideringsrapport/html/*
 /rapport/valideringsrapport/output_bk/*
 /rapport/valideringsrapport/analyse/person.xlsx
 /rapport/valideringsrapport/_bookdown_files/*
