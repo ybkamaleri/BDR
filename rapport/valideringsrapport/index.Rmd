@@ -339,3 +339,11 @@ latex_float(outTab) <- "!h"
 outTab
 ```
 
+## Andre kjente sykdommer {-}
+
+Tabellen viser antall og andel pasienter med andre kjente sykdommer.
+
+```{r sykdom}
+source("./analyse/sykdom.R")
+outTab
+```
