@@ -66,11 +66,11 @@ setnames(innTabel, names(innTabel), nyNavn)
 
 
 ## Tabell
-outTab <- tabHux(innTabel, size = 0.8, total = TRUE, del = c(.5, .1, .15, .1, .15))
+outTab <- tabHux(innTabel, size = 0.8, total = TRUE, del = c(.2, .15, .2, .15, .2))
 
 ## lage over titel
 bottom_border(outTab)[1, ] <- FALSE
-outTab <- rbind(c("", "", "Multiinjeksjon", "", "Insulinpumpe"), outTab)
+outTab <- rbind(c("", "Multiinjeksjon", "", "Insulinpumpe", ""), outTab)
 
 outTab <- outTab %>%
   set_bottom_border(2,, TRUE) %>%
@@ -79,6 +79,10 @@ outTab <- outTab %>%
   set_right_border(, 3, 0.4) %>%
   set_align(2:nrow(outTab), c(3, 5), "center")
 
+outTab <- merge_cells(outTab, 1, c(2:3))
+outTab <- merge_cells(outTab, 1, c(4:5))
+
+wrap(outTab) <- TRUE
 
 ## outTab <- merge_cells(outTab, 1, c(2:3, 4:5))
 
