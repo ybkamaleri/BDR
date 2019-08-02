@@ -139,7 +139,7 @@ hTB
 source("./analyse/hba1cAge.R")
 ```
 
-Tabellen viser HbA1c målt ved OUS, Aker for `r hospTitle` delt for aldersgrupper. Antall pasienter som hadde blitt registert med HbA1c er `r hbN`.
+Tabellen viser HbA1c målt ved OUS, Aker for `r hospTitle` delt for aldersgrupper. **`r hbN`** pasienter har data for HbA1c.
 
 ```{r hbaTabell}
 outTab

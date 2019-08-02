@@ -79,6 +79,10 @@ valgCol <- sequential_hcl(4, "Blues 3")
 ## ## For testing
 ## hospKoder = c(8, 14, 22)
 
+## Dato
+valgDato <- Sys.Date()
+
+
 ## Kjør rapporten som PDF
 ## ----------------------
 
@@ -109,7 +113,7 @@ for (hosp in hospKoder) {
     output_format = "bookdown::pdf_document2",
     params = list(
       nyTitle = hospTitle,
-      nyDate =  format(Sys.Date(), '%d %B %Y'),
+      nyDate =  format(valgDato, '%d %B %Y'),
       nySubTitle = "Årskontroller i BDR for 2018 data"
     )
   )
@@ -149,7 +153,7 @@ for (hosp in hospKoder) {
     output_format = "bookdown::gitbook",
     params = list(
       nyTitle = hospTitle,
-      nyDate =  format(Sys.Date(), '%d %B %Y'),
+      nyDate =  format(valgDato, '%d %B %Y'),
       nySubTitle = "Årskontroller i BDR for 2018 data"
     )
   )
