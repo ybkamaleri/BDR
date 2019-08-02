@@ -297,10 +297,11 @@ folTabell
 
 ## Helsetjenester {-}
 
-Tabellen viser gjennomsnittlig bruk av helsetjenester i 2018. I tillegg viser det også medianen og maksimal bruk av helsetjenester. Missing data antas som pasienter hadde ingen konsultasjon det siste året. Antall missing vises under *ubesvart*. 
+Tabellen viser gjennomsnittlig bruk av helsetjenester i 2018. I tillegg viser det også medianen og maksimal bruk av helsetjenester. Missing data antas som pasienter hadde ingen konsultasjon det siste året. For å ha informasjon angående antall missing ligger dataene under *ubesvart* i tabellen nedenfor. 
 
 ```{r helse}
 source("./analyse/helsetjeneste.R")
+left_border(utTabell)[, 6] <- 0.4
 utTabell
 ```
 
@@ -337,3 +338,4 @@ source("./analyse/bolus.R")
 latex_float(outTab) <- "!h"
 outTab
 ```
+
