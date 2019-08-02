@@ -335,9 +335,20 @@ Tabell viser antall og andel pasienter som bruker og ikke bruker boluskalkulator
 
 ```{r bolus}
 source("./analyse/bolus.R")
-latex_float(outTab) <- "!h"
+latex_float(outTab) <- "H"
 outTab
 ```
+
+## Annen behandling {-}
+
+Antal og andel pasienter som bruker annen behandling.
+
+```{r annbeh}
+source("./analyse/annenbeh.R")
+latex_float(outTab) <- "H"
+outTab
+```
+
 
 ## Andre kjente sykdommer {-}
 
@@ -345,5 +356,6 @@ Tabellen viser antall og andel pasienter med andre kjente sykdommer.
 
 ```{r sykdom}
 source("./analyse/sykdom.R")
+latex_float(outTab) <- "H"
 outTab
 ```
