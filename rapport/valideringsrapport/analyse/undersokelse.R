@@ -76,15 +76,18 @@ nyNavn <- c("Øyeundersøkelse", "Laserbehandling", "Påvist retinopati",
 
 undAll[.(id = 1:9, to = nyNavn), on = "id", navn := i.to]
 
-undAll[, pros2 := ifelse(ja == 0, paste0("- "), pros)]
 
+## Beholder 1 decimal selv om 0
+undAll[, pro := as.character(sprintf("%0.1f", pros))]
+## Hvis 0 så blir bare strek
+undAll[pros == 0, pro := "- "]
+## Bort ubrukte kollone
 undAll[, c("var", "pros", "id") := NULL]
-
-setcolorder(undAll, c("navn", "ja", "pros2", "n"))
+## Reorder
+setcolorder(undAll, c("navn", "ja", "pro", "n"))
 
 setnames(undAll, names(undAll),
   c(" ", "Antall", "Andel", "N"))
-
 
 ## Tabell hux
 lastLine <- dim(undAll)[1] + 1
