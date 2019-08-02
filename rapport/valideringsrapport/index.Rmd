@@ -85,7 +85,6 @@ Figuren viser gjennomsnitts HbA1c målt sentralt på Aker, OUS fordelt på kjøn
 plotHbc
 ```
 
-
 ## Typer diabetes {-}
 
 ```{r diabtype}
@@ -133,6 +132,18 @@ hTB
 ```
 
 ***Videre analyser inkludere KUN pasienter med Type 1 diabetes (n = `r dim(lok2018dt1)[1]`)***
+
+## HbA1c og alder {-}
+
+```{r hbaData}
+source("./analyse/hba1cAge.R")
+```
+
+Tabellen viser HbA1c målt ved OUS, Aker for `r hospTitle` delt for aldersgrupper. Antall pasienter som hadde blitt registert med HbA1c er `r hbN`.
+
+```{r hbaTabell}
+outTab
+```
 
 ## Pasient-karakteristika {-}
 
