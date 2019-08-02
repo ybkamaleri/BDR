@@ -43,7 +43,7 @@ tabFun <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE){
     bold(tabhx)[lastLine + 1, ] <- TRUE
     top_border(tabhx)[lastLine + 1, ] <- TRUE
   } else {
-    bottom_border(tabhx)[lastLine,] <- TRUE
+    bottom_border(tabhx)[lastLine + 1,] <- TRUE
   }
 
   width(tabhx) <- size
