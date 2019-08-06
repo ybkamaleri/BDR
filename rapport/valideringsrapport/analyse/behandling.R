@@ -1,21 +1,44 @@
 ## Behandling av diabetes
 
+## lokalDT <- copy(ars2018)
 lokalDT <- lok2018dt1
+
 
 ## Mltiinjeksjon
 mulVar <- c("beh_ins_beh_hurtig_ie_dogn", "beh_ins_beh_lang_ie_dogn")
 ## Totalt av mulVar
-lokalDT[, multot := rowSums(.SD, na.rm = TRUE), .SDcols = mulVar]
+lokalDT[!is.na(get(mulVar[1])) & !is.na(get(mulVar[2])),
+  multot := rowSums(.SD, na.rm = TRUE), .SDcols = mulVar,
+  by = .(PasientID)]
+## Hvis en av dem er NA så ikke telle
+lokalDT[is.na(get(mulVar[1])) | is.na(get(mulVar[2])), multot := NA]
 ## Total multiinjeksjon del med kroppsvekt
-lokalDT[, mulkg := multot / inn_Vekt, by = .(PasientID)]
+lokalDT[!is.na(multot) & !is.na(inn_Vekt), mulkg := multot / inn_Vekt, by = .(PasientID)]
+lokalDT[is.na(multot) & is.na(inn_Vekt), mulkg  := NA_real_, by = .(PasientID)]
+
+## 1 til multiinjeksjon og 2 til insulinpumpe (se videre nede)
+lokalDT[!is.na(mulkg), insbeh := 1L]
+
 
 
 ## Insulinpumpe
 insVar <- c("beh_ins_type_ie_basal", "beh_ins_type_ie_bolus")
 ## Totalt av insVar
-lokalDT[, instot := rowSums(.SD, na.rm = TRUE), .SDcols = insVar]
+lokalDT[!is.na(insVar[1]) & !is.na(insVar[2]),
+  instot := rowSums(.SD, na.rm = TRUE), .SDcols = insVar,
+  by = .(PasientID)]
+## Hvis en av dem er NA så teller ikke
+lokalDT[is.na(get(insVar[1])) | is.na(insVar[2]), instot := NA]
 ## Total multiinjeksjon del med kroppsvekt
-lokalDT[, inskg := instot / inn_Vekt, by = .(PasientID)]
+lokalDT[!is.na(instot) & !is.na(inn_Vekt), inskg := instot / inn_Vekt, by = .(PasientID)]
+lokalDT[is.na(instot) & is.na(inn_Vekt), inskg := NA_real_, by = .(PasientID)]
+
+## 2 til insulinpumpe
+lokalDT[!is.na(inskg), insbeh := 2L]
+
+
+## Hvis har svar på begge beholder insulinpumpe
+lokalDT[!is.na(mulkg) & !is.na(inskg), mulkg := NA_real_]
 
 
 ## rollup(lokalDT,
@@ -24,18 +47,45 @@ lokalDT[, inskg := instot / inn_Vekt, by = .(PasientID)]
 ##   by = c("agecat", "agekat"))
 
 ## Aggrigerer tallene
-innTabel <- groupingsets(
+innTabelRaw <- groupingsets(
    lokalDT,
   j = list(
     nmult = sum(!is.na(mulkg)),
     mmult = round(mean(mulkg, na.rm = TRUE), digits = 2),
     ninsu = sum(!is.na(inskg)),
     minsu = round(mean(inskg, na.rm = TRUE), digits = 2)),
-  by = c("agecat", "agekat"),
+  by = c("agekat", "insbeh"),
   sets = list(
-    c("agecat", "agekat"),
+    c("agekat", "insbeh"),
     character(0)
   ))
+
+
+setkey(innTabelRaw, insbeh, agekat)
+
+
+## Multiinjeksjon Tabell
+mulTabVar <- c("nmult", "mmult")
+multTabel <- innTabelRaw[insbeh == 1, .SD, keyby = .(insbeh, agekat), .SDcols = mulTabVar]
+## Insulinpumpe Tabell
+insTabVar <- c("ninsu", "minsu")
+insTabel <- innTabelRaw[insbeh == 2, .SD, keyby = .(insbeh, agekat), .SDcols = insTabVar]
+## insulin behandling tabell
+behTabRaw <- merge(insTabel, multTabel, by = "agekat", all = TRUE)
+
+
+## Dummy agekat  tabell
+dummyAge <- data.table(agekat = 1:4, agecat = c("0-4", "5-9", "10-14", "15+"))
+
+## Final Tabell
+behTabRaw <- merge(dummyAge, behTabRaw, by = "agekat", all.x = TRUE)
+
+## Totalt beh
+behTotal  <- innTabelRaw[is.na(agekat), ]
+
+## Alle Tabell
+innTabel <- rbindlist(list(behTabRaw, behTotal), use.names = TRUE, fill = TRUE)
+innTabel[, c("insbeh.x", "insbeh.y", "insbeh") := NULL]
 
 
 ## Tabell
@@ -55,8 +105,16 @@ innTabel[, minsu := sprintf("%0.2f", minsu)]
 
 ## Erstarter NA i mean til "-" hvis finnes
 for (j in c(3L, 5L)){
-  set(innTabel, which(is.na(innTabel[[j]])), j = j, value = "-")
-  }
+  set(innTabel, which(innTabel[[j]] == "NA"), j = j, value = "-")
+}
+
+## ## gir strek hvis missing
+## behVar <- c(mulTabVar, insTabVar)
+## innTabel[, (behVar) := lapply(.SD, as.character), .SDcol=behVar]
+## for (j in behVar){
+##   set(innTabel, which(is.na(innTabel[[j]])), j = j, value = "-")
+## }
+
 
 ## ny kolonnenavn
 nyNavn <- c("Alder", "n", "gj.snitt", "n", "gj.snitt")
@@ -70,7 +128,7 @@ outTab <- tabHux(innTabel, size = 0.8, total = TRUE, del = c(.2, .15, .2, .15, .
 
 ## lage over titel
 bottom_border(outTab)[1, ] <- FALSE
-outTab <- rbind(c("", "Multiinjeksjon", "", "Insulinpumpe", ""), outTab)
+outTab <- rbind(c("", "Insulinpumpe", "", "Multiinjeksjon", ""), outTab)
 
 outTab <- outTab %>%
   set_bottom_border(2,, TRUE) %>%
