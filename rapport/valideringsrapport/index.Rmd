@@ -74,11 +74,14 @@ antall.pas <- dim(ars2018)[1]
 
 ## HbA1c {-}
 
-```{r innhba}
+```{r innhba, include=FALSE}
 source("./analyse/mean_hba1c.R")
+
+## hbaNorge <- bdrB4[yr == 2018, mean(hba1c, na.rm = TRUE)]
+
 ```
 
-Figuren viser gjennomsnitts HbA1c målt sentralt på Aker, OUS fordelt på kjønn for perioden fra 2007 til 2018. Analysen inkluderer kun Type 1 diabetes (N = `r alleN`). Gjennomsnitt HbA1c for `r hospTitle` i 2018 er `r alleHb` for alle pasienter. Gutter har `r guttHb` (n=`r guttN`) og jenter har `r jenteHb` (n=`r jenteN`).
+Figuren viser gjennomsnitts HbA1c målt sentralt på Aker, OUS fordelt på kjønn for perioden fra 2007 til 2018. Analysen inkluderer kun Type 1 diabetes (N = `r alleN`). Gjennomsnitt HbA1c for `r hospTitle` i 2018 er **`r alleHb`** for alle pasienter. Gutter har `r guttHb` (n=`r guttN`) og jenter har `r jenteHb` (n=`r jenteN`). Landsgjennomsnitt for 2018 er `r `
 
 ```{r hba1c, echo=F}
 
@@ -92,7 +95,7 @@ plotHbc
 source("./analyse/type_diabetes.R")
 pros.syk <- round((antall.lokal / antall.pas) * 100, digits = 1)
 ```
-Antall registerte pasienter med diabetes (alle typer) for `r hospTitle` er **`r antall.lokal`** pasienter. Dette tilsvarer **`r pros.syk`** prosent av total
+Antall registerte pasienter med diabetes (alle typer) for `r hospTitle` er **`r antall.lokal`** pasienter. Dette tilsvarer `r pros.syk` prosent av total
 antall registerte pasienter i hele landet som har tatt årskontroll i 2018 dvs. **`r antall.pas`** pasienter. Antall pasienter for de forskjellige diabetes typer fordelt på kjønn for `r hospTitle` er som følgende:
 
 
@@ -140,7 +143,7 @@ hTB
 source("./analyse/hba1cAge.R")
 ```
 
-Tabellen viser HbA1c målt ved OUS, Aker for `r hospTitle` delt for aldersgrupper. **`r hbN`** pasienter har data for HbA1c.
+Tabellen viser HbA1c målt ved OUS, Aker for `r hospTitle` inndelt i aldersgrupper. **`r hbN`** pasienter har HbA1c data.
 
 ```{r hbaTabell}
 outTab
@@ -172,7 +175,7 @@ kar.htab
 Nasjonalitet er definert etter hvor barnets foreldre er født. Er en eller begge
 foreldrene født i et av de nordiske landene kategoriseres barnet som Nordisk. I det
 tilfelle hvor informasjon om nasjonalitet ikke finnes blir dette kategorisert som
-*ukjent*. Antall og andel for nasjonalitet del på kjønn er som følgende:
+*ukjent*. Antall og andel for nasjonalitet delt på kjønn er som følgende:
 
 
 ```{r nasjonal, warning=FALSE, message=FALSE}
@@ -219,7 +222,8 @@ source("./analyse/ispadguide.R")
 ```
 
 Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelines
-(2014) som spesifiserer at pasienter er 10 år eller eldre med 2 års diabetesvarighet eller yngre enn 10 år med 5 års diabetesvarighet (N = `r ispadN`).
+(2014) som spesifiserer at pasienter som er 10 år eller eldre med 2 års
+diabetesvarighet eller yngre enn 10 år med 5 års diabetesvarighet (N = `r ispadN`).
 
 ```{r ispad2}
 width(isp.htab) <- 0.7
@@ -232,9 +236,10 @@ isp.htab
 source("./analyse/blodtrykk.R")
 ```
 
-Det er **`r pbValid`** pasienter har komplett data for *alder, høyde, vekt, blodtrykk
-systolisk* og *blodtrykk diastolisk*. Tabellen nedenfor viser fordelingen for
-pasienter med blodtrykk mellom 90 og 94 persentil og pasienter med blodtrykk mer eller lik 95 persentil. Analysen inkluderer bare pasienter f.o.m 2 år og eldre.
+Det er **`r pbValid`** pasienter som har komplett data for *alder, høyde, vekt,
+blodtrykk systolisk* og *blodtrykk diastolisk*. Tabellen nedenfor viser fordelingen
+av pasienter med blodtrykk mellom 90 og 94 persentil og pasienter med blodtrykk mer
+eller lik 95 persentil. Analysen inkluderer bare pasienter f.o.m 2 år og eldre.
 
 ```{r bp}
 width(bp.htab) <- 0.8
@@ -278,7 +283,7 @@ lip.htab
 
 ## Diabetes ketoacidose (DKA) {-}
 
-Antall og andel for akutt komplikasjoner i 2018 del på alder. N er antall pasienter med data.
+Antall og andel for akutt komplikasjoner i 2018 delt i aldersgrupper. N er antall pasienter med data.
 
 ```{r dka, warning=F}
 source("./analyse/dka.R")
@@ -289,7 +294,7 @@ dkaTabell
 
 ## Insulinsjokk {-}
 
-Antall og andel pasienter som har hatt insulinsjokk i 2018 del på alder. N er antall pasienter med data.
+Antall og andel pasienter som har hatt insulinsjokk i 2018 delt i aldersgrupper. N er antall pasienter med data.
 
 ```{r insj, warning=F}
 source("./analyse/insulinsjokk.R")
@@ -298,7 +303,8 @@ insjTabell
 
 ## Føling {-}
 
-Antall og andel pasienter f.o.m 5 år og eldre som har hatt føling med behov for hjelp siste 4 uker. N er antall pasienter med data.
+Antall og andel pasienter f.o.m 5 år og eldre som har hatt føling med behov for hjelp
+siste 4 uker. N er antall pasienter med data.
 
 ```{r foling, warning=F}
 source("./analyse/foling.R")
@@ -309,7 +315,10 @@ folTabell
 
 ## Helsetjenester {-}
 
-Tabellen viser gjennomsnittlig bruk av helsetjenester i 2018. I tillegg viser det også medianen og maksimal bruk av helsetjenester. Missing data antas som pasienter hadde ingen konsultasjon det siste året. For å ha informasjon angående antall missing ligger dataene under *ubesvart* i tabellen nedenfor. 
+Tabellen viser gjennomsnittlig bruk av helsetjenester i 2018. I tillegg viser det
+også medianen og maksimal bruk av helsetjenester. Missing data defineres som at pasienter
+ikke hadde konsultasjon det siste året. For å ha informasjon angående antall missing
+ligger dataene under *ubesvart* i tabellen nedenfor.
 
 ```{r helse}
 source("./analyse/helsetjeneste.R")
@@ -334,7 +343,8 @@ outTab
 source("./analyse/pumpe.R")
 ```
 
-Tabell som viser antall og andel av type pumpe som blir brukt. Total pasienter med registerte data er `r nPump`, mens det mangler data fra `r mispump` pasienter.
+Tabell som viser antall og andel av type pumpe som blir brukt. Total pasienter med
+registerte data er `r nPump`, mens det mangler data fra `r mispump` pasienter.
 
 ```{r pumpe_tab}
 latex_float(outTab) <- "!h"

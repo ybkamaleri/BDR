@@ -77,7 +77,7 @@ valgCol <- sequential_hcl(4, "Blues 3")
 # 
 
 ## ## For testing
-## hospKoder = c(8, 14, 22)
+hospKoder = c(8, 14, 22)
 
 ## Dato
 valgDato <- Sys.Date()

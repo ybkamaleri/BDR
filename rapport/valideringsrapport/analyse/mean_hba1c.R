@@ -36,7 +36,6 @@ alldt <- rbindlist(list(bdrold, valgDT), use.names = TRUE)
 ## Tar bort attributes inherits fra SPSS
 alldt[] <- lapply(alldt, function(x) {attributes(x) <- NULL; x})
 
-
 ## subset fra loop data
 dtvalg <- subset(alldt, hospid == hosp)
 
