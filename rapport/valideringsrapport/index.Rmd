@@ -78,7 +78,7 @@ antall.pas <- dim(ars2018)[1]
 source("./analyse/mean_hba1c.R")
 ```
 
-Figuren viser gjennomsnitts HbA1c målt sentralt på Aker, OUS fordelt på kjønn for perioden fra 2007 til 2018. Analysen inkluderer kun Type 1 diabetes (N = `r alleN`). Gjennomsnitt HbA1c for `r hospTitle` i 2018 er `r alleHb` for alle pasienter. Gutter har `r guttHb` (n=`r guttN`) mens jenter har `r jenteHb` (n=`r jenteN`).
+Figuren viser gjennomsnitts HbA1c målt sentralt på Aker, OUS fordelt på kjønn for perioden fra 2007 til 2018. Analysen inkluderer kun Type 1 diabetes (N = `r alleN`). Gjennomsnitt HbA1c for `r hospTitle` i 2018 er `r alleHb` for alle pasienter. Gutter har `r guttHb` (n=`r guttN`) og jenter har `r jenteHb` (n=`r jenteN`).
 
 ```{r hba1c, echo=F}
 
@@ -86,6 +86,7 @@ plotHbc
 ```
 
 ## Typer diabetes {-}
+
 
 ```{r diabtype}
 source("./analyse/type_diabetes.R")
