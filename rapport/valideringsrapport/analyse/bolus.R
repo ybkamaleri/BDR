@@ -1,6 +1,6 @@
 ## Boluskalkulator
 
-lokalDT <- ars2018
+lokalDT <- lok2018dt1
 
 bolVar <- c("beh_ins_boluswizzard", "beh_ins_boluswizzard_frekv", "bolkod")
 
