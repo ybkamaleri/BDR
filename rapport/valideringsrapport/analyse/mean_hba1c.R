@@ -124,7 +124,7 @@ plotHbc <- ggplot() +
   scale_x_continuous(breaks = unique(dbaggr$yr)) +
   scale_shape_manual(values = c(16, 1, 4, 18),
     breaks = c("Gutter", "Jenter", "Alle", "Norge"), ) +
-  scale_color_manual(values = c(col3, "#FF55ee"), breaks = c("Gutter", "Jenter", "Alle", "Norge")) +
+  scale_color_manual(values = c(col3, "#FF0033"), breaks = c("Gutter", "Jenter", "Alle", "Norge")) +
   scale_y_continuous(breaks = seq(miny, maxy, by = 0.2),
     limits = c(miny - exty, maxy + exty)) +
   ylab("HbA1c verdi i %") +
