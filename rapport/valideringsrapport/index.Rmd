@@ -332,7 +332,12 @@ utTabell
 source("./analyse/insulinbeh.R")
 ```
 
-Insulinpumpe brukes av `r insN` pasienter (`r insPros`%) og `r multN` pasienter (`r multPros`%) bruker multiinjeksjon. Tabell for typer av insulinbehandling nedenfor viser gjennomsnittlig antall enheter per. kg/døgn delt på aldersgrupper. Analysen inkluderes bare de som har data på kroppsvekt og på alle spørsmålene for insulinpumpe og multiinjeksjon. Derfor kan antall pasienter i tabellen være ulik med antall pasienter nevnt ovenfor.
+Totalt pasienter som har data på insulinbehandling er `r behNtot`. Av disse bruker`r
+insN` pasienter (`r insPros`%) insulinpumper og `r multN` pasienter (`r multPros`%)
+bruker multiinjeksjon. Tabellen for type insulinbehandling nedenfor viser
+gjennomsnittlig antall enheter insulin per. kg/døgn fordelt i aldersgrupper. Analysen
+inkluderer bare de som har data på kroppsvekt og insulindose. Derfor kan antall
+pasienter i tabellen være ulik.
 
 ```{r insbeh}
 latex_float(outTab) <- "H"
