@@ -72,22 +72,6 @@ ars2018 <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds", fsep = "\\
 antall.pas <- dim(ars2018)[1]
 ```
 
-## HbA1c {-}
-
-```{r innhba, include=FALSE}
-source("./analyse/mean_hba1c.R")
-
-## hbaNorge <- bdrB4[yr == 2018, mean(hba1c, na.rm = TRUE)]
-
-```
-
-Figuren viser gjennomsnitts HbA1c målt sentralt på Aker, OUS fordelt på kjønn for perioden fra 2007 til 2018. Analysen inkluderer kun Type 1 diabetes (N = `r alleN`). Gjennomsnitt HbA1c for `r hospTitle` i 2018 er **`r alleHb`** for alle pasienter. Gutter har `r guttHb` (n=`r guttN`) og jenter har `r jenteHb` (n=`r jenteN`). Landsgjennomsnitt for 2018 er `r `
-
-```{r hba1c, echo=F}
-
-plotHbc
-```
-
 ## Typer diabetes {-}
 
 
@@ -136,6 +120,22 @@ hTB
 ```
 
 ***Videre analyser inkludere KUN pasienter med Type 1 diabetes (n = `r dim(lok2018dt1)[1]`)***
+
+
+## HbA1c {-}
+
+```{r innhba, include=FALSE}
+source("./analyse/mean_hba1c.R")
+
+## hbaNorge <- bdrB4[yr == 2018, mean(hba1c, na.rm = TRUE)]
+
+```
+
+Figuren viser gjennomsnitts HbA1c målt sentralt på Aker, OUS fordelt på kjønn for perioden fra 2007 til 2018. Analysen inkluderer kun Type 1 diabetes (N = `r alleN`). Gjennomsnitt HbA1c for `r hospTitle` i 2018 er **`r alleHb`** for alle pasienter. Gutter har `r guttHb` (n=`r guttN`) og jenter har `r jenteHb` (n=`r jenteN`). Landsgjennomsnitt HbA1c for 2018 er **`r norgeHb`** (N=`r norgeN`).
+
+```{r hba1c, echo=F}
+plotHbc
+```
 
 ## HbA1c og alder {-}
 
