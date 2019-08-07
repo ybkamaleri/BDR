@@ -118,13 +118,13 @@ plotHbc <- ggplot() +
   geom_line(data = dbaggr[!is.na(hba), ],
     aes(yr, hba, group = sex, color = sex), size = 1) +
   geom_line(data = norgeTab, aes(yr, meanAll, color = "Norge"),
-    color = "red", linetype = "twodash", size = 1) +
+    linetype = "twodash", size = 1) +
   geom_point(data = dbaggr, aes(yr, hba, group = sex, shape = sex), size = 2) +
-  geom_point(data = norgeTab, aes(yr, meanAll), shape = 18, size = 2) +
+  geom_point(data = norgeTab, aes(yr, meanAll, shape = "Norge"), size = 2) +
   scale_x_continuous(breaks = unique(dbaggr$yr)) +
-  scale_shape_manual(values = c(16, 1, 4),
-    breaks = c("Gutter", "Jenter", "Alle"), ) +
-  scale_color_manual(values = col3, breaks = c("Gutter", "Jenter", "Alle")) +
+  scale_shape_manual(values = c(16, 1, 4, 18),
+    breaks = c("Gutter", "Jenter", "Alle", "Norge"), ) +
+  scale_color_manual(values = c(col3, "#FF55ee"), breaks = c("Gutter", "Jenter", "Alle", "Norge")) +
   scale_y_continuous(breaks = seq(miny, maxy, by = 0.2),
     limits = c(miny - exty, maxy + exty)) +
   ylab("HbA1c verdi i %") +
