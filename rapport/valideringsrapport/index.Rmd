@@ -332,9 +332,9 @@ utTabell
 source("./analyse/insulinbeh.R")
 ```
 
-Totalt pasienter som har data på insulinbehandling er `r behNtot`. Av disse bruker`r
-insN` pasienter (`r insPros`%) insulinpumper og `r multN` pasienter (`r multPros`%)
-bruker multiinjeksjon. Tabellen for type insulinbehandling nedenfor viser
+Totalt pasienter som har data på insulinbehandling er `r behNtot`. Av disse bruker 
+`r insN` pasienter (`r insPros`%) insulinpumper og `r multN` pasienter (`r multPros`%)
+ multiinjeksjon. Tabellen for type insulinbehandling nedenfor viser
 gjennomsnittlig antall enheter insulin per. kg/døgn fordelt i aldersgrupper. Analysen
 inkluderer bare de som har data på kroppsvekt og insulindose. Derfor kan antall
 pasienter i tabellen være ulik.
