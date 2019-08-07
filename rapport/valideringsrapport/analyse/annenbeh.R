@@ -1,5 +1,6 @@
 ## Annen behandling
 
+## lokalDT <- copy(ars2018)
 lokalDT <- lok2018dt1
 
 undVar <- c("beh_ace", "beh_blodtrykk_med", "beh_statin", "beh_anti_epil")

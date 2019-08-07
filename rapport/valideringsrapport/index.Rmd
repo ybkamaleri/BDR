@@ -331,7 +331,7 @@ utTabell
 Tabell for type av insulinbehandling viser gjennomsnittlig antall enheter per. kg/døgn del på aldersgrupper.
 
 ```{r insbeh}
-source("./analyse/behandling.R")
+source("./analyse/insulinbeh.R")
 outTab
 ```
 
