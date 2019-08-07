@@ -4,15 +4,20 @@
 ## ## Datakilder
 ## gamle data "bdrB4" uploaded fra runEnkelRapport
 bdrold <- subset(bdrB4, select = c("hba1c", "yr", "hospid", "age", "gender"))
-## bdrold
 
-## Lokal data
-dtlokal <- lok2018dt1
+## Nasjonal data brukes
+norgeDT <- ars2018dt1
 
+## Antall pasienter
+norgeN <- nrow(norgeDT)
+
+
+## Utvalg av variabler
+## -------------------
 valgVar <- c("lab_HbA1cAkerVerdi", "Kjonn", "yr", "hospID", "alder")
-## dtlokal[, str(.SD), .SDcols = valgVar]
+## norgeDT[, str(.SD), .SDcols = valgVar]
 
-valgDT <- subset(dtlokal, select = valgVar)
+valgDT <- subset(norgeDT, select = valgVar)
 valgDT[.(Kjonn = c("Gutt", "Jente"), to = 1:2), on = "Kjonn", gender := i.to]
 valgDT[, Kjonn := NULL]
 
@@ -36,21 +41,38 @@ alldt <- rbindlist(list(bdrold, valgDT), use.names = TRUE)
 ## Tar bort attributes inherits fra SPSS
 alldt[] <- lapply(alldt, function(x) {attributes(x) <- NULL; x})
 
+## mean hba1c for hvert år
+alldt[, meanAll := round(mean(hba1c, na.rm = TRUE), digits = 1), keyby = .(yr)]
+
+## mean hba1c for all years hver sykehus
+## alldt[, meanhbc := round(mean(hba1c, na.rm = TRUE), digits = 1), keyby = .(yr, hospid)]
+
+## Beholder bare en rad på hvert år
+norgeTab <- alldt[alldt[, .I[1], by = yr]$V1]
+norgeTab[, yr := as.numeric(yr)]
+
+
+## Velge Lokal sykehus
+## -----------------------
 ## subset fra loop data
 dtvalg <- subset(alldt, hospid == hosp)
 
 ## gjennomsnitt hba1c
-dtvalg[, meanhbc  := round(mean(hba1c, na.rm = TRUE), digits = 1), by = yr]
+## dtvalg[, meanhbc  := round(mean(hba1c, na.rm = TRUE), digits = 1), by = yr]
 
 ## antall per år
-dtvalg[, N := .N, by = yr]
+## dtvalg[, N := .N, by = yr]
 ## dtvalg[, .N, by = yr]
 
-dtplot <- dtvalg[dtvalg[, .I[1], by = yr]$V1]
+## Beholder bare den første rad per år
+## dtplot <- dtvalg[dtvalg[, .I[1], by = yr]$V1]
 ## dtplot <- dtvalg[, head(.SD, 1), yr] #alternativ med litt treg
 
-dbaggr <- rollup(dtvalg, j = .(hba = mean(hba1c, na.rm = TRUE),
-  n = .N), by = c("yr", "kjonn"))
+dbaggr <- rollup(dtvalg,
+  j = list(
+    hba = mean(hba1c, na.rm = TRUE),
+    n = .N),
+  by = c("yr", "kjonn"))
 
 ## legger totallen dvs. 3. Kjønn er søm flgende:
 ## 1 = Gutter
@@ -91,12 +113,17 @@ miny <- round(min(dbaggr$hba, na.rm = TRUE), digits = 1)
 maxy <- round(max(dbaggr$hba, na.rm = TRUE), digits = 1)
 exty <- (maxy - miny) * .2
 
-plotHbc <- ggplot(dbaggr, aes(yr, hba, group = sex)) +
+plotHbc <- ggplot() +
   ## linje skal ikke kuttes hvis det er NA
-  geom_line(data = dbaggr[!is.na(hba), ], aes(color = sex), size = 1) +
-  geom_point(aes(shape = sex), size = 3.5) +
+  geom_line(data = dbaggr[!is.na(hba), ],
+    aes(yr, hba, group = sex, color = sex), size = 1) +
+  geom_line(data = norgeTab, aes(yr, meanAll, color = "Norge"),
+    color = "red", linetype = "twodash", size = 1) +
+  geom_point(data = dbaggr, aes(yr, hba, group = sex, shape = sex), size = 2) +
+  geom_point(data = norgeTab, aes(yr, meanAll), shape = 18, size = 2) +
   scale_x_continuous(breaks = unique(dbaggr$yr)) +
-  scale_shape_manual(values = c(17, 1, 16), breaks = c("Gutter", "Jenter", "Alle")) +
+  scale_shape_manual(values = c(16, 1, 4),
+    breaks = c("Gutter", "Jenter", "Alle"), ) +
   scale_color_manual(values = col3, breaks = c("Gutter", "Jenter", "Alle")) +
   scale_y_continuous(breaks = seq(miny, maxy, by = 0.2),
     limits = c(miny - exty, maxy + exty)) +
@@ -111,3 +138,4 @@ jenteHb <- round(dbaggr[yr == 2018 & kjonn == 2, hba], digits = 1)
 jenteN <- round(dbaggr[yr == 2018 & kjonn == 2, n])
 alleHb <- round(dbaggr[yr == 2018 & kjonn == 3, hba], digits = 1)
 alleN <- round(dbaggr[yr == 2018 & kjonn == 3, n])
+norgeHb <- round(norgeTab[yr == 2018, meanAll], digits = 1)
