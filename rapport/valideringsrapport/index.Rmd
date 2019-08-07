@@ -368,9 +368,9 @@ latex_float(outTab) <- "H"
 outTab
 ```
 
-## Annen behandling {-}
+## Annen type behandling {-}
 
-Antal og andel pasienter som bruker annen behandling.
+Antal og andel pasienter som bruker annen type behandling.
 
 ```{r annbeh}
 source("./analyse/annenbeh.R")
