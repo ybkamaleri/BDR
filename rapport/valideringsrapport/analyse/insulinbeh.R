@@ -5,7 +5,15 @@ lokalDT <- lok2018dt1
 
 
 ## Mltiinjeksjon
+## -------------
 mulVar <- c("beh_ins_beh_hurtig_ie_dogn", "beh_ins_beh_lang_ie_dogn")
+
+## Antall som bruker dvs. har svart minst en av dem i 'mulVar'
+lokalDT[, multN := NA_integer_]
+lokalDT[!is.na(get(mulVar[1])), multN := 1L]
+lokalDT[!is.na(get(mulVar[2])), multN := 1L]
+
+
 ## Totalt av mulVar
 lokalDT[!is.na(get(mulVar[1])) & !is.na(get(mulVar[2])),
   multot := rowSums(.SD, na.rm = TRUE), .SDcols = mulVar,
@@ -22,7 +30,15 @@ lokalDT[!is.na(mulkg), insbeh := 1L]
 
 
 ## Insulinpumpe
+## ------------
 insVar <- c("beh_ins_type_ie_basal", "beh_ins_type_ie_bolus")
+
+## Antall som bruker dvs. har svart minst en av dem i 'insVar'
+lokalDT[, insN := NA_integer_]
+lokalDT[!is.na(get(insVar[1])), insN := 1L]
+lokalDT[!is.na(get(insVar[2])), insN := 1L]
+
+
 ## Totalt av insVar
 lokalDT[!is.na(insVar[1]) & !is.na(insVar[2]),
   instot := rowSums(.SD, na.rm = TRUE), .SDcols = insVar,
@@ -36,9 +52,19 @@ lokalDT[is.na(instot) & is.na(inn_Vekt), inskg := NA_real_, by = .(PasientID)]
 ## 2 til insulinpumpe
 lokalDT[!is.na(inskg), insbeh := 2L]
 
-
-## Hvis har svar på begge beholder insulinpumpe
+## Hvis har svar på begge beholder bare en behandling dvs. insulinpumpe
 lokalDT[!is.na(mulkg) & !is.na(inskg), mulkg := NA_real_]
+
+
+## Antall og Andel for multiinjeksjon og
+## insulinpumpe som svarte minst en av målingene
+## ---------------------------------------------
+multN <- lokalDT[, sum(multN, na.rm = TRUE)]
+insN <- lokalDT[, sum(insN, na.rm = TRUE)]
+behNtot <- multN + insN
+multPros <- round(multN / behNtot * 100, digits = 1)
+insPros <- round(insN / behNtot * 100, digits = 1)
+
 
 
 ## rollup(lokalDT,
