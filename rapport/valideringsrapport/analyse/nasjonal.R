@@ -87,7 +87,6 @@ if (colN == 2){
 }
 
 
-
 ## Antall kjønn
 guttNr <- barnLg[kjonn == "Gutt", sum(N, na.rm = T)]
 jenteNr <- barnLg[kjonn == "Jente", sum(N, na.rm = T)]

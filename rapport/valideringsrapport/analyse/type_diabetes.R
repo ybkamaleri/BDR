@@ -84,7 +84,7 @@ diaTabell <- function(x){
   diab.tab[.(Kjonn = c("Gutt", "Jente"), to = c("Gutter", "Jenter")), on = "Kjonn", Kjonn := i.to]
   
   ## legge kolonnavn til tabellen
-  tabNavn <-c(" ", "DT1", "DT2", "MODY", "Annen")
+  tabNavn <-c(" ", "T1D", "T2D", "MODY", "Annen")
   setnames(diab.tab, names(diab.tab), tabNavn)
   
   ## Antall pasienter

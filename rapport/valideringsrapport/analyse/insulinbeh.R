@@ -154,7 +154,7 @@ outTab <- tabHux(innTabel, size = 0.8, total = TRUE, del = c(.2, .15, .2, .15, .
 
 ## lage over titel
 bottom_border(outTab)[1, ] <- FALSE
-outTab <- rbind(c("", "Insulinpumpe", "", "Multiinjeksjon", ""), outTab)
+outTab <- rbind(c("", "Insulinpumpe", "", "Multiinjeksjon (penn)", ""), outTab)
 
 outTab <- outTab %>%
   set_bottom_border(2,, TRUE) %>%

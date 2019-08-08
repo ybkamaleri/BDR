@@ -334,10 +334,21 @@ source("./analyse/insulinbeh.R")
 
 Totalt pasienter som har data på insulinbehandling er `r behNtot`. Av disse bruker 
 `r insN` pasienter (`r insPros`%) insulinpumper og `r multN` pasienter (`r multPros`%)
- multiinjeksjon. Tabellen for type insulinbehandling nedenfor viser
-gjennomsnittlig antall enheter insulin per. kg/døgn fordelt i aldersgrupper. Analysen
-inkluderer bare de som har data på kroppsvekt og insulindose. Derfor kan antall
-pasienter i tabellen være ulik.
+ multiinjeksjon (pennbehandling).
+
+For å beregne *insulindose*, følgende formula brukes:
+
+$$\frac{\sum_{i=1}^n X_i}{kg}$$
+
+$X$ = Totalt antall enheter insulin
+
+$kg$ = Kroppsvekt (pr.kg/døgn)
+ 
+## Insulindose {-}
+
+Tabellen nedenfor viser gjennomsnittlig antall enheter
+insulin pr.kg/døgn fordelt i aldersgrupper. Analysen inkluderer bare de som har
+data på kroppsvekt og insulindose.
 
 ```{r insbeh}
 latex_float(outTab) <- "H"

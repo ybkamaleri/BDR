@@ -48,7 +48,7 @@ undAll[, id := .I]
 nyNavn <- c(
   "ACE-hemmer",
   "Blodtrykk medikamenter",
-  "Satiner",
+  "Statin",
   "Anti epileptika"
 )
 
