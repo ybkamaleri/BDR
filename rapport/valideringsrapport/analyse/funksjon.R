@@ -57,6 +57,51 @@ tabFun <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE){
 
 }
 
+## Lager tabell med overordnet tittel
+tabFunx <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE,
+                    del = c(.4, .2, .2, .3),
+                    right = 3,
+                    center = 2,
+                    mix = 2:3){
+
+  lastLine <- nrow(dt) + 1
+  tabhx <- as_hux(dt, add_colnames = TRUE)
+
+  tabhx <- tabhx %>%
+    set_bold(1,, TRUE) %>%
+    map_background_color(by_rows("grey95", "white")) %>%
+    set_position("left") %>%
+    set_latex_float("h") %>%
+    set_align(, right, "right") %>%
+    set_col_width(del)
+
+  tabhx <- rbind(c("", "", navn, "", ""), tabhx)
+
+  tabhx <- merge_cells(tabhx, 1, mix)
+
+  tabhx <- tabhx %>%
+    set_align(1, center, "center") %>%
+    set_bottom_border(1, center, 0.4) %>%
+    set_top_border(3,, TRUE)
+
+  if (total){
+    bold(tabhx)[lastLine + 1, ] <- TRUE
+    top_border(tabhx)[lastLine + 1, ] <- TRUE
+  } else {
+    bottom_border(tabhx)[lastLine + 1,] <- TRUE
+  }
+
+  width(tabhx) <- size
+
+  if (rap){
+  ## for at width funker i PDF så må 'wrap' være TRUE
+  wrap(tabhx) <- TRUE
+  }
+
+  return(tabhx)
+
+}
+
 
 ## Lager tabell med 5 kolonner
 tabHux <- function(dt, size = 0.7, rap = FALSE, total = FALSE, del = NULL, ...){
