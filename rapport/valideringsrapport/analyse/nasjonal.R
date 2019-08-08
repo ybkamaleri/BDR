@@ -11,7 +11,7 @@ nasDT[!is.na(fodelandFar) , nordiskFar := ifelse(fodelandFar %in% nordLand, 1L, 
 
 ## nordisk barn
 ## Minst en av foreldrene er født i de nordiske landene
-nasDT[, .N, by=.(nordiskFar)]
+## nasDT[, .N, by=.(nordiskFar)]
 
 nordBarn <- nasDT[, {mor = ifelse(is.na(nordiskMor), 0, nordiskMor);
   far = ifelse(is.na(nordiskFar), 0, nordiskFar);
@@ -22,7 +22,7 @@ nordBarn <- nasDT[, {mor = ifelse(is.na(nordiskMor), 0, nordiskMor);
     mor = nordiskMor,
     far = nordiskFar,
     kjonn = Kjonn,
-    Pnr = Pnr
+    PasientID = PasientID
   )}]
 
 nordBarn[.(nordiskBarn = 1:2, to = 1), on = "nordiskBarn", nordiskBarn := i.to]
@@ -31,67 +31,95 @@ nordBarn[.(nordiskBarn = 1:2, to = 1), on = "nordiskBarn", nordiskBarn := i.to]
 # ukjent nasjonalitet
 nordBarn[is.na(nordiskBarn), nordiskBarn := 3]
 
-## Tabell long
-barnLg <- nordBarn[, .N, by = .(nordiskBarn, kjonn)]
+## Aggrigerer
+nasAgg <- groupingsets(nordBarn,
+  j = .(
+    nordisk = length(which(nordiskBarn == 1)),
+    ikke = length(which(nordiskBarn == 0)),
+    ukjent = length(which(nordiskBarn == 3))
+  ),
+  by = c("kjonn"),
+  sets = list(
+    c("kjonn"),
+    character(0)
+  ))
 
-## Legger prosent
-barnLg[, pros := round(N / sum(N, na.rm = T) * 100, digits = 1)]
+## Totalt
+nasAgg[is.na(kjonn), kjonn := "Totalt"]
+nasAgg[, N := rowSums(nasAgg[, -1])]
+
+## Prosent
+nasAgg[, `:=`(
+  npro = round(nordisk / N * 100, digits = 1),
+  ipro = round(ikke / N * 100, digits = 1),
+  upro = round(ukjent / N * 100, digits = 1)
+),
+by = .(kjonn)]
 
 ## Mix antall og prosent
-barnLg[, n := sprintf("%s (%0.1f%%)", N, pros)]
+nasAgg[, `:=`(
+  nord_N = sprintf("%s (%0.1f%%)", nordisk, npro),
+  ikke_N = sprintf("%s (%0.1f%%)", ikke, ipro),
+  ukjent_N = sprintf("%s (%0.1f%%)", ukjent, upro)
+),
+by = .(kjonn)]
+
+## Hvis 0 så byttes med strek
+nasAgg[nordisk == 0, nord_N := "-"]
+nasAgg[ikke == 0, ikke_N := "-"]
+nasAgg[ukjent == 0, ukjent_N := "-"]
 
 
-## Snu til wide
-barnWt <- dcast(barnLg, kjonn ~ nordiskBarn, value.var = "n")
+## Beholder det relevante
+bortVar <- c("nordisk", "ikke", "ukjent", "npro", "ipro", "upro")
+nasAgg[,(bortVar) := NULL ]
 
-## bytt NA med strekk
-for (j in seq_len(ncol(barnWt))){
-  set(barnWt, which(is.na(barnWt[[j]])), j = j, value = "  -")
-}
+## ## bytt NA med strekk
+## for (j in seq_len(ncol(nasAgg))){
+##   set(nasAgg, which(is.na(nasAgg[[j]])), j = j, value = "  -")
+## }
 
 ## Sjekk antall kolonner fordi ikke alle har annen nasjonaltitet
-colN <- ncol(barnWt)
-colNavn <- names(barnWt)
+colN <- ncol(nasAgg)
+colNavn <- names(nasAgg)
 kol1 <- grep("kjonn", colNavn, value = T)
-kol2 <- grep("1", colNavn, value = T)
-kol3 <- grep("0", colNavn, value = T)
-kol4 <- grep("3", colNavn, value = T)
+koln <- grep("^N", colNavn, value = T)
+kol2 <- grep("nord", colNavn, value = T)
+kol3 <- grep("ikke", colNavn, value = T)
+kol4 <- grep("ukjent", colNavn, value = T)
+
+barnWt <- nasAgg
 
 ## Kjønn skal være fleretall
 barnWt[.(kjonn = c("Gutt", "Jente"), to = c("Gutter", "Jenter")), on = "kjonn", kjonn := i.to]
 
 
-if (colN == 4) {
+if (colN == 5) {
   ## reorder columns
-  setcolorder(barnWt, c(kol1, kol2, kol3, kol4))
+  setcolorder(barnWt, c(kol1, koln, kol2, kol3, kol4))
 
   ## legger riktig colnavn
-  setnames(barnWt, names(barnWt), c("kjonn", "Nordisk", "Ikke Nordisk", "Ukjent"))
+  setnames(barnWt, names(barnWt), c("kjonn", "N", "Nordisk", "Ikke Nordisk", "Ukjent"))
+}
+
+if (colN == 4){
+  ## reorder columns
+  setcolorder(barnWt, c(kol1, koln, kol2, kol3))
+
+  ## legger riktig colnavn
+  setnames(barnWt, names(barnWt), c("kjonn", "N", "Nordisk", "Ikke Nordisk"))
+
 }
 
 if (colN == 3){
   ## reorder columns
-  setcolorder(barnWt, c(kol1, kol2, kol3))
+  setcolorder(barnWt, c(kol1, koln, kol2))
 
   ## legger riktig colnavn
-  setnames(barnWt, names(barnWt), c("kjonn", "Nordisk", "Ikke Nordisk"))
-
+  setnames(barnWt, names(barnWt), c("kjonn","N", "Nordisk"))
 }
-
-if (colN == 2){
-  ## reorder columns
-  setcolorder(barnWt, c(kol1, kol2))
-
-  ## legger riktig colnavn
-  setnames(barnWt, names(barnWt), c("kjonn", "Nordisk"))
-}
-
-
-## Antall kjønn
-guttNr <- barnLg[kjonn == "Gutt", sum(N, na.rm = T)]
-jenteNr <- barnLg[kjonn == "Jente", sum(N, na.rm = T)]
-
-barnWt[kjonn == "Gutter", Totalt := guttNr]
-barnWt[kjonn == "Jenter", Totalt := jenteNr]
 
 setnames(barnWt, "kjonn", "")
+barnWt[, N := as.character(N)] #problem med tall vises som scientific format
+
+utTabell <- tabHux(barnWt, total = TRUE, del = c(.1, .15, .22, .22, .22), autoformat = TRUE)
