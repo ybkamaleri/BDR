@@ -59,7 +59,7 @@ tabFun <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE){
 
 
 ## Lager tabell med 5 kolonner
-tabHux <- function(dt, size = 0.7, rap = FALSE, total = FALSE, del = NULL){
+tabHux <- function(dt, size = 0.7, rap = FALSE, total = FALSE, del = NULL, ...){
 
   lastLine <- nrow(dt) + 1
   tabhx <- as_hux(dt, add_colnames = TRUE)
