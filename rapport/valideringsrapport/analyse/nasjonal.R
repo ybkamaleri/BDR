@@ -122,4 +122,7 @@ if (colN == 3){
 setnames(barnWt, "kjonn", "")
 barnWt[, N := as.character(N)] #problem med tall vises som scientific format
 
-utTabell <- tabHux(barnWt, total = TRUE, del = c(.1, .15, .22, .22, .22), autoformat = TRUE)
+## utTabell <- tabHux(barnWt, total = TRUE, del = c(.1, .15, .22, .22, .22), autoformat = TRUE)
+
+utTabell <- tabFunx(barnWt, total = TRUE, navn = "n (%)",
+  del = c(.1, .15, .22, .22, .22), mix = 3:5, center = 3)
