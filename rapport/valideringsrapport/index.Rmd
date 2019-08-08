@@ -172,6 +172,7 @@ kar.htab
 ```
 
 ## Nasjonalitet {-}
+
 Nasjonalitet er definert etter hvor barnets foreldre er født. Er en eller begge
 foreldrene født i et av de nordiske landene kategoriseres barnet som Nordisk. I det
 tilfelle hvor informasjon om nasjonalitet ikke finnes blir dette kategorisert som
@@ -180,20 +181,20 @@ tilfelle hvor informasjon om nasjonalitet ikke finnes blir dette kategorisert so
 
 ```{r nasjonal, warning=FALSE, message=FALSE}
 source("./analyse/nasjonal.R")
+utTabell
+## lastLine <- dim(barnWt)[1] + 1
 
-lastLine <- dim(barnWt)[1] + 1
+## nas.htab <- as_hux(barnWt, add_colnames = TRUE)
 
-nas.htab <- as_hux(barnWt, add_colnames = TRUE)
+## nas.htab <- nas.htab %>%
+##   set_bottom_border(1,, TRUE) %>%
+##   set_bold(1,, TRUE) %>%
+##   set_bottom_border(lastLine,, TRUE) %>%
+##   map_background_color(by_rows("grey95", "white")) %>%
+##   set_position("left")
 
-nas.htab <- nas.htab %>%
-  set_bottom_border(1,, TRUE) %>%
-  set_bold(1,, TRUE) %>%
-  set_bottom_border(lastLine,, TRUE) %>%
-  map_background_color(by_rows("grey95", "white")) %>%
-  set_position("left")
-
-width(nas.htab) <- 0.7
-nas.htab
+## width(nas.htab) <- 0.7
+## nas.htab
 ```
 
 ## Kompletthet {-}
