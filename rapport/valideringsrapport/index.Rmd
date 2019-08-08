@@ -337,11 +337,11 @@ Totalt pasienter som har data på insulinbehandling er `r behNtot`. Av disse bru
 `r insN` pasienter (`r insPros`%) insulinpumper og `r multN` pasienter (`r multPros`%)
  multiinjeksjon (pennbehandling).
 
-For å beregne *insulindose*, følgende formula brukes:
+For å beregne *insulindose*, følgende formel brukes:
 
-$$\frac{\sum_{i=1}^n X_i}{kg}$$
+$$\frac{1}{kg}*\displaystyle{\sum_{i=1}^n x_i}$$
 
-$X$ = Totalt antall enheter insulin
+$x_i$ = Antall enheter insulin
 
 $kg$ = Kroppsvekt (pr.kg/døgn)
  
