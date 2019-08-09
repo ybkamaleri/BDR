@@ -66,6 +66,57 @@ multPros <- round(multN / behNtot * 100, digits = 1)
 insPros <- round(insN / behNtot * 100, digits = 1)
 
 
+pieDT <- data.table(
+  label = c("Insulinpumpe", "Multiinjeksjon"),
+  value = c(insN, multN),
+  percentage = c(insPros, multPros),
+  color = c("darkblue", "darkgreen")
+  )
+
+## reorder descending
+setorder(pieDT, value)
+## legger label i midten av pie
+pieDT[, valpos := cumsum(percentage) - 0.5 * percentage]
+
+## html pie
+utPieHtml <- pieDT %>%
+  pier() %>%
+  pie.size(inner = 70, outer = 100, width = 400, height = 350) %>%
+  pie.header(text = behNtot, size = 14, font = 'Impact', location = 'pie-center') %>%
+  pie.subtitle(text = 'Antall pasienter') %>%
+  pie.tooltips(string = "N={value}")
+
+
+## Valig pie
+## utPieLtx <- pie(pieDT$value, labels = paste0(pieDT$label, "\n",
+##   pieDT$value, "(", pieDT$percentage, "%)"),
+##   col = valgCol)
+
+## # Tidy up the theme
+## pietema = theme_classic() +
+##   theme(axis.line = element_blank(),
+##     axis.text = element_blank(),
+##     axis.ticks = element_blank(),
+##     plot.title = element_text(hjust = 0.5, color = "#666666"),
+##     legend.position = "none")
+## utPieLtx <- ggplot(pieDT, aes(x = "", y = percentage, fill = label)) +
+##   geom_bar(stat = "identity", width = 1) +
+##   # Convert to pie (polar coordinates) and add labels
+##   coord_polar("y", start = 0) +
+##   geom_text(aes(label = paste0(label, "\n", value, "(", percentage, "%)"))) +
+##   scale_fill_manual(values = valgCol[2:3]) +
+##   labs(x = NULL, y = NULL, fill = NULL) +
+##   pietema
+
+utPieLtx <- ggplot(pieDT, aes(x = 2, y = percentage, fill = label)) +
+  geom_bar(stat = 'identity', color = 'white') +
+  coord_polar(theta = "y", start = 0) +
+  geom_text(aes(y = valpos, label =paste0(label, "\n", value, "(", percentage, "%)"))) +
+  scale_fill_manual(values = valgCol[2:3]) +
+  theme_void() +
+  xlim(0.5, 2.5) +
+  theme(legend.position = "none")
+
 
 ## rollup(lokalDT,
 ##   .(mmult = mean(mulkg, na.rm = TRUE),
@@ -169,8 +220,3 @@ outTab <- merge_cells(outTab, 1, c(4:5))
 wrap(outTab) <- TRUE
 
 ## outTab <- merge_cells(outTab, 1, c(2:3, 4:5))
-
-
-## ## --- Sjekk var----- ##
-## lokalDT[is.na(inskg),
-##   c("Pnr", insVar, "inn_Vekt", "instot", "inskg", "agecat"), with = F]

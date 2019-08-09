@@ -28,7 +28,6 @@ header-includes:
 - \usepackage[utf8]{inputenc}
 - \renewcommand{\figurename}{Figur}
 - \renewcommand{\tablename}{Tabell}
-
 output:
   bookdown::gitbook:
     split_by: section
@@ -40,7 +39,7 @@ output:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.pos = 'H')
 
 ## upload functions
 source("./analyse/funksjon.R")
@@ -336,15 +335,13 @@ source("./analyse/insulinbeh.R")
 Totalt pasienter som har data på insulinbehandling er `r behNtot`. Av disse bruker 
 `r insN` pasienter (`r insPros`%) insulinpumper og `r multN` pasienter (`r multPros`%)
  multiinjeksjon (pennbehandling).
-
-For å beregne *insulindose*, følgende formel brukes:
-
-$$\frac{1}{kg}*\displaystyle{\sum_{i=1}^n x_i}$$
-
-$x_i$ = Antall enheter insulin
-
-$kg$ = Kroppsvekt (pr.kg/døgn)
  
+
+```{r pieut, fig.cap="insulinbehandling", out.extra='', fig.hight=4, fig.width=4}
+if (knitr::is_html_output()) utPieHtml
+if (knitr::is_latex_output()) utPieLtx
+```
+
 ## Insulindose {-}
 
 Tabellen nedenfor viser gjennomsnittlig antall enheter
@@ -355,6 +352,15 @@ data på kroppsvekt og insulindose.
 latex_float(outTab) <- "H"
 outTab
 ```
+
+For å beregne *insulindose*, følgende formel brukes:
+
+$$\frac{1}{kg}*\displaystyle{\sum_{i=1}^n x_i}$$
+
+$x_i$ = Antall enheter insulin
+
+$kg$ = Kroppsvekt (pr.kg/døgn)
+
 
 ## Type pumpe {-}
 
