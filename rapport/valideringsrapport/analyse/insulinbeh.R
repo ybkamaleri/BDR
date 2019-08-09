@@ -73,18 +73,15 @@ pieDT <- data.table(
   color = c("darkblue", "darkgreen")
   )
 
-## reorder descending
-setorder(pieDT, value)
-## legger label i midten av pie
-pieDT[, valpos := cumsum(percentage) - 0.5 * percentage]
+
 
 ## html pie
 utPieHtml <- pieDT %>%
   pier() %>%
   pie.size(inner = 70, outer = 100, width = 400, height = 350) %>%
-  pie.header(text = behNtot, size = 14, font = 'Impact', location = 'pie-center') %>%
+  pie.header(text = behNtot, size = 18, font = 'Impact', location = 'pie-center') %>%
   pie.subtitle(text = 'Antall pasienter') %>%
-  pie.tooltips(string = "N={value}")
+  pie.tooltips(string = "{label}: N={value}")
 
 
 ## Valig pie
@@ -108,14 +105,20 @@ utPieHtml <- pieDT %>%
 ##   labs(x = NULL, y = NULL, fill = NULL) +
 ##   pietema
 
+## reorder descending
+setorder(pieDT, value)
+## legger label i midten av pie
+pieDT[, valpos := cumsum(percentage) - 0.5 * percentage]
+
 utPieLtx <- ggplot(pieDT, aes(x = 2, y = percentage, fill = label)) +
   geom_bar(stat = 'identity', color = 'white') +
   coord_polar(theta = "y", start = 0) +
-  geom_text(aes(y = valpos, label =paste0(label, "\n", value, "(", percentage, "%)"))) +
+  geom_text(aes(y = valpos, label =paste0(label, "\n", value, " (", percentage, "%)"))) +
   scale_fill_manual(values = valgCol[2:3]) +
   theme_void() +
   xlim(0.5, 2.5) +
-  theme(legend.position = "none")
+  theme(legend.position = "right",
+    legend.title = element_blank())
 
 
 ## rollup(lokalDT,
