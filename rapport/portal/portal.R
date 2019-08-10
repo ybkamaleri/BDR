@@ -7,7 +7,7 @@ inspak <- function(pkg){
   sapply(pkg, require, character.only = TRUE)
 }
 
-pkgs = c("data.table", "stringi", "lubridate", "sqldf","huxtable", "dplyr","rio")
+pkgs = c("data.table", "openxlsx", "dplyr","rio")
 
 inspak(pkgs)
 
@@ -37,14 +37,15 @@ KiB <- dt[,
 ## -----------------
 KiC <- dt[,
   .(n = length(which(get(hba1c) < 7)),
-    N = length(get(hba1c))),
+    N = sum(!is.na(get(hba1c)))),
   by = .(resh)]
+
 
 ## KiD - HbA1c < 7.5
 ## -----------------
 KiD <- dt[,
   .(n = length(which(get(hba1c) < 7.5)),
-    N = length(get(hba1c))),
+    N = sum(!is.na(get(hba1c)))),
   by = .(resh)]
 
 
@@ -52,7 +53,7 @@ KiD <- dt[,
 ## -----------------
 KiE <- dt[,
   .(n = length(which(get(hba1c) >= 9)),
-    N = length(get(hba1c))),
+    N = sum(!is.na(get(hba1c)))),
   by = .(resh)]
 
 
@@ -151,7 +152,7 @@ KiN <- dt[, list(
 ## Convert til excel
 indK <- grep("^Ki", ls(), value = TRUE)
 pathXL <- "~/Git-work/bdr/rapport/portal/excel/"
-sapply(indK, function(x) write.xlsx(get(x), paste0(pathXL, x, ".xlsx")), USE.NAMES = TRUE)
+sapply(indK, function(x) write.xlsx(get(x), paste0(pathXL, x, "_", format(Sys.Date(), "%Y%m%d"), ".xlsx")), USE.NAMES = TRUE)
 
 ## library(openxlsx)
 ## write.xlsx(KiB, paste0(pathXL,"KiB.xlsx"))
