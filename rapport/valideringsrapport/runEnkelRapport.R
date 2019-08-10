@@ -2,13 +2,16 @@
 ## -----------------
 rm(list = ls())
 
+## pier package
+## devtools::install_github("mrjoh3/pier")
+
 inspak <- function(pkg){
   nypkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
   if (length(nypkg)) install.packages(nypkg, repos = "http://cran.rstudio.com")
   sapply(pkg, require, character.only = TRUE)
 }
 
-pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf","huxtable", "dplyr", "kableExtra", "bookdown", "rreg", "colorspace")
+pkgs = c("data.table", "stringi", "pier", "validate", "ggplot2", "lubridate", "readxl", "sqldf","huxtable", "dplyr", "kableExtra", "bookdown", "rreg", "colorspace")
 
 inspak(pkgs)
 
