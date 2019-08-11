@@ -2,16 +2,13 @@
 ## -----------------
 rm(list = ls())
 
-## pier package
-## devtools::install_github("mrjoh3/pier")
-
 inspak <- function(pkg){
   nypkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
   if (length(nypkg)) install.packages(nypkg, repos = "http://cran.rstudio.com")
   sapply(pkg, require, character.only = TRUE)
 }
 
-pkgs = c("data.table", "stringi", "pier", "validate", "ggplot2", "lubridate", "readxl", "sqldf","huxtable", "dplyr", "kableExtra", "bookdown", "rreg", "colorspace")
+pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf","huxtable", "dplyr", "kableExtra", "bookdown", "rreg", "colorspace", "pier")
 
 inspak(pkgs)
 
@@ -65,6 +62,7 @@ outDir <- "output"
 if (!dir.exists(outDir)) {dir.create(outDir)} else {print("Output dir finnes allerede")}
 
 ## Farge valg
+## install.packages("colorspace", repos = "http://R-Forge.R-project.org")
 ## hcl_palettes(plot = TRUE) #får å se mulige fargevalg pallettes
 valgCol <- sequential_hcl(4, "Blues 3")
 
@@ -83,7 +81,7 @@ valgCol <- sequential_hcl(4, "Blues 3")
 # 
 
 ## ## For testing
-hospKoder = c(8, 14, 22)
+## hospKoder = c(8, 14, 22)
 
 ## Dato
 valgDato <- Sys.Date()
@@ -92,78 +90,62 @@ valgDato <- Sys.Date()
 ## Kjør rapporten som PDF
 ## ----------------------
 
-for (hosp in hospKoder) {
+hospTitle <- "Hele landet"
+pdfTitle <- "Norge"
 
-  hospTitle <- ars2018[hospID == hosp, .(hospital)][[1]][1]
-  pdfTitle <- ars2018[hospID == hosp, .(hosKort)][[1]][1]
+## file delete if exists pga. error fra førrige kompilering
+filehosp <- paste0(pdfTitle, ".Rmd")
+if (file.exists(filehosp)) file.remove(filehosp)
 
-  ## file delete if exists pga. error fra førrige kompilering
-  filehosp <- paste0(pdfTitle, ".Rmd")
-  if (file.exists(filehosp)) file.remove(filehosp)
+## Norge
+lokal2018 <- ars2018
 
-  ## lokal
-  lokal2018 <- subset(ars2018, hospID == hosp)
+## diabetes Type 1
+lok2018dt1 <- subset(ars2018, diabetes_Type1 == "Ja")
 
-  ## lokal diabetes Type 1
-  lok2018dt1 <- subset(ars2018, hospID == hosp &  diabetes_Type1 == "Ja")
+## _bookdown.yml
+filBKD <- "_bookdown.yml"
+if (file.exists(filBKD)) file.remove(filBKD)
+bookFN <- paste0("book_filename: '", pdfTitle, ".Rmd'")
+outDir <- paste0("output_dir: './output/", pdfTitle, "'")
+write(bookFN, file = filBKD, append = TRUE)
+write(outDir, file = filBKD, append = TRUE)
 
-  ## _bookdown.yml
-  filBKD <- "_bookdown.yml"
-  if (file.exists(filBKD)) file.remove(filBKD)
-  bookFN <- paste0("book_filename: '", pdfTitle, ".Rmd'")
-  outDir <- paste0("output_dir: './output/", pdfTitle, "'")
-  write(bookFN, file = filBKD, append = TRUE)
-  write(outDir, file = filBKD, append = TRUE)
-
-  bookdown::render_book(input = "index.Rmd",
-    output_format = "bookdown::pdf_document2",
-    params = list(
-      nyTitle = hospTitle,
-      nyDate =  format(valgDato, '%d %B %Y'),
-      nySubTitle = "Årskontroller for data innsamlet i 2018"
-    )
+bookdown::render_book(input = "index.Rmd",
+  output_format = "bookdown::pdf_document2",
+  params = list(
+    nyTitle = hospTitle,
+    nyDate =  format(valgDato, '%d %B %Y'),
+    nySubTitle = "Årskontroller for data innsamlet i 2018"
   )
+)
 
-  file.remove(filBKD)
+file.remove(filBKD)
 
-}
 
+## file delete if exists pga. error fra førrige kompilering
+filehosp <- paste0(pdfTitle, ".Rmd")
+if (file.exists(filehosp)) file.remove(filehosp)
 
 
 ## Kjør rapporten som HTML
 ## ------------------------
-for (hosp in hospKoder) {
 
-  hospTitle <- ars2018[hospID == hosp, .(hospital)][[1]][1]
-  pdfTitle <- ars2018[hospID == hosp, .(hosKort)][[1]][1]
+## _bookdown.yml
+filBKD <- "_bookdown.yml"
+if (file.exists(filBKD)) file.remove(filBKD)
+bookFN <- paste0("book_filename: '", pdfTitle, ".Rmd'")
+outDir <- paste0("output_dir: './output/", pdfTitle, "'")
+write(bookFN, file = filBKD, append = TRUE)
+write(outDir, file = filBKD, append = TRUE)
 
-  ## file delete if exists pga. error fra førrige kompilering
-  filehosp <- paste0(pdfTitle, ".Rmd")
-  if (file.exists(filehosp)) file.remove(filehosp)
-
-  ## lokal
-  lokal2018 <- subset(ars2018, hospID == hosp)
-
-  ## lokal diabetes Type 1
-  lok2018dt1 <- subset(ars2018, hospID == hosp &  diabetes_Type1 == "Ja")
-  
-  ## _bookdown.yml
-  filBKD <- "_bookdown.yml"
-  if (file.exists(filBKD)) file.remove(filBKD)
-  bookFN <- paste0("book_filename: '", pdfTitle, ".Rmd'")
-  outDir <- paste0("output_dir: './output/", pdfTitle, "'")
-  write(bookFN, file = filBKD, append = TRUE)
-  write(outDir, file = filBKD, append = TRUE)
-
-  bookdown::render_book(input = "index.Rmd",
-    output_format = "bookdown::gitbook",
-    params = list(
-      nyTitle = hospTitle,
-      nyDate =  format(valgDato, '%d %B %Y'),
-      nySubTitle = "Årskontroller for data innsamlet i 2018"
-    )
+bookdown::render_book(input = "index.Rmd",
+  output_format = "bookdown::gitbook",
+  params = list(
+    nyTitle = hospTitle,
+    nyDate =  format(valgDato, '%d %B %Y'),
+    nySubTitle = "Årskontroller for data innsamlet i 2018"
   )
+)
 
-  file.remove(filBKD)
-
-}
+file.remove(filBKD)
