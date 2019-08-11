@@ -15,7 +15,7 @@ inspak(pkgs)
 resh <- import("sykehus_resh_id.xlsx")
 
 ## Hent data fra filen 'emacs_path.R'
-source("~/avid/bdr/emacs_path.R")
+
 ## Merge resh koder til datasettet
 DT <- merge(ars2018raw, resh, by.x = "hospID", by.y = "kode", all.x = TRUE)
 
@@ -152,6 +152,7 @@ KiN <- dt[, list(
 ## Convert til excel
 indK <- grep("^Ki", ls(), value = TRUE)
 pathXL <- "~/Git-work/bdr/rapport/portal/excel/"
+<<<<<<< HEAD
 sapply(indK, function(x) write.xlsx(get(x), paste0(pathXL, x, "_", format(Sys.Date(), "%Y%m%d"), ".xlsx")), USE.NAMES = TRUE)
 
 ## library(openxlsx)
@@ -168,3 +169,21 @@ sapply(indK, function(x) write.xlsx(get(x), paste0(pathXL, x, "_", format(Sys.Da
 ## write.xlsx(KiL, paste0(pathXL,"KiL.xlsx"))
 ## write.xlsx(KiM, paste0(pathXL,"KiM.xlsx"))
 ## write.xlsx(KiN, paste0(pathXL,"KiN.xlsx"))
+=======
+sapply(indK, function(x) write.xlsx(x, paste0(pathXL, x, ".xlsx")), USE.NAMES = TRUE)
+
+library(openxlsx)
+write.xlsx(KiB, paste0(pathXL,"KiB.xlsx"))
+write.xlsx(KiC, paste0(pathXL,"KiC.xlsx"))
+write.xlsx(KiD, paste0(pathXL,"KiD.xlsx"))
+write.xlsx(KiE, paste0(pathXL,"KiE.xlsx"))
+write.xlsx(KiF, paste0(pathXL,"KiE.xlsx"))
+write.xlsx(KiG, paste0(pathXL,"KiG.xlsx"))
+write.xlsx(KiH, paste0(pathXL,"KiH.xlsx"))
+write.xlsx(KiI, paste0(pathXL,"KiI.xlsx"))
+write.xlsx(KiJ, paste0(pathXL,"KiJ.xlsx"))
+write.xlsx(KiK, paste0(pathXL,"KiK.xlsx"))
+write.xlsx(KiL, paste0(pathXL,"KiL.xlsx"))
+write.xlsx(KiM, paste0(pathXL,"KiM.xlsx"))
+write.xlsx(KiN, paste0(pathXL,"KiN.xlsx"))
+>>>>>>> parent of 7b61357... loop files
