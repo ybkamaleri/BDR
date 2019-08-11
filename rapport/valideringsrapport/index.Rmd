@@ -1,7 +1,7 @@
 ---
 params:
   nyTitle: "Sykehusnavn"
-  nyDate: !r Sys.Date()
+  nyDate: "`r format(Sys.time(), '%d %B, %Y')`"
   nySubTitle: "Tidsperioden"
 title: "`r params$nyTitle`"
 date: "`r params$nyDate`"
