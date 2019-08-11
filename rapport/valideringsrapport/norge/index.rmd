@@ -182,7 +182,9 @@ source("./analyseNorge/mean_hba1c.R")
 Figuren viser gjennomsnitts HbA1c målt sentralt på Aker, OUS fordelt på kjønn for perioden fra 2007 til 2018. Analysen inkluderer kun Type 1 diabetes (N = `r alleN`). Gjennomsnitt HbA1c for `r hospTitle` i 2018 er **`r alleHb`** for alle pasienter. Gutter har `r guttHb` (n=`r guttN`) og jenter har `r jenteHb` (n=`r jenteN`).
 
 ```{r hba1c2, echo=F}
-plotHbc
+if (knitr::is_latex_output()) plotHbc
+if (knitr::is_html_output()) plotHbcWidget
+
 ```
 
 ## HbA1c og alder {-}

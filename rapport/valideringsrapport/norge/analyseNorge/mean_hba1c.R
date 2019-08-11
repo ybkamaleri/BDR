@@ -118,10 +118,12 @@ exty <- (maxy - miny) * .2
 plotHbc <- ggplot() +
   ## linje skal ikke kuttes hvis det er NA
   geom_line(data = dbaggr[!is.na(hba), ],
-    aes(yr, hba, group = sex, color = sex), size = 1) +
+    aes(yr, hba, group = sex, color = sex,
+      text = paste('N= ', n, '</br>kjønn: ', sex)), size = 1) +
   ## geom_line(data = norgeTab, aes(yr, meanAll, color = "Norge"),
   ##   linetype = "twodash", size = 1) +
-  geom_point(data = dbaggr, aes(yr, hba, group = sex, shape = sex), size = 2) +
+  geom_point(data = dbaggr, aes(yr, hba, group = sex, shape = sex,
+     text = paste('N= ', n, '</br>kjønn: ', sex)), size = 2) +
   ## geom_point(data = norgeTab, aes(yr, meanAll, shape = "Norge"), size = 2) +
   scale_x_continuous(breaks = unique(dbaggr$yr)) +
   scale_shape_manual(values = c(16, 1, 4, 18),
@@ -133,6 +135,8 @@ plotHbc <- ggplot() +
   xlab(" ") +
   ptheme
 
+## htmlwidget
+plotHbcWidget <- ggplotly(plotHbc, tooltip = c("yr", "hba", "text"))
 
 guttHb <- round(dbaggr[yr == 2018 & kjonn == 1, hba], digits = 1)
 guttN <- round(dbaggr[yr == 2018 & kjonn == 1, n])
