@@ -17,10 +17,17 @@ ageCat <- function(x, lower, upper, by, sep = "-") {
 
 
 ## Lager tabell med 4 kolonner
-tabFun <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE){
+tabFun <- function(dt, navn, size = 0.7, rap = FALSE, tbo = NULL, total = FALSE){
 
   lastLine <- nrow(dt) + 1
   tabhx <- as_hux(dt, add_colnames = TRUE)
+
+
+  ## order colone
+  if (!is.null(tbo)){
+    tabhx <- asTab[order(asTab[[tob]],decreasing = T),]
+  }
+
 
   tabhx <- tabhx %>%
     set_bold(1,, TRUE) %>%
@@ -60,12 +67,19 @@ tabFun <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE){
 ## Lager tabell med overordnet tittel
 tabFunx <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE,
                     del = c(.4, .2, .2, .3),
+                    tbo = NULL,
                     right = 3,
                     center = 2,
                     mix = 2:3){
 
   lastLine <- nrow(dt) + 1
   tabhx <- as_hux(dt, add_colnames = TRUE)
+
+
+  ## order colone
+  if (!is.null(tbo)){
+    tabhx <- asTab[order(asTab[[tob]],decreasing = T),]
+  }
 
   tabhx <- tabhx %>%
     set_bold(1,, TRUE) %>%
@@ -104,10 +118,15 @@ tabFunx <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE,
 
 
 ## Lager tabell med 5 kolonner
-tabHux <- function(dt, size = 0.7, rap = FALSE, total = FALSE, del = NULL, ...){
+tabHux <- function(dt, size = 0.7, tbo = NULL, rap = FALSE, total = FALSE, del = NULL, ...){
 
   lastLine <- nrow(dt) + 1
   tabhx <- as_hux(dt, add_colnames = TRUE)
+
+  ## order colone
+  if (!is.null(tbo)){
+    tabhx <- asTab[order(asTab[[tob]],decreasing = T),]
+  }
 
   tabhx <- tabhx %>%
     set_bold(1,, TRUE) %>%
