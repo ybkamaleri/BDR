@@ -25,7 +25,7 @@ tabFun <- function(dt, navn, size = 0.7, rap = FALSE, tbo = NULL, total = FALSE)
 
   ## order colone
   if (!is.null(tbo)){
-    tabhx <- asTab[order(asTab[[tob]],decreasing = T),]
+    tabhx <- tabhx[order(tabhx[[tbo]],decreasing = T),]
   }
 
 
@@ -78,7 +78,7 @@ tabFunx <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE,
 
   ## order colone
   if (!is.null(tbo)){
-    tabhx <- asTab[order(asTab[[tob]],decreasing = T),]
+    tabhx <- tabhx[order(tabhx[[tbo]],decreasing = T),]
   }
 
   tabhx <- tabhx %>%
@@ -123,9 +123,10 @@ tabHux <- function(dt, size = 0.7, tbo = NULL, rap = FALSE, total = FALSE, del =
   lastLine <- nrow(dt) + 1
   tabhx <- as_hux(dt, add_colnames = TRUE)
 
+
   ## order colone
   if (!is.null(tbo)){
-    tabhx <- asTab[order(asTab[[tob]],decreasing = T),]
+    tabhx <- tabhx[order(tabhx[[tbo]],decreasing = T),]
   }
 
   tabhx <- tabhx %>%
