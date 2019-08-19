@@ -8,7 +8,12 @@ useDT <- lok2018dt1
 ## useDT[is.na(lab_HbA1cAkerVerdi), .N]
 ## resVar <- c("und_syk_col", "und_syk_hypo", "und_syk_hype")
 
-komVar <- c("lab_HbA1c", "lab_HbA1cAkerVerdi",  "und_inssjokk", "und_ketoacidose", "lab_lip_LDL_2", "inn_Blodtrykk_s", "inn_Blodtrykk_d", "und_infiltrater", "inn_Lengde", "inn_Vekt")
+## Bruk ikke fastende, hvis missing bruk fastende
+useDT[, ldl2 := lab_lip_LDL_2] %>%
+  .[is.na(lab_lip_LDL_2), ldl2 := lab_lip_LDL]
+
+## Valgte variabler
+komVar <- c("lab_HbA1c", "lab_HbA1cAkerVerdi",  "und_inssjokk", "und_ketoacidose", "inn_Blodtrykk_s", "inn_Blodtrykk_d", "und_infiltrater", "inn_Lengde", "inn_Vekt", "ldl2")
 
 # Antall ikke missing
 komWt <- useDT[, lapply(.SD, function(x) sum(!is.na(x))), .SDcols=komVar]
@@ -37,16 +42,17 @@ komAll[, pros := round(n / tot * 100, digits = 1)]
 
 ## Gir nytt navn til var
 komAll[, nr := .I]
-komNavn <- c("HbA1c eget lab",
+komNavn <- c(
+  "HbA1c eget lab",
   "HbA1c sentral",
   "Insulinsjokk",
   "DKA",
-  "LDL",
   "BT Systolisk",
   "BT Diastolisk",
   "Infiltrater",
   "Høyde",
   "Vekt",
+  "LDL",
   "Fysisk aktivitet")
 
 komAll[.(nr = 1:11, to = komNavn), on = "nr", var2 := i.to]
