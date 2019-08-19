@@ -7,7 +7,8 @@
 ## Kilderdata
 dt <- lok2018dt1
 
-## Total kolesterol. Bruk ikke fastende, hvis missing bruk fastende
+## OBS! Bruk ikke fastende, hvis missing bruk fastende
+## Total kolesterol.
 dt[, tkl2 := lab_lip_totkol_2] %>%
   .[is.na(lab_lip_totkol_2), tkl2  := lab_lip_totkol]
 
