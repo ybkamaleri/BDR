@@ -260,23 +260,7 @@ Tabellen nedenfor gir antall og andel over følgende spesifisert grense hvor N e
 - **Triglycerider** (N = `r lipTab$trigN[1]`) referer til triglycerider mer enn 2.5 mmol/l
 
 ```{r liptabell01}
-lastLine <- nrow(lipTabell) + 1
-lip.htab <- as_hux(lipTabell, add_colnames = TRUE)
-
-lip.htab <- lip.htab %>%
-  set_bold(1,, TRUE) %>%
-  set_bold(lastLine,, TRUE) %>%
-  set_bottom_border(1,, TRUE) %>%
-  set_top_border(lastLine,, TRUE) %>%
-  set_align(, 2:5, "right") %>%
-  map_background_color(by_rows("grey95", "white")) %>%
-  set_position("left") %>%
-  set_latex_float("h") %>%
-  set_col_width(value = c(2.5, 1.5, 1.5, 1.5, 1.5, 1.5)) %>%
-  set_width(0.8)
-
 lip.htab
-
 ```
 
 \newpage
