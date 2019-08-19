@@ -6,6 +6,8 @@ nordLand <- c("Norge", "Danmark", "Finland", "Sverige", "Island")
 ## Data kilder
 nasDT <- lok2018dt1
 
+
+## Nasjonalitet variabler - Nasjonalitet, mor- og farfødeland
 nasDT[!is.na(fodelandMor) , nordiskMor := ifelse(fodelandMor %in% nordLand, 1L, 0L)]
 nasDT[!is.na(fodelandFar) , nordiskFar := ifelse(fodelandFar %in% nordLand, 1L, 0L)]
 
@@ -14,19 +16,27 @@ nasDT[!is.na(fodelandFar) , nordiskFar := ifelse(fodelandFar %in% nordLand, 1L, 
 ## nasDT[, .N, by=.(nordiskFar)]
 
 nordBarn <- nasDT[, {mor = ifelse(is.na(nordiskMor), 0, nordiskMor);
-  far = ifelse(is.na(nordiskFar), 0, nordiskFar);
+  far = ifelse(is.na(nordiskFar), 0L, nordiskFar);
   barn = mor + far;
   nordiskBarn = ifelse(is.na(nordiskMor) & is.na(nordiskFar), NA, barn);
   list(barn = barn,
-    nordiskBarn = nordiskBarn,
+    nasj = Nasjonalitet,
+    nordkid = as.integer(nordiskBarn),
     mor = nordiskMor,
     far = nordiskFar,
     kjonn = Kjonn,
     PasientID = PasientID
   )}]
 
-nordBarn[.(nordiskBarn = 1:2, to = 1), on = "nordiskBarn", nordiskBarn := i.to]
+nordBarn[.(nordkid = 1L:2L, to = 1L), on = "nordkid", nordkid := i.to]
 # nordBarn[nordiskBarn %in% 1:2, nordiskBarn := 1]
+
+## Nasjonalitet og foreldre fødeland hvis missing Nasjonalitet
+nordBarn[, nasj := trimws(nasj)]
+nordnasj <- c("Norsk", "norsk", "Dansk", "dansk", "Finsk", "Svensk", "svensk", "Island", "Islandsk")
+nordBarn[, nordiskBarn := ifelse(nasj %in% nordnasj, 1L, 0L)]
+nordBarn[is.na(nasj), nordiskBarn := nordkid, by = PasientID]
+
 
 # ukjent nasjonalitet
 nordBarn[is.na(nordiskBarn), nordiskBarn := 3]
