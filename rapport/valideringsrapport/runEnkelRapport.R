@@ -35,7 +35,7 @@ inspak(pkgs)
 
 ## EMACS
 dataSti <- "~/avid/bdr"
-ars2018raw <- readRDS(file.path(dataSti, "validert_arskontroll2018_yb.rds"))
+ars2018raw <- readRDS(file.path(dataSti, "validert_arskontroll2018_raw.rds"))
 
 ## ## Lage alder kategori med 5 interval
 ## source("./analyse/ageCat.R")
@@ -53,6 +53,9 @@ hospKoder <- unique(ars2018raw$hospID)
 bpp <- readRDS(file.path(dataSti,"bloodpressure.RDS"))
 bpSub <- subset(bpp, select = c("id", "stage"))
 ars2018 <- merge(ars2018raw, bpSub, by.x = "Pnr", by.y = "id", all.x = TRUE)
+
+## saveRDS fil med blodtrykk
+saveRDS(ars2018, file.path(dataSti, "dt2018medBlodTrykk.RDS"))
 
 ## data type1 fra 2007 - 2017
 bdrB4 <- readRDS(file.path(dataSti, "allBDRtype1.rds"))
