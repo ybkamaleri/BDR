@@ -1,5 +1,7 @@
 ## nasjonalitet og kjønn
 ## ---------------------
+## Definition: Land hvor minst en av foreldrene er født,
+## hvis missing bruk barnes nasjonalitet
 
 ## Data kilder
 nasDT <- lok2018dt1
@@ -21,6 +23,7 @@ nordBarn <- nasDT[, {mor = ifelse(is.na(nordiskMor), 0, nordiskMor);
   nordiskBarn = ifelse(is.na(nordiskMor) & is.na(nordiskFar), NA, barn);
   list(barn = barn,
     nasj = Nasjonalitet,
+    barnland = FodeLand,
     nordkid = as.integer(nordiskBarn),
     mor = nordiskMor,
     far = nordiskFar,
