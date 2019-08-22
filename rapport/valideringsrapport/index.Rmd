@@ -32,6 +32,13 @@ output:
   bookdown::gitbook:
     split_by: section
     download: ["pdf"]
+    config:
+      toc:
+        collapse: subsection
+        before: |
+          <li><a href="http://bdreg.github.io"><strong>Hjem</strong></a></li>
+        after: |
+          <li><a href="https://bdreg.github.io/rapport" target="blank"><em>Tilbake til sykehusliste</em></a></li>
   bookdown::pdf_document2:
     keep_tex: no
     toc: no
