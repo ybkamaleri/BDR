@@ -54,8 +54,8 @@ bpp <- readRDS(file.path(dataSti,"bloodpressure.RDS"))
 bpSub <- subset(bpp, select = c("id", "stage"))
 ars2018 <- merge(ars2018raw, bpSub, by.x = "Pnr", by.y = "id", all.x = TRUE)
 
-## saveRDS fil med blodtrykk
-saveRDS(ars2018, file.path(dataSti, "dt2018medBlodTrykk.RDS"))
+## ## saveRDS fil med blodtrykk
+## saveRDS(ars2018, file.path(dataSti, "dt2018medBlodTrykk.RDS"))
 
 ## data type1 fra 2007 - 2017
 bdrB4 <- readRDS(file.path(dataSti, "allBDRtype1.rds"))
