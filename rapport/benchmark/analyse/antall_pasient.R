@@ -16,4 +16,4 @@ setnames(pasDT, c("yr.x", "N.x", "yr.y", "N.y"), c("yr2018", "n2018", "yr2017", 
 ## raphist
 source("/home/bdr/Git-work/traume/rapport/annualrap/raphist.R")
 
-pasFig <- raphist(pasDT, hosKort, n2018, n2017, lab1 = "2018", lab2 = "2017", leg1 = "2018", leg2 = "2017")
+pasFig <- raphist(pasDT, hosKort, n2018, n2017, lab1 = "(2018)", lab2 = "(2017)", leg1 = "2018", leg2 = "2017")
