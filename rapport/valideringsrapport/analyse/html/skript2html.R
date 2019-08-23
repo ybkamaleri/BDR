@@ -29,4 +29,4 @@ lapply(list.files(pattern = ".Rmd"), function(x) file.move(x, "./html/", overwri
 library('rmarkdown')
 rmarkdown::render('type_diabetes.R')
 
-sapply(rfiles, function(x) rmarkdown::render(x, output_format = "html_document"))
+lapply(rfiles, function(x) rmarkdown::render(x, output_format = "html_document"))
