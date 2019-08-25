@@ -64,5 +64,6 @@ tab.dtype[is.na(hosKort), hosKort := "Totalt"]
 
 tabNavn <- c("", "Type I", "Type II", "Mody", "Annen", "Totalt")
 setnames(tab.dtype, names(tab.dtype), tabNavn)
+tab.dtype
 
 ## dbt.tab <- tabFunx(tab.dtype)
