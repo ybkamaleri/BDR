@@ -72,9 +72,17 @@ tabFunx <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE,
                     center = 2,
                     mix = 2:3){
 
+  #navn - header label
+  #rap - to fix with LaTeX column width
+  #total -if Total is in the tabel to be bolded
+  #del - kolomnsdeling
+  #tbo - kolumn for ordering
+  #right - kolumn for right margin
+  #center - kolumn for center margin
+  #mix - which columns to merge
+
   lastLine <- nrow(dt) + 1
   tabhx <- as_hux(dt, add_colnames = TRUE)
-
 
   ## order colone
   if (!is.null(tbo)){
