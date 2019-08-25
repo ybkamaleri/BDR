@@ -72,6 +72,9 @@ setkey(DT, hosKort)
 ## raphist
 source("~/Git-work/traume/rapport/annualrap/raphist.R")
 
+## Tabell
+source("~/Git-work/bdr/rapport/valideringsrapport/analyse/funksjon.R")
+
 ```
 
 ## Registrerte pasienter {-}
