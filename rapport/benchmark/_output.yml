@@ -1,3 +1,6 @@
+bookdown::pdf_document2:
+  keep_tex: no
+  toc: no
 bookdown::gitbook:
   split_by: section
   download: ["pdf"]
@@ -8,6 +11,3 @@ bookdown::gitbook:
         <li><a href="http://bdreg.github.io/bdrbenchmark"><strong>Hjem</strong></a></li>
       after: |
         <li><a href="https://bdreg.github.io" target="blank"><em>Til BDR startside</em></a></li>
-bookdown::pdf_document2:
-  keep_tex: no
-  toc: no

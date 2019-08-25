@@ -1,2 +1,3 @@
 book_filename: "benchmark"
 delete_merged_file: true
+output_dir: docs

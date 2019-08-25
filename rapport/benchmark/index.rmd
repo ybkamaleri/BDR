@@ -58,6 +58,20 @@ dtB4 <- readRDS(file.path(dataSti, "allBDR2007til2017.rds"))
 ## hospital koder
 sykehusID <- DT[!duplicated(hospID), .(hosKort, hospital), keyby = hospID]
 
+idx <- c("Ostfold", "Ulleval", "Alesund", "Bodo", "Forde", "Nord_norge", "Gjovik", "Sandessjoen")
+idRett <- c("Østfold", "Ullevål", "Ålesund", "Bodø", "Førde", "Nord Norge", "Gjøvik", "Sandessjøen")
+sykehusID[.(hosKort = idx, to = idRett), on = "hosKort", hosKort := i.to]
+## gir norsk borstaver til datasettet
+dt1[.(hosKort = idx, to = idRett), on = "hosKort", hosKort := i.to]
+DT[.(hosKort = idx, to = idRett), on = "hosKort", hosKort := i.to]
+
+## sort per hosKort
+setkey(dt1, hosKort)
+setkey(DT, hosKort)
+
+## raphist
+source("~/Git-work/traume/rapport/annualrap/raphist.R")
+
 ```
 
 ## Registrerte pasienter {-}
@@ -66,7 +80,12 @@ Figuren viser antall og andel registerte pasienter i 2018 sammenligne med i 2017
 
 ```{r pasient, fig.width=7, fig.height=8}
 source("./analyse/antall_pasient.R")
-print(pasFig)
+print(pasCir)
 ```
+
+## Diabetes type {-}
+
+
+
 
 
