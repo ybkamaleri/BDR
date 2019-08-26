@@ -35,8 +35,6 @@ description: "Benchmark rapport for Barnediabetesregisteret"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.pos = 'H')
-## upload functions
-source("../valideringsrapport/analyse/funksjon.R")
 
 ## pakker
 pkg <- c("data.table", "ggplot2", "rreg", "huxtable", "bookdown", "knitr", "rmarkdown", "colorspace", "pier", "stringi")
@@ -54,9 +52,14 @@ DT <- readRDS(file.path(dataSti, "dt2018medBlodTrykk.RDS"))
 ##     set(DT, j = j, value = trimws(DT[[j]]))
 ## }
 
+## ## Missing pasienter
+## DT[PasientID == 3071, diabetes_Mody := "Ja"] #Østfold
+## DT[PasientID == 6205, diabetes_UkjentDiabetes := "Ja"] #St. Olav
+## saveRDS(DT, file.path(dataSti, "dt2018medBlodTrykk.RDS"))
 
-## Bare TD1
-dt1 <- subset(DT, diabetes_Type1 == "Ja")
+
+## Bare TD1 og 'Sandessjøen' er eksludert pga. har bare 1 pasient 
+dt1 <- subset(DT, hospID != 5 & diabetes_Type1 == "Ja")
 
 ## data type1 fra 2007 - 2017
 ## dtB4 <- readRDS(file.path(dataSti, "allBDRtype1.rds"))
@@ -69,10 +72,11 @@ sykehusID <- DT[!duplicated(hospID), .(hosKort, hospital), keyby = hospID]
 
 idx <- c("Ostfold", "Ulleval", "Alesund", "Bodo", "Forde", "Nord_norge", "Gjovik", "Sandessjoen")
 idRett <- c("Østfold", "Ullevål", "Ålesund", "Bodø", "Førde", "Nord Norge", "Gjøvik", "Sandessjøen")
-sykehusID[.(hosKort = idx, to = idRett), on = "hosKort", hosKort := i.to]
+
+sykehusID <- sykehusID[.(hosKort = idx, to = idRett), on = "hosKort", hosKort := i.to]
 ## gir norsk borstaver til datasettet
-dt1[.(hosKort = idx, to = idRett), on = "hosKort", hosKort := i.to]
-DT[.(hosKort = idx, to = idRett), on = "hosKort", hosKort := i.to]
+dt1 <- dt1[.(hosKort = idx, to = idRett), on = "hosKort", hosKort := i.to]
+DT <- DT[.(hosKort = idx, to = idRett), on = "hosKort", hosKort := i.to]
 
 ## sort per hosKort
 setkey(dt1, hosKort)
@@ -82,7 +86,6 @@ setkey(DT, hosKort)
 source("~/Git-work/traume/rapport/annualrap/raphist.R")
 
 ## Tabell
-source("~/Git-work/bdr/rapport/valideringsrapport/analyse/funksjon.R")
 source("./analyse/tab.function.R")
 
 ```
@@ -93,13 +96,22 @@ Figuren viser antall og andel registerte pasienter i 2018 sammenligne med i 2017
 
 ```{r pasient, fig.width=7, fig.height=8}
 source("./analyse/antall_pasient.R")
-print(pasCir)
+pasCir
 ```
 
 ## Diabetes type 
 
 ```{r tabDiabType}
 source("./analyse/diab_type.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+## Utvalgte pasient-karakteristika
+
+```{r pasKarakter}
+source("./analyse/pas_karakter.R")
+latex_float(tabOut) <- "H"
 tabOut
 ```
 

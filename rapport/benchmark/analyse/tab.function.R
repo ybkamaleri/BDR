@@ -3,9 +3,9 @@ exp.tabel <- function(dt, navn, ncol = NULL,
                       size = 0.7, rap = FALSE, total = 0,
                       del = NULL,
                       tbo = NULL,
-                      right = NULL,
                       valgCol = NULL,
                       valgAlign = "right",
+                      rowHeight = NULL,
                       mixCol = NULL){
 
   #navn - header label
@@ -21,6 +21,10 @@ exp.tabel <- function(dt, navn, ncol = NULL,
 
   tabXX <- as_hux(dt, add_colnames = TRUE)
   tabXX <- map_background_color(tabXX, by_rows("grey90", "white"))
+
+
+  lastRow <- nrow(tabXX)
+  lastCol <- ncol(tabXX)
 
   if (total == 1) {
     bold(tabXX)[lastRow, ] <- TRUE
@@ -70,6 +74,10 @@ exp.tabel <- function(dt, navn, ncol = NULL,
 
   width(tabXX) <- size
 
+  ## Row hight
+  if (!is.null(rowHeight)){
+    row_height(tabXX) <- rowHeight
+  }
 
   if (rap){
   ## for at width funker i PDF så må 'wrap' være TRUE

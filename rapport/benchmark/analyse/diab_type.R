@@ -66,4 +66,11 @@ tab.dtype[is.na(hosKort), hosKort := "Totalt"]
 tabNavn <- c("", "Type I", "Type II", "Mody", "Annen", "Totalt")
 setnames(tab.dtype, names(tab.dtype), tabNavn)
 
-tabOut <- exp.tabel(tab.dtype, "Diabetes type", ncol = 6, total = 2, mixCol = 2:5)
+tabOut <- exp.tabel(
+  tab.dtype,
+  "Diabetes type",
+  ncol = 6,
+  size = 0.8,
+  rowHeight = .03,
+  total = 2,
+  mixCol = 2:5)
