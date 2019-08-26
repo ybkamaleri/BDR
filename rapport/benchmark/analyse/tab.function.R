@@ -1,65 +1,109 @@
 ## Lager tabell med overordnet tittel
-tabFunx <- function(dt, navn, size = 0.7, rap = FALSE, total = FALSE,
-                    del = NULL,
-                    tbo = NULL,
-                    right = NULL,
-                    center = NULL,
-                    mix = 2:3){
+exp.tabel <- function(dt, navn, ncol = NULL,
+                      size = 0.7, rap = FALSE, total = 0,
+                      del = NULL,
+                      tbo = NULL,
+                      right = NULL,
+                      valgCol = NULL,
+                      valgAlign = "right",
+                      mixCol = NULL){
 
   #navn - header label
+  #ncol - 5 or 6 columns
   #rap - to fix with LaTeX column width
-  #total -if Total is in the tabel to be bolded
+  #total -if Total=1 bottom Totalt else Total=2 bottom og right column
   #del - kolomnsdeling
   #tbo - kolumn for ordering
   #right - kolumn for right margin
-  #center - kolumn for center margin
-  #mix - which columns to merge
+  #valgCol - select coloumn to be align eg. c(1,3,5)
+  #valgAlign - Align for valgCol
+  #mixCol - which column to merge and underline
 
-  lastLine <- nrow(dt) + 1
-  tabhx <- as_hux(dt, add_colnames = TRUE)
+  tabXX <- as_hux(dt, add_colnames = TRUE)
+  tabXX <- map_background_color(tabXX, by_rows("grey90", "white"))
+
+  if (total == 1) {
+    bold(tabXX)[lastRow, ] <- TRUE
+  }
+
+  if (total == 2){
+    bold(tabXX)[lastRow, ] <- TRUE
+    bold(tabXX)[, lastCol] <- TRUE
+  }
+
+  ## Cells to merge e.g 2:5
+  valgCell <- mixCol
+
+  if (!is.null(navn)){
+    if (ncol == 6){
+      tabXX <- rbind(c("", navn, "", "", "", ""), tabXX)
+      bottom_border(tabXX)[1, valgCell] <- 0.5
+      tabXX <- merge_cells(tabXX, 1, valgCell)
+    }
+
+    if (ncol == 5){
+      tabXX <- rbind(c("", navn, "", "", ""), tabXX)
+      bottom_border(tabXX)[1, valgCell] <- 0.5
+      tabXX <- merge_cells(tabXX, 1, valgCell)
+    }
+  }
+
+  ## Adjust width eg. with 4 columns del = c(.4, .2, .2, .3)
+  if (!is.null(del)){
+    col_width(tabXX) <- del
+  }
+
+  if (!is.null(valgCol)){
+    align(tabXX)[, valgCol] <- valgAlign
+    }
 
   ## order colone
   if (!is.null(tbo)){
-    tabhx <- tabhx[order(tabhx[[tbo]],decreasing = T),]
+    tabXX <- tabXX[order(tabXX[[tbo]],decreasing = T),]
   }
 
-  tabhx <- tabhx %>%
-    set_bold(1,, TRUE) %>%
-    map_background_color(by_rows("grey95", "white")) %>%
-    set_position("left") %>%
-    set_latex_float("h")
 
-  if (!is.null(del)){
-    col_width(tabhx) <- del
-  }
+  #tittle border and align
+  bottom_border(tabXX)[2, ] <- TRUE
+  top_border(tabXX)[lastRow + 1, ] <- TRUE
+  align(tabXX)[1, ] <- "center"
 
-  if (!is.null(right)){
-    tabhx <- set_align(tabhx, right, "right")
-    }
+  width(tabXX) <- size
 
-  tabhx <- rbind(c("", "", navn, "", ""), tabhx)
-
-  tabhx <- merge_cells(tabhx, 1, mix)
-
-  tabhx <- tabhx %>%
-    set_align(1, center, "center") %>%
-    set_bottom_border(1, center, 0.4) %>%
-    set_top_border(3,, TRUE)
-
-  if (total){
-    bold(tabhx)[lastLine + 1, ] <- TRUE
-    top_border(tabhx)[lastLine + 1, ] <- TRUE
-  } else {
-    bottom_border(tabhx)[lastLine + 1,] <- TRUE
-  }
-
-  width(tabhx) <- size
 
   if (rap){
   ## for at width funker i PDF så må 'wrap' være TRUE
-  wrap(tabhx) <- TRUE
+  wrap(tabXX) <- TRUE
   }
 
-  return(tabhx)
+  return(tabXX)
 
 }
+
+
+
+## tab.dtype
+
+## dtypeTab <- as_hux(tab.dtype, add_colnames = TRUE)
+## tabXX <- dtypeTab
+
+## tabXX <- map_background_color(tabXX, by_rows("grey90", "white"))
+
+## lastRow <- nrow(tabXX)
+## lastCol <- ncol(tabXX)
+## bold(tabXX)[lastRow, ] <- TRUE
+## bold(tabXX)[, lastCol] <- TRUE
+
+## tabXX <- rbind(c("", "Diabetes type", "", "", "", ""), tabXX)
+## bottom_border(tabXX)[1, 2:5] <- 0.5
+## bottom_border(tabXX)[2, ] <- TRUE #tittle border
+## top_border(tabXX)[lastRow + 1, ] <- TRUE
+
+## tab11 <- tabXX
+
+
+## cellMix <- 2:5
+## tab11 <- merge_cells(tab11, 1, cellMix)
+## align(tab11)[1,] <- "center"
+
+## quick_pdf(tab11, file = "test.pdf")
