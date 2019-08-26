@@ -124,7 +124,7 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
-## HbA1C (rådata)
+## HbA1c (rådata)
 
 
 ```{r}

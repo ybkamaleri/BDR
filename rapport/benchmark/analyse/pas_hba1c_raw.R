@@ -3,13 +3,22 @@ valgVar <- "lab_HbA1cAkerVerdi"
 
 rawtab <- rollup(dt1,
   j = list(
-    mean = mean(get(valgVar), na.rm = TRUE),
-    median = median(get(valgVar), na.rm = TRUE)
+    mean1 = mean(get(valgVar), na.rm = TRUE),
+    median1 = median(get(valgVar), na.rm = TRUE)
   ),
   by = "hosKort"
 )
 
+
 rawtab[is.na(hosKort), hosKort := "Totalt"]
+
+rawtab[,  `:=`(
+  mean = sprintf("%0.2f", mean1),
+  median = sprintf("%0.2f", median1)
+) ]
+
+delColRaw <- grep("1$", names(rawtab))
+rawtab[, (delColRaw) := NULL]
 
 ## Totalt
 hosTab <- cube(dt1,
@@ -55,7 +64,7 @@ setnames(tabRaw, names(tabRaw), nyNavn)
 ## Tabell
 tabOut <- exp.tabel(tabRaw,
   "HbA1c : %(n)", ncol = 7,
-  size = 0.9, total = 1, valgCol = 4:7, valgAlign = "left",
+  size = 0.9, total = 1, valgCol = 2:7, valgAlign = "left",
   rowHeight = .03, mixCol = 2:7)
 
 
