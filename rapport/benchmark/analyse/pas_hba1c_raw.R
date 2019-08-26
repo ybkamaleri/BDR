@@ -51,7 +51,7 @@ delCol2 <- grep("^pro", names(hosTab), value = TRUE)
 delCol <- c("n", delCol1, delCol2)
 
 hosTab[, (delCol) := NULL]
-hosTab[is.na(hosKort), hosKort := "Totalt"]
+hosTab[is.na(hosKort), hosKort := "Hele landet"]
 
 ## Mix tabell
 tabRaw <- rawtab[hosTab, on = "hosKort"]
