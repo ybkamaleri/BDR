@@ -12,6 +12,7 @@ fun.dtype <- function(x){
   ## lage subset
   diabDT <- x[, c(demoVar, diabetesVar), with = F]
 
+
   ## --- Pasienter uten diagnoser ----
   diabDTx <- copy(diabDT)
   diabDTx[, (diabetesVar) := lapply(.SD, function(x) ifelse(x == "Ja", 1, 0)), .SDcols = diabetesVar]
@@ -64,6 +65,5 @@ tab.dtype[is.na(hosKort), hosKort := "Totalt"]
 
 tabNavn <- c("", "Type I", "Type II", "Mody", "Annen", "Totalt")
 setnames(tab.dtype, names(tab.dtype), tabNavn)
-tab.dtype
 
-## dbt.tab <- tabFunx(tab.dtype)
+tabOut <- exp.tabel(tab.dtype, "Diabetes type", ncol = 6, total = 2, mixCol = 2:5)

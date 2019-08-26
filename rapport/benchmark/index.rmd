@@ -46,6 +46,15 @@ lapply(pkg, library, character.only = TRUE)[[1]]
 dataSti <- "~/avid/bdr"
 ## Load all data
 DT <- readRDS(file.path(dataSti, "dt2018medBlodTrykk.RDS"))
+
+## ## Diabetes variabler bort med whitespace
+## diabetesVar = c("diabetes_Type1", "diabetes_Type2", "diabetes_Mody", "diabetes_Kir62", "diabetes_SekDiabetes", "diabetes_AnnenDiabetes", "diabetes_UkjentDiabetes")
+## for (j in diabetesVar){
+##   if(class(DT[[j]]) == 'character')
+##     set(DT, j = j, value = trimws(DT[[j]]))
+## }
+
+
 ## Bare TD1
 dt1 <- subset(DT, diabetes_Type1 == "Ja")
 
@@ -74,6 +83,7 @@ source("~/Git-work/traume/rapport/annualrap/raphist.R")
 
 ## Tabell
 source("~/Git-work/bdr/rapport/valideringsrapport/analyse/funksjon.R")
+source("./analyse/tab.function.R")
 
 ```
 
@@ -88,6 +98,10 @@ print(pasCir)
 
 ## Diabetes type 
 
+```{r tabDiabType}
+source("./analyse/diab_type.R")
+tabOut
+```
 
 
 
