@@ -133,4 +133,13 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+## HbA1C alder (rådata)
+
+
+```{r}
+source("./analyse/hba1c_alder.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
 
