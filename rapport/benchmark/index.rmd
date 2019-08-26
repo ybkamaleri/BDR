@@ -142,4 +142,19 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+# Etnisitet
+
+
+```{r}
+source("./analyse/pas_etnisk.R")
+```
+
+Gjennomsnitt HbA1C for nordisk og ikke nordisk pasienter. Nordisk pasienter defineres som at minst en av foreldene var født i et av de nordiske landene. Analysen inkluderes KUN pasienter med informasjon om fødeland for minst en av foreldene. Det er `r norskNA` pasienter er eksludert i analysen.
+
+
+```{r}
+latex_float(tabOut) <- "H"
+tabOut
+```
+
 
