@@ -115,6 +115,14 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+## Aldersfordeling
+
+
+```{r}
+source("./analyse/pas_alder.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
 
 
 

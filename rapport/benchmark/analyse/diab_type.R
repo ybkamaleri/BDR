@@ -73,4 +73,5 @@ tabOut <- exp.tabel(
   size = 0.8,
   rowHeight = .03,
   total = 2,
+  del = c(.2, .15, .15, .15, .15, .2),
   mixCol = 2:5)
