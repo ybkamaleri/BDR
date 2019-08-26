@@ -26,6 +26,12 @@ exp.tabel <- function(dt, navn, ncol = NULL,
   lastRow <- nrow(tabXX)
   lastCol <- ncol(tabXX)
 
+  ## Adjust width eg. with 4 columns del = c(.4, .2, .2, .3)
+  if (!is.null(del)){
+    col_width(tabXX) <- del
+  }
+
+  ## Totalt position 1 - bottom only and 2 - bottom and end column
   if (total == 1) {
     bold(tabXX)[lastRow, ] <- TRUE
   }
@@ -38,6 +44,7 @@ exp.tabel <- function(dt, navn, ncol = NULL,
   ## Cells to merge e.g 2:5
   valgCell <- mixCol
 
+  ## Number of columns
   if (!is.null(navn)){
     if (ncol == 7){
       tabXX <- rbind(c("", navn, "", "", "", "", ""), tabXX)
@@ -58,11 +65,8 @@ exp.tabel <- function(dt, navn, ncol = NULL,
     }
   }
 
-  ## Adjust width eg. with 4 columns del = c(.4, .2, .2, .3)
-  if (!is.null(del)){
-    col_width(tabXX) <- del
-  }
 
+  ## Aligning columns
   if (!is.null(valgCol)){
     align(tabXX)[, valgCol] <- valgAlign
     }
@@ -71,7 +75,6 @@ exp.tabel <- function(dt, navn, ncol = NULL,
   if (!is.null(tbo)){
     tabXX <- tabXX[order(tabXX[[tbo]],decreasing = T),]
   }
-
 
   #tittle border and align
   bottom_border(tabXX)[2, ] <- TRUE
