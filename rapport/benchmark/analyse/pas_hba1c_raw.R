@@ -51,12 +51,13 @@ delCol2 <- grep("^pro", names(hosTab), value = TRUE)
 delCol <- c("n", delCol1, delCol2)
 
 hosTab[, (delCol) := NULL]
-hosTab[is.na(hosKort), hosKort := "Hele landet"]
+hosTab[is.na(hosKort), hosKort := "Totalt"]
 
 ## Mix tabell
 tabRaw <- rawtab[hosTab, on = "hosKort"]
 
 ## git navn
+tabRaw[hosKort == "Totalt", hosKort := "Hele landet"]
 nyNavn <- c("", "Gj.snitt", "Median", "<7.5", "<8.0", ">=9.0", ">=10")
 setnames(tabRaw, names(tabRaw), nyNavn)
 

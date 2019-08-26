@@ -1,6 +1,6 @@
-bookdown::pdf_document2:
-  keep_tex: no
-  toc: yes
+# bookdown::pdf_document2:
+#   keep_tex: no
+#   toc: yes
 bookdown::gitbook:
   split_by: section
   download: ["pdf"]

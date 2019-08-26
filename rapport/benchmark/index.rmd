@@ -90,7 +90,7 @@ source("./analyse/tab.function.R")
 
 ```
 
-## Registrerte pasienter
+# Registrerte pasienter
 
 Figuren viser antall og andel registerte pasienter i 2018 sammenligne med i 2017.
 
@@ -99,7 +99,7 @@ source("./analyse/antall_pasient.R")
 pasCir
 ```
 
-## Diabetes type 
+# Diabetes type 
 
 ```{r tabDiabType}
 source("./analyse/diab_type.R")
@@ -107,7 +107,7 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
-## Utvalgte pasient-karakteristika
+# Utvalgte pasient-karakteristika
 
 ```{r pasKarakter}
 source("./analyse/pas_karakter.R")
@@ -115,7 +115,7 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
-## Aldersfordeling
+# Aldersfordeling
 
 
 ```{r}
@@ -124,7 +124,7 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
-## HbA1c (rådata)
+# HbA1c
 
 
 ```{r}
@@ -133,7 +133,7 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
-## HbA1C alder (rådata)
+# HbA1C alder
 
 
 ```{r}
