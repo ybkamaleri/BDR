@@ -39,6 +39,12 @@ exp.tabel <- function(dt, navn, ncol = NULL,
   valgCell <- mixCol
 
   if (!is.null(navn)){
+    if (ncol == 7){
+      tabXX <- rbind(c("", navn, "", "", "", "", ""), tabXX)
+      bottom_border(tabXX)[1, valgCell] <- 0.5
+      tabXX <- merge_cells(tabXX, 1, valgCell)
+    }
+
     if (ncol == 6){
       tabXX <- rbind(c("", navn, "", "", "", ""), tabXX)
       bottom_border(tabXX)[1, valgCell] <- 0.5
