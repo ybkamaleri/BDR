@@ -40,7 +40,7 @@ source("../valideringsrapport/analyse/funksjon.R")
 
 ## pakker
 pkg <- c("data.table", "ggplot2", "rreg", "huxtable", "bookdown", "knitr", "rmarkdown", "colorspace", "pier", "stringi")
-lapply(pkg, library, character.only = TRUE)
+lapply(pkg, library, character.only = TRUE)[[1]]
 
 ## Data path
 dataSti <- "~/avid/bdr"
@@ -77,7 +77,7 @@ source("~/Git-work/bdr/rapport/valideringsrapport/analyse/funksjon.R")
 
 ```
 
-## Registrerte pasienter {-}
+## Registrerte pasienter
 
 Figuren viser antall og andel registerte pasienter i 2018 sammenligne med i 2017.
 
@@ -86,7 +86,7 @@ source("./analyse/antall_pasient.R")
 print(pasCir)
 ```
 
-## Diabetes type {-}
+## Diabetes type 
 
 
 
