@@ -206,3 +206,19 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+# Insulinsjokk
+
+```{r insulin}
+source("./analyse/insulin.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+# Følinger
+
+```{r foling}
+source("./analyse/foling.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
