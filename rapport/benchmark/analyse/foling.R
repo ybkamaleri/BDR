@@ -31,7 +31,6 @@ setnames(nkat, names(nkat), giNavn)
 
 katAll <- Nkat[nkat, on = "hosp"]
 
-
 tabRaw <- katAll[, {
   ## age1 = n1 / N1 * 100;
   age2 = n2 / N2 * 100;
