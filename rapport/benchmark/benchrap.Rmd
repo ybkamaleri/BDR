@@ -216,6 +216,8 @@ tabOut
 
 # Følinger
 
+Pasienter er fra 5 år og eldre.
+
 ```{r foling}
 source("./analyse/foling.R")
 latex_float(tabOut) <- "H"
