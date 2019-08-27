@@ -26,7 +26,7 @@ katAll <- Nkat[nkat, on = "hosp"]
 
 tabRaw <- katAll[, {
   age1 = n1 / N1 * 100;
-  age2 = n1 / N1 * 100;
+  age2 = n2 / N2 * 100;
   age3 = n3 / N3 * 100;
   age4 = n4 / N4 * 100;
   age5 = n5 / N5 * 100;
