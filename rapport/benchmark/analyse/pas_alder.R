@@ -22,7 +22,7 @@ setnames(tabAge, names(tabAge), nyNavn)
 
 tabOut <- exp.tabel(
   tabAge,
-  navn = "Alder",
+  name = "Alder",
   ncol = 6,
   size = 0.9,
   total = 2,

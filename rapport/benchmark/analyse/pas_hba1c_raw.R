@@ -24,6 +24,7 @@ rawtab[, (delColRaw) := NULL]
 hosTab <- cube(dt1,
   j = list(
     n = .N,
+    und6 = sum(get(valgVar) < 7, na.rm = TRUE),
     und7 = sum(get(valgVar) < 7.5, na.rm = TRUE),
     und8 = sum(get(valgVar) < 8, na.rm = TRUE),
     und9 = sum(get(valgVar) >= 9, na.rm = TRUE),
@@ -32,6 +33,7 @@ hosTab <- cube(dt1,
   by = "hosKort")
 
 hosTab[, `:=`(
+  pro6 = und6 / n * 100,
   pro7 = und7 / n * 100,
   pro8 = und8 / n * 100,
   pro9 = und9 / n * 100,
@@ -40,6 +42,7 @@ hosTab[, `:=`(
 
 
 hosTab[, `:=`(
+  u6 = sprintf("%0.1f (%s)", pro6, und6),
   u7 = sprintf("%0.1f (%s)", pro7, und7),
   u8 = sprintf("%0.1f (%s)", pro8, und8),
   m9 = sprintf("%0.1f (%s)", pro9, und9),
@@ -58,17 +61,16 @@ tabRaw <- rawtab[hosTab, on = "hosKort"]
 
 ## git navn
 tabRaw[hosKort == "Totalt", hosKort := "Hele landet"]
-nyNavn <- c("", "Gj.snitt", "Median", "<7.5", "<8.0", ">=9.0", ">=10")
+nyNavn <- c("", "Gj.snitt", "Median", "<7.0", "<7.5", "<8.0", ">=9.0", ">=10")
 setnames(tabRaw, names(tabRaw), nyNavn)
-
 
 ## Tabell
 tabOut <- exp.tabel(tabRaw,
-  "HbA1c : %(n)", ncol = 7,
-  size = 0.9, total = 1, valgCol = 2:7, valgAlign = "left",
+  "HbA1c : %(n)", ncol = 8, rap = TRUE,
+  total = 1, valgCol = 2:7, valgAlign = "left",
   rowHeight = .03, mixCol = 2:7)
 
-
+## quick_pdf(tabOut, file = "test.pdf")
 
 ## ## per sykehus
 ## hostab <- dt1[, {

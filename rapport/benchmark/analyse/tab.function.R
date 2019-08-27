@@ -1,5 +1,5 @@
 ## Lager tabell med overordnet tittel
-exp.tabel <- function(dt, navn, ncol = NULL,
+exp.tabel <- function(dt, name = NULL, ncol = NULL, xcol = NULL,
                       size = 0.7, rap = FALSE, total = 0,
                       del = NULL,
                       tbo = NULL,
@@ -8,8 +8,9 @@ exp.tabel <- function(dt, navn, ncol = NULL,
                       rowHeight = NULL,
                       mixCol = NULL){
 
-  #navn - header label
-  #ncol - 5 or 6 columns
+  #name - header label
+  #ncol - 5 to 8 columns
+  #xcol - how columns will be specified if ncol = 1 eg. c("", "Title 1", "", "Title 2", "")
   #rap - to fix with LaTeX column width
   #total -if Total=1 bottom Totalt else Total=2 bottom og right column
   #del - kolomnsdeling
@@ -45,26 +46,40 @@ exp.tabel <- function(dt, navn, ncol = NULL,
   valgCell <- mixCol
 
   ## Number of columns
-  if (!is.null(navn)){
+  if (!is.null(name)){
+
+    if (ncol == 8){
+      tabXX <- rbind(c("", name, "", "", "", "", "", ""), tabXX)
+      bottom_border(tabXX)[1, valgCell] <- 0.5
+      tabXX <- merge_cells(tabXX, 1, valgCell)
+    }
+
     if (ncol == 7){
-      tabXX <- rbind(c("", navn, "", "", "", "", ""), tabXX)
+      tabXX <- rbind(c("", name, "", "", "", "", ""), tabXX)
       bottom_border(tabXX)[1, valgCell] <- 0.5
       tabXX <- merge_cells(tabXX, 1, valgCell)
     }
 
     if (ncol == 6){
-      tabXX <- rbind(c("", navn, "", "", "", ""), tabXX)
+      tabXX <- rbind(c("", name, "", "", "", ""), tabXX)
       bottom_border(tabXX)[1, valgCell] <- 0.5
       tabXX <- merge_cells(tabXX, 1, valgCell)
     }
 
     if (ncol == 5){
-      tabXX <- rbind(c("", navn, "", "", ""), tabXX)
+      tabXX <- rbind(c("", name, "", "", ""), tabXX)
       bottom_border(tabXX)[1, valgCell] <- 0.5
       tabXX <- merge_cells(tabXX, 1, valgCell)
     }
   }
 
+  ## Two column titles
+  ## specify xcol = c("", "Title 1", "", "Title 2", "")
+  if (!is.null(xcol)){
+      tabXX <- rbind(xcol, tabXX)
+      bottom_border(tabXX)[1, valgCell] <- 0.5
+      tabXX <- merge_cells(tabXX, 1, valgCell)
+    }
 
   ## Aligning columns
   if (!is.null(valgCol)){
