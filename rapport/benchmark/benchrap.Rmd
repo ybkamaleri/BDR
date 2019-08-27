@@ -197,4 +197,12 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+# Ketoacidose
+Antall og andel ketoacidose.
+
+```{r dka}
+source("./analyse/dka.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
 
