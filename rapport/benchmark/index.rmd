@@ -91,6 +91,24 @@ source("./analyse/tab.function.R")
 
 ```
 
+
+```{r htmlTemplate, echo=FALSE}
+# Create the external file
+img <- htmltools::img(src = knitr::image_uri(file.path("./docs", "logo.png")), 
+               alt = 'logo', 
+               style = 'position:absolute; top:50px; right:1%; padding:10px;z-index:200; width:80px; height:70px;')
+
+htmlhead <- paste0('
+<script>
+document.write(\'<div class="logos">',img,'</div>\')
+</script>
+')
+
+readr::write_lines(htmlhead, path = "header.html")
+
+```
+
+
 # Registrerte pasienter
 
 Figuren viser antall og andel registerte pasienter i 2018 sammenligne med i 2017.

@@ -4,6 +4,8 @@ bookdown::pdf_document2:
 bookdown::gitbook:
   split_by: section
   download: ["pdf"]
+  includes:
+    in_header: header.html
   config:
     toc:
       collapse: subsection
