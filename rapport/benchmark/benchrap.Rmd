@@ -188,6 +188,13 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+# Akutt komplikasjoner
+Tabellen viser antall og andel for innlagt pga ketoacidose, insulinsjokk med kramper og bevisstløshetk, og følinger med behov for hjelp siste 4 uker. Pasienter som er inkludert i analysen for følinger er bare de som er 5 år eller eldre.
 
+```{r akutt}
+source("./analyse/pas_komplikasjon.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
 
 
