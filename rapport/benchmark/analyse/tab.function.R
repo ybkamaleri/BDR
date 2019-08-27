@@ -71,6 +71,12 @@ exp.tabel <- function(dt, name = NULL, ncol = NULL, xcol = NULL,
       bottom_border(tabXX)[1, valgCell] <- 0.5
       tabXX <- merge_cells(tabXX, 1, valgCell)
     }
+
+    if (ncol == 4){
+      tabXX <- rbind(c("", name, "", ""), tabXX)
+      bottom_border(tabXX)[1, valgCell] <- 0.5
+      tabXX <- merge_cells(tabXX, 1, valgCell)
+    }
   }
 
   ## Two column titles
