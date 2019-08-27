@@ -1,5 +1,6 @@
 ## Føling for bare elder enn 5 år
-katdt <- rollup(dt1[agekat != 1, ],
+dtsub <- subset(dt1, agekat != 1)
+katdt <- cube(dtsub,
   j = list(
     n_dka = sum(!is.na(und_foling == 'Ja')),
     j_dka = sum(und_foling == 'Ja', na.rm = TRUE)
