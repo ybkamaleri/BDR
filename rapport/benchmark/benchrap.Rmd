@@ -45,7 +45,7 @@ theme: lumen
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.pos = 'H')
 
 ## pakker
-pkg <- c("data.table", "ggplot2", "rreg", "huxtable", "bookdown", "knitr", "rmarkdown", "colorspace", "pier", "stringi")
+pkg <- c("data.table", "ggplot2", "rreg", "huxtable", "bookdown", "knitr", "rmarkdown", "colorspace", "pier", "stringi", "plotly")
 lapply(pkg, library, character.only = TRUE)[[1]]
 
 ## Data path
@@ -159,6 +159,21 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+# HbA1c sammenligning
+HbA1c verdi målt på eget sykehus sammenligne mot det som er målt sentralt dvs. på Aker sykehus.
+
+```{r samenlikHba1c}
+source("./analyse/hba1c_diff.R")
+
+if (knitr::is_latex_output()){
+  hbaPlot
+}
+
+if (knitr::is_html_output()){
+  hbaInt
+}
+```
+
 # Etnisitet
 
 
@@ -173,6 +188,7 @@ Gjennomsnitt HbA1c for nordisk og ikke nordisk pasienter. Nordisk pasienter defi
 latex_float(tabOut) <- "H"
 tabOut
 ```
+
 
 
 
