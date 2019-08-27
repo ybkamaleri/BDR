@@ -134,18 +134,27 @@ tabOut
 
 # HbA1c
 
-
 ```{r}
 source("./analyse/pas_hba1c_raw.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
 
-# HbA1C alder
+# HbA1c alder
 
 
 ```{r}
 source("./analyse/hba1c_alder.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+# Justert HbA1c 
+Justert HbA1c for kjønn, alder og diabetesvarighet.
+
+
+```{r}
+source("./analyse/hba1c_justert.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
@@ -164,5 +173,6 @@ Gjennomsnitt HbA1c for nordisk og ikke nordisk pasienter. Nordisk pasienter defi
 latex_float(tabOut) <- "H"
 tabOut
 ```
+
 
 
