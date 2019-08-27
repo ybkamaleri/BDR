@@ -45,4 +45,4 @@ setnames(tabw, getCol, nyNavn)
 ## Tabell
 tabOut <- exp.tabel(tabw, "Gj.snitt HbA1c per. aldersgrupper",
   ncol = 6, del = c(.2, .15, .15, .15, .15, .2),
-  size = 0.9, total = 2, rowHeight = .03, mixCol = 2:5)
+  size = 0.9, total = 2, rowHeight = .015, mixCol = 2:5)

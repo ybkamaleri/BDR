@@ -86,12 +86,12 @@ tabAll[, `:=`(
 roundVar <-  c("age", "varig", "proj")
 tabAll[, (roundVar) := round(.SD, digits = 1), .SDcols = roundVar]
 
-tabNavn <- c("", "Ujustert gj.snitt", "Justert gj.snitt", "Justert median", "Alder", "Sykdomvarighet", "Jenter (%)")
+tabNavn <- c("", "Ujustert", "Justert", "Justert median", "Alder", "Syk.varighet", "Jenter (%)")
 
 setnames(tabAll, names(tabAll), tabNavn)
 
 tabOut <- exp.tabel(tabAll,
-  xcol = c("", "HbA1c", "", "", "Gjennomsnitt", "", "Prosent"),
+  xcol = c("", "HbA1c", "", "", "Gj.snitt", "", "Prosent"), rowHeight = 0.015,
   size = 0.9, total = 1, del = c(.2, .15, .15, .15, .1, .15, .1))
 
 ## quick_pdf(tabOut, file = "test.pdf")

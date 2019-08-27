@@ -142,7 +142,6 @@ tabOut
 
 # HbA1c alder
 
-
 ```{r}
 source("./analyse/hba1c_alder.R")
 latex_float(tabOut) <- "H"

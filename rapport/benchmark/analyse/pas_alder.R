@@ -27,6 +27,6 @@ tabOut <- exp.tabel(
   size = 0.9,
   total = 2,
   del = c(.2, .15, .15, .15, .15, .2),
-  rowHeight = .03,
+  rowHeight = .015,
   mixCol = 2:5
   )
