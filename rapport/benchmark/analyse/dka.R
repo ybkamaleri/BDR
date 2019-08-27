@@ -60,5 +60,7 @@ for (j in seq_len(ncol(tabRaw))){
 tabNavn <- c("", "<5 år", "5-9 år", "10-14 år", ">14 år", "Antall")
 setnames(tabRaw, names(tabRaw), tabNavn)
 
+tabRaw[, Antall := as.character(Antall)]
+
 tabOut <- exp.tabel(tabRaw, "Aldersgrupper", ncol = 6,
   size = 0.9, total = 2, rowHeight = .015, mixCol = 2:5, valgCol = 6, valgAlign = "left")
