@@ -114,6 +114,7 @@ source("./analyse/diab_type.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+Videre analyse inneholder KUN pasienter med diabetes Type 1. Helgelandssykehuset avd. Sandessjøen har bare en pasient til årskontroll og er tatt ut fra videre analyser.
 
 # Utvalgte pasient-karakteristika
 
@@ -124,7 +125,6 @@ tabOut
 ```
 
 # Aldersfordeling
-
 
 ```{r}
 source("./analyse/pas_alder.R")
