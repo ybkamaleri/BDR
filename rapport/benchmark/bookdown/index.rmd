@@ -1,0 +1,160 @@
+---
+title: "Årskontrollrapport for 2018"
+author: ""
+date: "23.08.2019"
+site: bookdown::bookdown_site
+documentclass: book
+link-citations: yes
+header-includes:
+ - \usepackage{booktabs}
+ - \usepackage{longtable}
+ - \usepackage{array}
+ - \usepackage{multirow}
+ - \usepackage{wrapfig}
+ - \usepackage{float}
+ - \usepackage{colortbl}
+ - \usepackage{pdflscape}
+ - \usepackage{tabu}
+ - \usepackage{threeparttable}
+ - \usepackage{threeparttablex}
+ - \usepackage[normalem]{ulem}
+ - \usepackage{makecell}
+ - \usepackage[T1]{fontenc}
+ - \usepackage{geometry}
+ - \geometry{a4paper, total={6in,8in},}
+ - \usepackage[utf8]{inputenc}
+ - \renewcommand{\figurename}{Figur}
+ - \renewcommand{\tablename}{Tabell}
+ - \usepackage{titling}
+ - \pretitle{\begin{center}\LARGE\includegraphics[width=6cm]{logo.png}\\[\bigskipamount]}
+ - \posttitle{\end{center}}
+url: 'http\://bdreg.github.io/'
+cover-image: "logo.png"
+description: "Benchmark rapport for Barnediabetesregisteret"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.pos = 'H')
+
+## pakker
+pkg <- c("data.table", "ggplot2", "rreg", "huxtable", "bookdown", "knitr", "rmarkdown", "colorspace", "pier", "stringi")
+lapply(pkg, library, character.only = TRUE)[[1]]
+
+## Data path
+dataSti <- "~/avid/bdr"
+## Load all data
+DT <- readRDS(file.path(dataSti, "dt2018medBlodTrykk.RDS"))
+
+## ## Diabetes variabler bort med whitespace
+## diabetesVar = c("diabetes_Type1", "diabetes_Type2", "diabetes_Mody", "diabetes_Kir62", "diabetes_SekDiabetes", "diabetes_AnnenDiabetes", "diabetes_UkjentDiabetes")
+## for (j in diabetesVar){
+##   if(class(DT[[j]]) == 'character')
+##     set(DT, j = j, value = trimws(DT[[j]]))
+## }
+
+## ## Missing pasienter
+## DT[PasientID == 3071, diabetes_Mody := "Ja"] #Østfold
+## DT[PasientID == 6205, diabetes_UkjentDiabetes := "Ja"] #St. Olav
+## saveRDS(DT, file.path(dataSti, "dt2018medBlodTrykk.RDS"))
+
+
+## Bare TD1 og 'Sandessjøen' er eksludert pga. har bare 1 pasient 
+dt1 <- subset(DT, hospID != 5 & diabetes_Type1 == "Ja")
+
+## data type1 fra 2007 - 2017
+## dtB4 <- readRDS(file.path(dataSti, "allBDRtype1.rds"))
+## dtB4[kodeOld == "ø", hospid := 5] #Sandessjoen
+## saveRDS(dtB4, file.path(dataSti, "allBDR2007til2017.rds"))
+dtB4 <- readRDS(file.path(dataSti, "allBDR2007til2017.rds"))
+
+## hospital koder
+sykehusID <- DT[!duplicated(hospID), .(hosKort, hospital), keyby = hospID]
+
+idx <- c("Ostfold", "Ulleval", "Alesund", "Bodo", "Forde", "Nord_norge", "Gjovik", "Sandessjoen")
+idRett <- c("Østfold", "Ullevål", "Ålesund", "Bodø", "Førde", "Nord Norge", "Gjøvik", "Sandessjøen")
+
+sykehusID <- sykehusID[.(hosKort = idx, to = idRett), on = "hosKort", hosKort := i.to]
+## gir norsk borstaver til datasettet
+dt1 <- dt1[.(hosKort = idx, to = idRett), on = "hosKort", hosKort := i.to]
+DT <- DT[.(hosKort = idx, to = idRett), on = "hosKort", hosKort := i.to]
+
+## sort per hosKort
+setkey(dt1, hosKort)
+setkey(DT, hosKort)
+
+## raphist
+source("~/Git-work/traume/rapport/annualrap/raphist.R")
+
+## Tabell
+source("./analyse/tab.function.R")
+
+```
+
+# Registrerte pasienter
+
+Figuren viser antall og andel registerte pasienter i 2018 sammenligne med i 2017.
+
+```{r pasient, fig.width=7, fig.height=8}
+source("./analyse/antall_pasient.R")
+pasCir
+```
+
+# Diabetes type 
+
+```{r tabDiabType}
+source("./analyse/diab_type.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+# Utvalgte pasient-karakteristika
+
+```{r pasKarakter}
+source("./analyse/pas_karakter.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+# Aldersfordeling
+
+
+```{r}
+source("./analyse/pas_alder.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+# HbA1c
+
+
+```{r}
+source("./analyse/pas_hba1c_raw.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+# HbA1C alder
+
+
+```{r}
+source("./analyse/hba1c_alder.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+# Etnisitet
+
+
+```{r}
+source("./analyse/pas_etnisk.R")
+```
+
+Gjennomsnitt HbA1C for nordisk og ikke nordisk pasienter. Nordisk pasienter defineres som at minst en av foreldene var født i et av de nordiske landene. Analysen inkluderes KUN pasienter med informasjon om fødeland for minst en av foreldene. Det er `r norskNA` pasienter er eksludert i analysen.
+
+
+```{r}
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+
