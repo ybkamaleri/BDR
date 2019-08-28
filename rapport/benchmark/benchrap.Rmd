@@ -358,6 +358,12 @@ tabOut
     
 # Kontinuerlig blodsukkermåling
 
+```{r bsukmol}
+source("./analyse/bsukker.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
 beh_ins_kont_blodsukker_reg
 
 # Boluskalkulator
