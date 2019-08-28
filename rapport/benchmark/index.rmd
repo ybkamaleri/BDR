@@ -266,3 +266,10 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+# Lipider
+
+```{r lipidTab}
+source("./analyse/lipider.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
