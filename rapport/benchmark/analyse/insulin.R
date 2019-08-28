@@ -2,7 +2,7 @@
 
 katdt <- cube(dt1,
   j = list(
-    n_dka = sum(!is.na(und_inssjokk == 'Ja')),
+    n_dka = sum(!is.na(und_inssjokk)),
     j_dka = sum(und_inssjokk == 'Ja', na.rm = TRUE)
   ),
   by = c("hosKort", "agekat"))
