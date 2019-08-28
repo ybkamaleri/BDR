@@ -273,3 +273,13 @@ source("./analyse/lipider.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+
+# Persisterende microalbuminuri
+Antall og andel med persisterende microalbuminuri (basert på avkrysset data).
+
+```{r micoTab}
+source("./analyse/microalbumi.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
