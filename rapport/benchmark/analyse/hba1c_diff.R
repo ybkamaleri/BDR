@@ -13,7 +13,7 @@ hbaPlot <- ggplot(dt1, aes(get(hbaLokal), get(hbaAker)), stat = 'identity', posi
   scale_y_continuous(name = "HbA1c målt sentral (Aker)", limits = c(5, 15)) +
   scale_x_continuous(name = "HbA1c målt lokalt", limits = c(5, 15)) +
   geom_smooth(method = 'lm', color = "red") +
-  scale_color_viridis_d() +
+  scale_color_viridis_d() + theme_classic() +
   theme(legend.position = "none")
 
 ## ggplot(dt1, aes({{ hbaAker }}, {{ hbaLokal}}), position = 'identity') +
