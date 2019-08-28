@@ -54,6 +54,43 @@ lokalDT[!is.na(inskg), insbeh := 2L]
 lokalDT[!is.na(mulkg) & !is.na(inskg), mulkg := NA_real_]
 
 
+### Hvem bruker hva
+insRaw <- rollup(lokalDT[!is.na(insbeh), ],
+  j = .(
+    nins = sum(insbeh == 2, na.rm = TRUE),
+    nmul = sum(insbeh == 1, na.rm = TRUE),
+    n = sum(!is.na(insbeh))
+  ), by = "hosKort")
+
+insTab <- insRaw[, {
+  pins = nins / n * 100;
+  pmul = nmul / n * 100;
+  uins = sprintf("%s (%0.1f)", nins, pins);
+  umul = sprintf("%s (%0.1f)", nmul, pmul);
+  list(
+    hosKort = hosKort,
+    uins = uins,
+    umul = umul,
+    n = n
+  )
+}]
+
+insTab[is.na(hosKort), hosKort := "Hele landet"]
+
+insNavn <- c("", "Insulinpumpe", "Mulitinjuksjon(penn)", "N")
+setnames(insTab, names(insTab), insNavn)
+
+for (j in seq_len(ncol(insTab))){
+  set(insTab, which(insTab[[j]] == '0 (0.0)'), j = j, value = " -")
+}
+
+tabOut <- exp.tabel(insTab, "Insulinbehandling: n (%)", ncol = 4, valgCol = 2:3,
+  valgAlign = "right",
+  size = 0.8, total = 2, rowHeight = .014, mixCol = 2:3)
+
+## quick_pdf(tabOut, file = "test.pdf")
+
+
 ## Aggrigerer tallene
 ## ----------------------
 ## Mulitinjuksjon

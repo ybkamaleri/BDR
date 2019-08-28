@@ -287,6 +287,8 @@ tabOut
 
 ```{r insbehTab}
 source("./analyse/insulindose.R")
+latex_float(tabOut) <- "H"
+tabOut
 ```
 
 
