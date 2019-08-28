@@ -49,6 +49,6 @@ tomCol <- rep(" ", nrow(tabOut))
 tabOut <- insert_column(tabOut, tomCol, after = 3)
 tabOut <- tabOut %>%
   set_bottom_border(1, 2:3, 0.4) %>%
-  set_bottom_border(1, 6:7, 0.4)
+  set_bottom_border(1, 5:6, 0.4)
 
 ## quick_pdf(tabOut, file = "test.pdf")

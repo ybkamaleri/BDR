@@ -225,6 +225,15 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+# Insulinsjokk og HbA1c
+Antall og andel pasienter med HbA1c < 7.0% og HbA1c < 7.5% som har fått insulinsjokk.
+
+```{r inshba}
+source("./analyse/inslin_hba1c.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
 # Følinger
 
 Pasienter er fra 5 år og eldre.
