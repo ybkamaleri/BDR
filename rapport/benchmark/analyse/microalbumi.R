@@ -28,6 +28,6 @@ for (j in seq_len(ncol(tabRaw))){
 tabNavn <- c("", "n (%)", "N")
 setnames(tabRaw, names(tabRaw), tabNavn)
 
-tabOut <- exp.tabel(tabRaw, xcol = c("", " ", ""), total = 2, valgCol = 2, valgAlign = "right", rowHeight = 0.015)
+tabOut <- exp.tabel(tabRaw, xcol = c("", " ", ""), total = 2, valgCol = 2, valgAlign = "right", rowHeight = 0.025)
 
 ## quick_pdf(tabOut, file = "test.pdf")

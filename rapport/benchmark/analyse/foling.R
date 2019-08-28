@@ -73,4 +73,4 @@ setnames(tabRaw, names(tabRaw), tabNavn)
 tabRaw[, Antall := as.character(Antall)]
 
 tabOut <- exp.tabel(tabRaw, "Aldersgrupper: n(%)", ncol = 5,
-  size = 0.9, total = 2, rowHeight = .015, mixCol = 2:4, valgCol = 5, valgAlign = "center")
+  size = 0.9, total = 2, rowHeight = .025, mixCol = 2:4, valgCol = 5, valgAlign = "center")

@@ -45,7 +45,7 @@ setnames(tabRaw, names(tabRaw), tabNavn)
 tabOut <- exp.tabel(tabRaw,
   xcol = c("", "HbA1c < 7.0%", "", "HbA1c < 7.5%", ""),
   ncol = 5, del = c(.2, .15, .1, .15, .1), valgCol = c(2, 4), valgAlign = "right",
-  size = 0.9, total = 1, rowHeight = .015)
+  size = 0.9, total = 1, rowHeight = .025)
 
 tomCol <- rep(" ", nrow(tabOut))
 tabOut <- insert_column(tabOut, tomCol, after = 3)

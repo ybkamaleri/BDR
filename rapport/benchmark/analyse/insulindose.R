@@ -77,7 +77,7 @@ insTab <- insRaw[, {
 
 insTab[is.na(hosKort), hosKort := "Hele landet"]
 
-insNavn <- c("", "Insulinpumpe", "Mulitinjuksjon(penn)", "N")
+insNavn <- c("", "Insulinpumpe", "Multiinjeksjon(penn)", "N")
 setnames(insTab, names(insTab), insNavn)
 
 for (j in seq_len(ncol(insTab))){
@@ -86,7 +86,7 @@ for (j in seq_len(ncol(insTab))){
 
 tabOut <- exp.tabel(insTab, "Insulinbehandling: n (%)", ncol = 4, valgCol = 2:3,
   valgAlign = "right",
-  size = 0.8, total = 2, rowHeight = .014, mixCol = 2:3)
+  size = 0.8, total = 2, rowHeight = .025, mixCol = 2:3)
 
 ## quick_pdf(tabOut, file = "test.pdf")
 
@@ -121,8 +121,8 @@ setcolorder(longMult, c("hosKort", "v1", "v2", "v3", "v4", "vNA"))
 nyNavn <- c("", "<5 år", "5-9 år", "10-14 år", ">14 år", "HF")
 setnames(longMult, names(longMult), nyNavn)
 
-tabOutMult <- exp.tabel(longMult, "Mulitinjuksjon (penn): gjennomsnitt",
-  ncol = 6, size = 0.9, total = 2, rowHeight = .015, mixCol = 2:6)
+tabOutMult <- exp.tabel(longMult, "Multiinjeksjon (penn): gjennomsnitt",
+  ncol = 6, size = 0.9, total = 2, rowHeight = .025, mixCol = 2:6)
 
 ## quick_pdf(tabOutMult, file = "test.pdf")
 
@@ -157,6 +157,6 @@ nyNavn <- c("", "<5 år", "5-9 år", "10-14 år", ">14 år", "HF")
 setnames(longIns, names(longIns), nyNavn)
 
 tabOutIns <- exp.tabel(longIns, "Insulinpumpe: gjennomsnitt",
-  ncol = 6, size = 0.9, total = 2, rowHeight = .015, mixCol = 2:6)
+  ncol = 6, size = 0.9, total = 2, rowHeight = .025, mixCol = 2:6)
 
 ## quick_pdf(tabOutIns, file = "test.pdf")

@@ -71,7 +71,7 @@ tabOut <- exp.tabel(
   "Diabetes type",
   ncol = 6,
   size = 0.9,
-  rowHeight = .015,
+  rowHeight = .025,
   total = 2,
   del = c(.2, .15, .15, .15, .15, .2),
   mixCol = 2:5)

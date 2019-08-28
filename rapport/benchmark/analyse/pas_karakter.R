@@ -45,7 +45,7 @@ tabOut <- exp.tabel(
   ncol = 5,
   size = 0.9,
   rap = FALSE,
-  rowHeight = 0.015,
+  rowHeight = 0.025,
   total = 1,
   del = c(.2, .22, .22, .22, .22),
   valgCol = 2:5,

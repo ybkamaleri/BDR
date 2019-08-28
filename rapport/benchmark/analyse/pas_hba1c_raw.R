@@ -68,7 +68,7 @@ setnames(tabRaw, names(tabRaw), nyNavn)
 tabOut <- exp.tabel(tabRaw,
   "HbA1c : n(%)", ncol = 8, size = 0.9,
   total = 1, valgCol = 2:7, valgAlign = "left",
-  rowHeight = .015, mixCol = 2:7)
+  rowHeight = .025, mixCol = 2:7)
 
 ## quick_pdf(tabOut, file = "test.pdf")
 

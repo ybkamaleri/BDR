@@ -64,6 +64,6 @@ setnames(tabRaw, names(tabRaw), tabNavn)
 tabRaw[, Antall := as.character(Antall)]
 
 tabOut <- exp.tabel(tabRaw, "Aldersgrupper: n(%)", ncol = 6,
-  size = 0.9, total = 2, rowHeight = .015, mixCol = 2:5, valgCol = 6, valgAlign = "center")
+  size = 0.9, total = 2, rowHeight = .025, mixCol = 2:5, valgCol = 6, valgAlign = "center")
 
 ## quick_pdf(tabOut, file = "test.pdf")

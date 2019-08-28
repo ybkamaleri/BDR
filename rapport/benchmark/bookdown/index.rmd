@@ -1,7 +1,7 @@
 ---
 title: "Årskontrollrapport for 2018"
 author: ""
-date: "23.08.2019"
+date: "`r format(Sys.time(), '%d %B %Y')`"
 site: bookdown::bookdown_site
 documentclass: book
 link-citations: yes
@@ -91,9 +91,27 @@ source("./analyse/tab.function.R")
 
 ```
 
+
+```{r htmlTemplate, echo=FALSE}
+# Create the external file
+img <- htmltools::img(src = knitr::image_uri(file.path("./docs", "logo.png")), 
+               alt = 'logo', 
+               style = 'position:absolute; top:50px; right:1%; padding:10px;z-index:200; width:80px; height:70px;')
+
+htmlhead <- paste0('
+<script>
+document.write(\'<div class="logos">',img,'</div>\')
+</script>
+')
+
+readr::write_lines(htmlhead, path = "header.html")
+
+```
+
+
 # Registrerte pasienter
 
-Figuren viser antall og andel registerte pasienter i 2018 sammenligne med i 2017.
+Figuren viser antall registerte pasienter i 2018 sammenligne med i 2017.
 
 ```{r pasient, fig.width=7, fig.height=8}
 source("./analyse/antall_pasient.R")
@@ -207,6 +225,15 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+# Insulinsjokk og HbA1c
+Antall og andel pasienter med HbA1c < 7.0% og HbA1c < 7.5% som har fått insulinsjokk.  **Total N** er antall som har svart til spørsmålet.
+
+```{r inshba}
+source("./analyse/inslin_hba1c.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
 # Følinger
 
 Pasienter er fra 5 år og eldre.
@@ -217,3 +244,67 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+# Følinger og HbA1c
+Antall og andel pasienter med HbA1c < 7.0% og HbA1c < 7.5% som har hatt følinger med behov for hjelp siste 4 uker. **Total N** er antall som har svart til spørsmålet.
+
+```{r folhba}
+source("./analyse/foling_hba1c.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+# ISPAD Guidelines
+
+Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelines
+(2014) som spesifiserer at pasienter som er 10 år eller eldre med 2 års
+diabetesvarighet eller yngre enn 10 år med 5 års diabetesvarighet.
+
+
+```{r ispadTab}
+source("./analyse/ispad.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+# Lipider
+
+```{r lipidTab}
+source("./analyse/lipider.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+# Persisterende microalbuminuri
+Antall og andel med persisterende microalbuminuri (basert på avkrysset data).
+
+```{r micoTab}
+source("./analyse/microalbumi.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+# Insulinbehandling
+
+```{r insbehTab}
+source("./analyse/insulindose.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
+
+# Insulinpumpe
+Gjennomsnittlig antall enheter insulin pr. døgn (bolus og basal) per. kg kroppsvekt.
+
+```{r tabIns}
+latex_float(tabOutIns) <- "H"
+tabOutIns
+```
+
+
+# Multiinjeksjon (penn)
+Gjennomsnittlig antall enheter insulin pr. døgn per. kg kroppsvekt.
+
+```{r tabMulti}
+latex_float(tabOutMult) <- "H"
+tabOutMult
+```

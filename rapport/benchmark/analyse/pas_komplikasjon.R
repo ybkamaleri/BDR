@@ -40,6 +40,6 @@ tabRaw <- dtAll[, {
 giNavn <- c("", "Ketoacidose", "Insulinsjokk", "Føling")
 setnames(tabRaw, names(tabRaw), giNavn)
 
-tabOut <- exp.tabel(tabRaw, "Komplikasjoner: n(%)", ncol = 4, size = 0.9, total = 1, rowHeight = 0.015, mixCol = 2:4)
+tabOut <- exp.tabel(tabRaw, "Komplikasjoner: n(%)", ncol = 4, size = 0.9, total = 1, rowHeight = 0.025, mixCol = 2:4)
 
 ## quick_pdf(tabOut, file = "test.pdf")

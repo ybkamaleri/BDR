@@ -88,6 +88,6 @@ tabOut <- tabXX %>%
   set_bottom_border(1,2:5, 0.5) %>%
   set_align(, c(2,4), "left") %>%
   set_width(0.9) %>%
-  set_row_height(.015)
+  set_row_height(.025)
 
 ## quick_pdf(tabOut, file = "test.pdf")

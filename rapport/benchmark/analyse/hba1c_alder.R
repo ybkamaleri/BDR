@@ -43,6 +43,6 @@ nyNavn <- c("", "<5 år", "5-9 år", "10-14 år", ">14 år", "HF gj.snitt")
 setnames(tabw, getCol, nyNavn)
 
 ## Tabell
-tabOut <- exp.tabel(tabw, "Gj.snitt HbA1c per. aldersgrupper",
+tabOut <- exp.tabel(tabw, "Gj.snitt HbA1c pr. aldersgrupper",
   ncol = 6, del = c(.2, .15, .15, .15, .15, .2),
-  size = 0.9, total = 2, rowHeight = .015, mixCol = 2:5)
+  size = 0.9, total = 2, rowHeight = .025, mixCol = 2:5)

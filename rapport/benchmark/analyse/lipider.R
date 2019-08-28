@@ -71,15 +71,14 @@ tabNavn <- c(" ", "Total kol.", "HDL", "LDL 2", "LDL 3", "Triglycerider")
 setnames(tabRaw, names(tabRaw), tabSub)
 
 tabOut <- exp.tabel(tabRaw, xcol = tabNavn,
-  size = 0.9, total = 1, rowHeight = .01,
-  del = c(2.5, 1.5, 1.5, 1.5, 1.5, 1.5),
+  size = 0.9, total = 1, rowHeight = .025,
   valgCol = 2:6, valgAlign = "right")
 
-extNavn <- c("", "Antall og andel pasienter: n (%)", "", "", "", "")
-tabOut <- rbind(extNavn, tabOut)
-tabOut <- tabOut %>%
-  merge_cells(1, 2:6) %>%
-  set_bottom_border(1,2:6, 0.3)
+## extNavn <- c("", "Antall og andel pasienter: n (%)", "", "", "", "")
+## tabOut <- rbind(extNavn, tabOut)
+## tabOut <- tabOut %>%
+##   merge_cells(1, 2:6) %>%
+##   set_bottom_border(1,2:6, 0.3)
 
 
 ## quick_pdf(tabOut, file = "test.pdf")

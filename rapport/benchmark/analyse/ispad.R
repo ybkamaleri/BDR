@@ -34,6 +34,6 @@ tabRaw <- ispDT[, {
 nyNavn <- c("", "Øye", "Urin", "Totalt")
 setnames(tabRaw, names(tabRaw), nyNavn)
 
-tabOut <- exp.tabel(tabRaw, "Undersøkelse utført: n(%)", ncol = 4, size = 0.9, total = 2, rowHeight = 0.015, mixCol = 2:3, valgCol = 2:3, valgAlign = "right")
+tabOut <- exp.tabel(tabRaw, "Undersøkelse utført: n(%)", ncol = 4, size = 0.9, total = 2, rowHeight = 0.025, mixCol = 2:3, valgCol = 2:3, valgAlign = "right")
 
 ## quick_pdf(tabOut, file = "test.pdf")
