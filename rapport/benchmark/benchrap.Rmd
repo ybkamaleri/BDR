@@ -120,6 +120,7 @@ Figuren viser antall registerte pasienter i 2018 sammenlignet med i 2017.
 source("./analyse/antall_pasient.R")
 pasCir
 ```
+\newpage
 
 # Diabetes type 
 
@@ -130,6 +131,8 @@ tabOut
 ```
 Videre analyse inneholder KUN pasienter med diabetes Type 1. Helgelandssykehuset avd. Sandessjøen har bare en pasient til årskontroll og er tatt ut fra videre analyser.
 
+\newpage
+
 # Utvalgte pasient-karakteristika
 
 ```{r pasKarakter}
@@ -137,6 +140,7 @@ source("./analyse/pas_karakter.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # Aldersfordeling
 
@@ -145,6 +149,7 @@ source("./analyse/pas_alder.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # HbA1c
 HbA1c målt på OUS, Aker sykehus.
@@ -154,6 +159,7 @@ source("./analyse/pas_hba1c_raw.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # HbA1c fordelt på alder
 
@@ -162,6 +168,7 @@ source("./analyse/hba1c_alder.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # Justert HbA1c 
 HbA1c justert for kjønn, alder og sykdomsvarighet.
@@ -171,6 +178,7 @@ source("./analyse/hba1c_justert.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # HbA1c sammenligning
 HbA1c verdi målt på eget sykehus sammenlignet mot det som er målt sentralt dvs. på Aker sykehus.
@@ -186,6 +194,8 @@ if (knitr::is_html_output()){
   hbaInt
 }
 ```
+
+\newpage
 
 # Etnisitet
 
@@ -204,6 +214,7 @@ norskNA` pasienter er eksludert i denne tabellen pga. manglende informasjon.
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # Akutt komplikasjoner
 Tabellen viser antall og andel for innlagt pga. diabetes ketoacidose (DKA),
@@ -216,6 +227,7 @@ source("./analyse/pas_komplikasjon.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # Diabetes ketoacidose (DKA)
 
@@ -224,6 +236,7 @@ source("./analyse/dka.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # Insulinsjokk
 
@@ -232,6 +245,7 @@ source("./analyse/insulin.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # Insulinsjokk og HbA1c
 Antall og andel pasienter med HbA1c < 7.0% og HbA1c < 7.5% som har hatt insulinsjokk.  **Total N** er antall som har data.
@@ -241,6 +255,7 @@ source("./analyse/inslin_hba1c.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # Følinger
 
@@ -251,6 +266,7 @@ source("./analyse/foling.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # Følinger og HbA1c
 Antall og andel pasienter med HbA1c < 7.0% og HbA1c < 7.5% som har hatt følinger med
@@ -261,6 +277,8 @@ source("./analyse/foling_hba1c.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+
+\newpage
 
 # Øye- og urinundersøkelse iht. ISPAD Guidelines
 
@@ -274,6 +292,7 @@ source("./analyse/ispad.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # Lipider
 
@@ -283,6 +302,8 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+\newpage
+
 # Persisterende microalbuminuri
 Antall og andel med persisterende microalbuminuri (basert på avkrysset data).
 
@@ -291,6 +312,7 @@ source("./analyse/microalbumi.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+\newpage
 
 # Insulinbehandling
 
@@ -300,6 +322,7 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+\newpage
 
 # Insulinpumpe
 Gjennomsnittlig antall enheter insulin pr. døgn (bolus og basal) pr. kg kroppsvekt.
@@ -309,6 +332,7 @@ latex_float(tabOutIns) <- "H"
 tabOutIns
 ```
 
+\newpage
 
 # Multiinjeksjonsbehandling (penn)
 Gjennomsnittlig antall enheter insulin pr. døgn pr. kg kroppsvekt.
@@ -317,6 +341,19 @@ Gjennomsnittlig antall enheter insulin pr. døgn pr. kg kroppsvekt.
 latex_float(tabOutMult) <- "H"
 tabOutMult
 ```
+
+# Blodtrykk
+
+Antall og andel pasienter med blodtrykk mellom 90-94 persentilen, >= 95 persentilen basert på formel...
+
+# Kontinuerlig blodsukkermåling
+
+beh_ins_kont_blodsukker_reg
+
+# Boluskalkulator
+
+
+
 
                                                                          
                                                                          
