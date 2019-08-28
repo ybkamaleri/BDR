@@ -283,3 +283,26 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+# Insulinbehandling
+
+```{r insbehTab}
+source("./analyse/insulindose.R")
+```
+
+
+# Insulinpumpe
+Gjennomsnittlig antall enheter insulin pr. døgn (bolus og basal) per. kg kroppsvekt.
+
+```{r tabIns}
+latex_float(tabOutIns) <- "H"
+tabOutIns
+```
+
+
+# Multiinjeksjon (penn)
+Gjennomsnittlig antall enheter insulin pr. døgn per. kg kroppsvekt.
+
+```{r tabMulti}
+latex_float(tabOutMult) <- "H"
+tabOutMult
+```
