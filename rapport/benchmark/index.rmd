@@ -226,7 +226,7 @@ tabOut
 ```
 
 # Insulinsjokk og HbA1c
-Antall og andel pasienter med HbA1c < 7.0% og HbA1c < 7.5% som har fått insulinsjokk.
+Antall og andel pasienter med HbA1c < 7.0% og HbA1c < 7.5% som har fått insulinsjokk.  **Total N** er antall som har svart til spørsmålet.
 
 ```{r inshba}
 source("./analyse/inslin_hba1c.R")
@@ -243,4 +243,14 @@ source("./analyse/foling.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
+
+# Følinger og HbA1c
+Antall og andel pasienter med HbA1c < 7.0% og HbA1c < 7.5% som har hatt følinger med behov for hjelp siste 4 uker. **Total N** er antall som har svart til spørsmålet.
+
+```{r folhba}
+source("./analyse/foling_hba1c.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
+
 

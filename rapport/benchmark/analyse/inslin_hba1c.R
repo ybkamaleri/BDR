@@ -2,14 +2,14 @@
 hbaVar = "lab_HbA1cAkerVerdi"
 ins7 <- rollup(dt1[lab_HbA1cAkerVerdi < 7.0, ],
   j = list(
-    n_7 = sum(!is.na(und_inssjokk == 'Ja')),
+    n_7 = sum(!is.na(und_inssjokk)),
     j_7 = sum(und_inssjokk == 'Ja', na.rm = TRUE)
   ),
   by = "hosKort")
 
 ins75 <- rollup(dt1[lab_HbA1cAkerVerdi < 7.5, ],
   j = list(
-    n_75 = sum(!is.na(und_inssjokk == 'Ja')),
+    n_75 = sum(!is.na(und_inssjokk)),
     j_75 = sum(und_inssjokk == 'Ja', na.rm = TRUE)
   ),
   by = "hosKort")

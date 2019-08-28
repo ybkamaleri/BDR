@@ -1,17 +1,17 @@
 ## Følinger og HbA1c nivå
 dtsub <- subset(dt1, agekat != 1)
-hbaVar = "lab_HbA1cAkerVerdi"
+## hbaVar = "lab_HbA1cAkerVerdi"
 
 ins7 <- rollup(dtsub[lab_HbA1cAkerVerdi < 7.0, ],
   j = list(
-    n_7 = sum(!is.na(und_foling == 'Ja')),
+    n_7 = sum(!is.na(und_foling)),
     j_7 = sum(und_foling == 'Ja', na.rm = TRUE)
   ),
   by = "hosKort")
 
 ins75 <- rollup(dtsub[lab_HbA1cAkerVerdi < 7.5, ],
   j = list(
-    n_75 = sum(!is.na(und_foling == 'Ja')),
+    n_75 = sum(!is.na(und_foling)),
     j_75 = sum(und_foling == 'Ja', na.rm = TRUE)
   ),
   by = "hosKort")
