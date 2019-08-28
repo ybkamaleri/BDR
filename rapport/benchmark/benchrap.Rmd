@@ -208,8 +208,8 @@ source("./analyse/pas_etnisk.R")
 
 Gjennomsnitt HbA1c for nordisk og ikke nordisk pasienter. Nordiske pasienter
 defineres som at minst en av foreldene er født i et av de nordiske landene. Analysen
-inkluderer KUN pasienter med informasjon om fødeland for minst en av foreldene. `r
-norskNA` pasienter er eksludert i denne tabellen pga. manglende informasjon.
+inkluderer KUN pasienter med informasjon om fødeland for minst en av 
+foreldene. Det mangler data for `r norskNA` pasienter og er eksludert i denne tabellen.
 
 
 ```{r}
