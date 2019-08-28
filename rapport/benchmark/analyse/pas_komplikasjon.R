@@ -26,9 +26,9 @@ tabRaw <- dtAll[, {
   dka1 = j_dka / n_dka * 100;
   ins1 = j_ins / n_ins * 100;
   fol1 = j_fol / n_fol * 100;
-  dka = sprintf("%0.1f (%s)", dka1, n_dka);
-  ins = sprintf("%0.1f (%s)", ins1, n_ins);
-  fol = sprintf("%0.1f (%s)", fol1, n_fol);
+  dka = sprintf("%s (%0.1f)", n_dka, dka1);
+  ins = sprintf("%s (%0.1f)", n_ins, ins1);
+  fol = sprintf("%s (%0.1f)", n_fol, fol1);
   list(
     hosp = hosKort,
     dka = dka,
@@ -40,6 +40,6 @@ tabRaw <- dtAll[, {
 giNavn <- c("", "Ketoacidose", "Insulinsjokk", "Føling")
 setnames(tabRaw, names(tabRaw), giNavn)
 
-tabOut <- exp.tabel(tabRaw, "Prosent (Antall)", ncol = 4, size = 0.9, total = 1, rowHeight = 0.015, mixCol = 2:4)
+tabOut <- exp.tabel(tabRaw, "Komplikasjoner: n(%)", ncol = 4, size = 0.9, total = 1, rowHeight = 0.015, mixCol = 2:4)
 
 ## quick_pdf(tabOut, file = "test.pdf")

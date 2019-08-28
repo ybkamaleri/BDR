@@ -111,7 +111,7 @@ readr::write_lines(htmlhead, path = "header.html")
 
 # Registrerte pasienter
 
-Figuren viser antall og andel registerte pasienter i 2018 sammenligne med i 2017.
+Figuren viser antall registerte pasienter i 2018 sammenligne med i 2017.
 
 ```{r pasient, fig.width=7, fig.height=8}
 source("./analyse/antall_pasient.R")

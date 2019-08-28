@@ -42,11 +42,11 @@ hosTab[, `:=`(
 
 
 hosTab[, `:=`(
-  u6 = sprintf("%0.1f (%s)", pro6, und6),
-  u7 = sprintf("%0.1f (%s)", pro7, und7),
-  u8 = sprintf("%0.1f (%s)", pro8, und8),
-  m9 = sprintf("%0.1f (%s)", pro9, und9),
-  m10 = sprintf("%0.1f (%s)", pro10, und10)
+  u6 = sprintf("%s (%0.1f)", und6, pro6),
+  u7 = sprintf("%s (%0.1f)", und7, pro7),
+  u8 = sprintf("%s (%0.1f)", und8, pro8),
+  m9 = sprintf("%s (%0.1f)", und9, pro9),
+  m10 = sprintf("%s (%0.1f)", und10, pro10)
 )]
 
 delCol1 <- grep("^und", names(hosTab), value = TRUE)
@@ -66,7 +66,7 @@ setnames(tabRaw, names(tabRaw), nyNavn)
 
 ## Tabell
 tabOut <- exp.tabel(tabRaw,
-  "HbA1c : %(n)", ncol = 8, size = 0.9,
+  "HbA1c : n(%)", ncol = 8, size = 0.9,
   total = 1, valgCol = 2:7, valgAlign = "left",
   rowHeight = .015, mixCol = 2:7)
 
