@@ -11,3 +11,4 @@
 *.log
 huxtable-output.pdf
 /rapport/benchmark/test.pdf
+/rapport/benchmark/docs/libs/*
