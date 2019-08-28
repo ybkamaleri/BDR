@@ -2,7 +2,7 @@
 
 katdt <- cube(dt1,
   j = list(
-    n_dka = sum(!is.na(und_ketoacidose == 'Ja')),
+    n_dka = sum(!is.na(und_ketoacidose)),
     j_dka = sum(und_ketoacidose == 'Ja', na.rm = TRUE)
   ),
   by = c("hosKort", "agekat"))
