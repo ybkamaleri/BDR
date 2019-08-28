@@ -16,7 +16,7 @@ tabAge <- tabAlder[tabTot, on = "hosKort"]
 
 ## reorder
 
-tabAge[is.na(hosKort), hosKort := "Totalt"]
+tabAge[is.na(hosKort), hosKort := "Hele landet"]
 nyNavn <- c("", "<5 år", "5-9 år", "10-14 år", ">14 år", "Totalt")
 setnames(tabAge, names(tabAge), nyNavn)
 

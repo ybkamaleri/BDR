@@ -114,6 +114,9 @@ exp.tabel <- function(dt, name = NULL, ncol = NULL, xcol = NULL,
   wrap(tabXX) <- TRUE
   }
 
+  tabXX <- tabXX %>%
+    set_position("left")
+
   return(tabXX)
 
 }

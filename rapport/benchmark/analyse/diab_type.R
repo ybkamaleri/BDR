@@ -61,7 +61,7 @@ hosp.dttot <- cube(diabDT, .(antall = sum(!is.na(dbtype))),
 
 tab.dtype <- hosp.diab[hosp.dttot, on = "hosKort"]
 
-tab.dtype[is.na(hosKort), hosKort := "Totalt"]
+tab.dtype[is.na(hosKort), hosKort := "Hele landet"]
 
 tabNavn <- c("", "Type I", "Type II", "Mody", "Annen", "Totalt")
 setnames(tab.dtype, names(tab.dtype), tabNavn)

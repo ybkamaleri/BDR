@@ -34,7 +34,7 @@ rawTab[, `:=` (
 
 selVar <- c("hosKort", "age", "agediag", "varig", "bmi")
 tabClean <- rawTab[, ..selVar]
-tabClean[is.na(hosKort), hosKort := "Totalt"]
+tabClean[is.na(hosKort), hosKort := "Hele landet"]
 
 nyNavn <- c("", "Alder", "Diagnose alder", "Sykdomsvarighet", "BMI")
 setnames(tabClean, selVar, nyNavn)
