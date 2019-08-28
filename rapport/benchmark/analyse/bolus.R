@@ -7,7 +7,7 @@ dt1[get(var1) %like% "^> 50", bolkod := 1] %>%
   .[get(var1) %like% "Vet", bolkod := 3]
 
 var2 <- bolVar[1]
-dt1[get(var2) == "Ja", .N]
+## dt1[get(var2) == "Ja", .N]
 
 
 bolJa <- rollup(dt1[get(var2) == "Ja"],
@@ -39,11 +39,11 @@ dtAlle <- bolJa[bolvetikke, on = "hosKort"]
 tabRaw <- dtAlle[, {
   p50mer = n50mer / nja * 100;
   p50und = n50und / nja * 100;
-  pvk = vk / nja * 100;
+  pvk = nvk / nja * 100;
   pikke = nik / N * 100;
   u50mer = sprintf("%s (%0.1f)", n50mer, p50mer);
   u50und = sprintf("%s (%0.1f)", n50und, p50und);
-  uvk = sprintf("%s (%0.1f)", vk, pvk);
+  uvk = sprintf("%s (%0.1f)", nvk, pvk);
   uik = sprintf("%s (%0.1f)", nik, pikke);
   list(
     hosp = hosKort,
