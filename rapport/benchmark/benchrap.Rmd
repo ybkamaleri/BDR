@@ -355,7 +355,10 @@ source("./analyse/blodtrykk.R")
 latex_float(tabOut) <- "H"
 tabOut
 ```
-    
+
+\newpage
+
+
 # Kontinuerlig blodsukkermåling
 
 ```{r bsukmol}
@@ -364,11 +367,15 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
-beh_ins_kont_blodsukker_reg
+\newpage
 
 # Boluskalkulator
 
-6508 1545 8532 8554 8544 8624 3406 3468 1889 1168 1211
+```{r bolusTab}
+source("./analyse/bolus.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
 
 
                                                                          
