@@ -33,8 +33,8 @@ description: "Benchmark rapport for Barnediabetesregisteret"
 output:
   pdf_document:
     toc: true
-number_sections: true
-theme: lumen
+    number_sections: true
+
 ---
 
 
