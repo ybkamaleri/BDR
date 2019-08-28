@@ -253,4 +253,16 @@ latex_float(tabOut) <- "H"
 tabOut
 ```
 
+# ISPAD Guidelines
+
+Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelines
+(2014) som spesifiserer at pasienter som er 10 år eller eldre med 2 års
+diabetesvarighet eller yngre enn 10 år med 5 års diabetesvarighet.
+
+
+```{r ispadTab}
+source("./analyse/ispad.R")
+latex_float(tabOut) <- "H"
+tabOut
+```
 
