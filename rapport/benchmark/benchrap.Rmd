@@ -352,7 +352,7 @@ beh_ins_kont_blodsukker_reg
 
 # Boluskalkulator
 
-
+6508 1545 8532 8554 8544 8624 3406 3468 1889 1168 1211
 
 
                                                                          
