@@ -65,3 +65,41 @@ ageCat <- function(x, lower, upper, by, sep = "-") {
 
 dt[, agegp := ageCat(alder, 0, 15, 5), by = Pnr]
 rollup(dt, j = .(n = .N), by = "agegp")
+
+
+## HbA1c
+dim(dt)
+dt1 <- dt[is.na(annonym) & diabetes_Type1 == "Ja", ]
+dim(dt1)
+hba <- "lab_HbA1c_Sentralt"
+hba2 = "lab_HbA1c"
+dt[, hba1c := get(hba)][is.na(hba1c), hba1c := get(hba2)]
+dt1[is.na(hba1c), .N]
+dt1[is.na(get(hba)), .N]
+
+dt[hba1c > 18, .N]
+dt1[hba1c > 30, .(Pnr, hosKort, hba1c)]
+
+
+
+rollup(dt1,
+  j = .(
+    mhb = mean(hba1c, na.rm = T),
+    n = .N,
+    min = min(hba1c, na.rm = T),
+    max = max(hba1c, na.rm = T),
+    nmiss = sum(is.na(hba1c))
+  ), by = "agegp" )
+
+
+dim(dt)
+dt[Pnr == 27060595769, hba1c := 13.6]
+dt[Pnr == 2030884615 , hba1c := 11.7]
+dt[Pnr == 27080595668 , hba1c := 16.8]
+dt[Pnr == 30110595936, hba1c := 15.9]
+dt[Pnr == 1041080473, hba1c := 12.1]
+dt[Pnr == 24050983176, hba1c := 11.1]
+dt[Pnr == 9011482128, hba1c := 7.9]
+dt[Pnr == 30061399522, hba1c := 12.3]
+dt[Pnr == 29041099621, hba1c := 14.2]
+dt[Pnr == 8111180254, hba1c := 10.9]
