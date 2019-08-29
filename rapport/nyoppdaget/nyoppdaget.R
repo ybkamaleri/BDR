@@ -93,11 +93,27 @@ diabDT[dbtype == 1 & alder < 5, .N]
 ##------------------------
 dim(DT)
 DT[, age := round(alder, digits = 0)]
-ageDT <- diabDT[,.N, by = age]
-diabDT[age == 1, .(Pnr, hosKort, inn_DiagDato)]
-diabDT[age == 2, .(Pnr, hosKort, inn_DiagDato)]
+ageDT <- DT[,.N, keyby = age]
 
-regbar(ageDT, age, N, flip = FALSE)
+DT[age == 1, .(Pnr, hosKort, inn_DiagDato, FDato)]
+DT[age == 2, .(Pnr, hosKort, inn_DiagDato, FDato)]
+
+## regbar(ageDT, age, N, flip = FALSE)
+ageDT[]
+
+(AlderFig <- ggplot(ageDT, aes(as.factor(age), N)) +
+  geom_bar(stat = "identity", fill = "#004499") +
+  labs(y = "Antall", x = "Alder") +
+  theme_classic() + scale_y_continuous(expand = c(0, 0), limits = c(0, 60)) + #begynt på 0
+  theme(
+    axis.text = element_text(size = 12),
+    panel.grid.major.y = element_line(size = .4, linetype = "dashed", color = "grey70"),
+    ## panel.grid.minor.y = element_line(size = .2, linetype = "dashed", color = "grey70"),
+    panel.grid.major.x = element_blank()
+  ))
+
+ggsave("alder_fig.jpg", plot = AlderFig, width = 15, height = 8, units = "cm")
+
 
 
 ## Alder i grupperinger og antall
