@@ -1,4 +1,5 @@
-
+## Diabetes typer
+##---------------
 DTtype <- function(x){
 
   ## Demografisk variabler
@@ -41,53 +42,20 @@ DTtype <- function(x){
 
 }
 
-dt <- DT
-diabDT <- DTtype(allnyDT)
-## diabDT[]
 
-utDT <- dt[!diabDT, on = .(Pnr, hospID)]
-dim(utDT)
-utDT[, c(demoVar, diabetesVar, "FNavn"), with = F]
+## Alder kategorier
+##------------------------
+## Lager kategorisering for alder
+ageCat <- function(x, lower, upper, by, sep = "-") {
+  ## Finne høyeste kategori
+  kat <- paste0(seq(lower + by - 1, upper - 1, by = by))
+  indTop <- max(length(kat))
+  top <- as.numeric(kat[indTop])
 
-
-hosp.diab <- groupingsets(diabDT,
-  j = .(
-    td1 = sum(dbtype == 1),
-    td2 = sum(dbtype == 2),
-    mody = sum(dbtype == 3),
-    annen = sum(dbtype == 4)
-  ),
-  by = c("hosKort"),
-  sets = list(c("hosKort"), character(0)))
-
-hosp.dttot <- cube(diabDT, .(antall = sum(!is.na(dbtype))),
-  by = c("hosKort"))
-
-
-## Beregning
-diabDT[, .N, by = diabType]
-
-## Alder
-library("lubridate")
-dt <- allnyDT
-dt[, alder := as.numeric(round(as.period(interval(FDato, inn_DiagDato)/duration(n=1, unit="years")), digits = 1))]
-
-
-DT[alder, .(
-  misAge = sum(is.na(alder)),
-  over15 = sum(alder >= 15, na.rm = TRUE)
-)]
-
-over15 <- subset(diabDT, alder >= 15)
-dim(over15)
-over15[, .N, by = diabType]
-
-diabDT[dbtype == 1 & alder < 5, .N]
-
-
-under15 <- subset(diabDT, alder < 15)
-dim(under15)
-under15[, .N, by = diabType]
-
-diabDT[dbtype == 1 & alder < 5, .N]
-
+  labs <- paste0(c(paste(seq(lower, upper - by, by = by),
+    seq(lower + by - 1, upper - 1, by = by),
+    sep = sep),
+    paste(top + 1, "+", sep = "")))
+  cut(floor(x), breaks = c(seq(lower, upper, by = by), Inf),
+    include.lowest = TRUE, right = FALSE, labels = labs)
+}
