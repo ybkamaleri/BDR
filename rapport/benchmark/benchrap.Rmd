@@ -1,5 +1,5 @@
 ---
-title: "Årskontrollrapport for 2018"
+title: "Benchmarkingsrapport for 2018"
 author: "https://bdreg.github.io"
 date: "29.08.2019"
 link-citations: yes
@@ -32,6 +32,7 @@ cover-image: "logo.png"
 description: "Benchmark rapport for Barnediabetesregisteret"
 output:
   pdf_document:
+    keep_tex: true
     toc: true
     number_sections: true
     includes:
@@ -123,19 +124,24 @@ readr::write_lines(htmlhead, path = "header.html")
 
 Denne rapporten fra Barnediabetesregisteret inneholder analyser fra årskontroller i 2018. Alle
 analysene er fordelt på hver enkelt deltagende sykehusavdeling. I analysene er det kun
-pasienter med type I diabetes som inngår, med unntak av tabell 1 og 2.
+pasienter med type I diabetes som inngår, med unntak av side 4 og 5.
+
 Datamaterialet er basert på 2896 pasienter fra 26 sykehusavdelinger, Sandnessjøen sykehus
-har registrert 1 pasient &lt; 18 år. Pasienten er i denne rapporten kun inkludert i tabell 1 og 2.
+har registrert 1 pasient < 18 år. Pasienten er i denne rapporten kun inkludert i tabell 1 og 2.
 Materialet består av 1553 gutter og 1343 jenter, gjennomsnittsalderen var 12,7 år (fra 1,4 til
 20,2 år), og gjennomsnittlig varighet av diabetes var 5,1 år.
 
 Av disse har 2820 (97 %) type 1 diabetes, 1521 gutter og 1298 jenter. Gjennomsnittsalderen
 var 12,7 år (fra 1,4 til 20,2 år), og gjennomsnittlig varighet av diabetes var 5,1 år.
-I denne årskontrollrapporten er analysene som involverer mean HbA1c, justert for
+
+I denne benckmarkingsrapporten er analysene som involverer mean HbA1c, justert for
 kjønn, alder og diabetesvarighet, resten er rådata. Dataene er presentert ved gjennomsnitt
 og standardavvik eller som antall (n) med prosenter, dersom ikke annet er oppgitt.
 
-Oslo, 22:42
+
+\hfill \break
+
+Oslo, 29.08.2019
 
 \newpage
 
@@ -231,10 +237,10 @@ if (knitr::is_html_output()){
 source("./analyse/pas_etnisk.R")
 ```
 
-Gjennomsnitt HbA1c for nordisk og ikke nordisk pasienter. Nordiske pasienter
+Gjennomsnitt HbA1c for nordisk og ikke nordiske pasienter. Nordiske pasienter
 defineres som at minst en av foreldene er født i et av de nordiske landene. Analysen
 inkluderer KUN pasienter med informasjon om fødeland for minst en av 
-foreldene. Det mangler data for `r norskNA` pasienter og er eksludert i denne tabellen.
+foreldene. Det mangler data fra `r norskNA` pasienter og er eksludert i denne tabellen.
 
 
 ```{r}
@@ -373,7 +379,7 @@ tabOutMult
 
 # Blodtrykk
 
-Antall og andel pasienter med blodtrykk mellom 90-94 persentilen og >= 95 persentilen.
+Antall og andel pasienter med blodtrykk mellom 90-94 persentilen og >= 95 persentilen. Utregnet basert på data for alder, høyde, vekt, systolisk og diastolisk blodtrykk. 
 
 ```{r bloodTab}
 source("./analyse/blodtrykk.R")
@@ -385,6 +391,7 @@ tabOut
 
 
 # Kontinuerlig blodsukkermåling
+
 
 ```{r bsukmol}
 source("./analyse/bsukker.R")

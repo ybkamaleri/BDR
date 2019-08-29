@@ -61,4 +61,4 @@ for (j in seq_len(ncol(tabRaw))){
 giNavn <- c("", "> 50%", "< 50%", "ikke oppgitt", "bruker ikke")
 setnames(tabRaw, names(tabRaw), giNavn)
 
-tabOut <- exp.tabel(tabRaw, "Bruk av boluskalkulater: n(%)", ncol = 5, size = 0.9, total = 1, rowHeight = 0.025, mixCol = 2:5)
+tabOut <- exp.tabel(tabRaw, "Bruksfrekvens av boluskalkulater: n(%)", ncol = 5, size = 0.9, total = 1, rowHeight = 0.025, mixCol = 2:5)
