@@ -12,3 +12,9 @@
 huxtable-output.pdf
 /rapport/benchmark/test.pdf
 /rapport/benchmark/docs/libs/*
+/rapport/benchmark/benchrap.aux
+/rapport/benchmark/benchrap.fdb_latexmk
+/rapport/benchmark/benchrap.fls
+/rapport/benchmark/benchrap.out
+/rapport/benchmark/benchrap.toc
+/rapport/benchmark/header.tex
