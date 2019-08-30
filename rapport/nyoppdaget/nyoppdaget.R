@@ -294,22 +294,146 @@ ggsave("dkaFigurRHF.jpg", plot = dkaRHF, width = 15, height = 15, units = "cm")
 
 ## DKA Alvorlighet grad
 ## -----------------------
+## ## dt1[get(blo) > 11, dka := 1]
+## #Mild
+## dt1[get(kar) < 15, dka := 1]
+## dt1[get(ph) < 7.3, dka := 1]
+## dt1[, .N, by = dka]
+
+
+## ## Moderat
+## dt1[, dkaMod := NULL]
+## dt1[dka == 1 & get(kar) < 10, dkaMod := 1]
+## dt1[dka == 1 & get(ph) < 7.2, dkaMod := 1]
+## dt1[, .N, by = dkaMod]
+## dt1[dkaMod == 1, .N, by = agegp]
+
+
+
+
+## ## Alvorlig
+## dt1[, dkaAlvo := NULL]
+## dt1[dka == 1 & get(kar) < 5, dkaAlvo := 1]
+## dt1[dka == 1 & get(ph) < 7.1, dkaAlvo := 1]
+## dt1[, .N, by = dkaAlvo]
+## dt1[dkaAlvo == 1, c(ph, kar), with = FALSE]
+## dt1[dkaAlvo == 1, .N, by = agegp]
+
+
 ## dt1[get(blo) > 11, dka := 1]
 #Mild
-dt1[get(kar) < 15, dka := 1]
-dt1[get(ph) < 7.3, dka := 1]
-dt1[, .N, by = dka]
+dt1[, dkaGd := NULL]
+dt1[get(kar) < 15, dkaGd := 1]
+dt1[get(ph) < 7.3, dkaGd := 1]
 
 ## Moderat
-dt1[, dkaMod := NULL]
-dt1[dka == 1 & get(kar) < 10, dkaMod := 1]
-dt1[dka == 1 & get(ph) < 7.2, dkaMod := 1]
-dt1[, .N, by = dkaMod]
-
+dt1[get(kar) < 10, dkaGd := 2]
+dt1[get(ph) < 7.2, dkaGd := 2]
 
 ## Alvorlig
-dt1[, dkaAlvo := NULL]
-dt1[dka == 1 & get(kar) < 5, dkaAlvo := 1]
-dt1[dka == 1 & get(ph) < 7.1, dkaAlvo := 1]
-dt1[, .N, by = dkaAlvo]
-dt1[dkaAlvo == 1, c(ph, kar), with = FALSE]
+dt1[get(kar) < 5, dkaGd := 3]
+dt1[get(ph) < 7.1, dkaGd := 3]
+dt1[, .N, by = dkaGd]
+
+dt1[!is.na(dkaGd), {
+  n = .N;
+  pro = n / 109;
+  list(
+    n = n,
+    pro = pro
+  )
+}, by = agegp]
+
+dt1[!is.na(dkaGd), .N]
+
+## Mild
+dt1[dkaGd == 1, {
+  n = .N;
+  pro = n / 109 * 100;
+  list(
+    n = n,
+    pro = pro
+  )
+}, by = agegp]
+
+## Moderat
+dt1[dkaGd == 2, {
+  n = .N;
+  pro = n / 109 * 100;
+  list(
+    n = n,
+    pro = pro
+  )
+}, by = agegp]
+
+## Alvorlig
+dt1[dkaGd == 3, {
+  n = .N;
+  pro = n / 109 * 100;
+  list(
+    n = n,
+    pro = pro
+  )
+}, by = agegp]
+
+
+## Insidens
+norge <-  fread("~/avid/bdr/Personer1.csv", encoding = "Latin-1")
+names(norge)
+setnames(norge, names(norge)[4], "N")
+norge[, .N, by = kjønn]
+
+norgeBF <- norge[, sum(N)]
+norgeBF
+
+## Anntall 2018 med td1 under 15 år
+diab017  <- 96 + 586 + 1222
+DTA[alder < 15, .N]
+diab017
+
+
+
+
+denomN <- norgeBF - diab017
+denomN
+
+antallAlder <- DTA[, .N, by=.(agecat,agekat)]
+saveRDS(antallAlder, "antallPerAlder.rds")
+
+dt1N <- dt1[alder < 15, .N]
+dt1N
+
+Insidens <- dt1N / denomN * 100000
+
+norge[kjønn %like% "Menn", kjonn := 1]
+norge[kjønn %like% "Kvinner", kjonn := 2]
+norge[, .N, by = kjonn]
+
+norge
+norge[, kk := .I, by = kjønn]
+norge[kk %in%  1:5, age := 1]
+norge[kk %in%  16:20, age := 1]
+norge[kk %in%  6:10, age := 2]
+norge[kk %in%  21:25, age := 2]
+norge[kk %in%  11:15, age := 3]
+norge[kk %in%  26:30, age := 3]
+norge[, .N, by = age]
+
+norge[, nage := sum(N), by = .(kjonn, age)]
+## saveRDS(norge, "befolkning0_14.rds")
+## Previous pasienter som er allerede syke
+age15 <- antallAlder[agekat != 4, ]
+age15
+insDTraw <- merge(age15, norge, by.x = "agekat", by.y = "age")
+insDTraw[, demon := nage - N.x]
+insDTraw
+
+
+nydd <-  dt1[, .N, by = agegp]
+nydd[, kode := .I]
+nydd <- nydd[kode != 4, ]
+nydd
+
+insDT  <- merge(insDTraw, nydd, by.x = "agekat", by.y = "kode")
+saveRDS(insDT, "insidensAge.rds")
+insDT[, ins := N / demon * 100000, by = .(agekat, kjonn)]
