@@ -41,6 +41,14 @@ library(rreg)
 ggsave("figAntall.jpg")
 
 
+## Felles Var
+demoVar <-  c("PasientID", "Pnr", "hospital", "hospID", "hosKort", "Kjonn", "alder", "inn_DiagDato")
+
+## diabetes variabler
+diabetesVar = c("diabetes_Type1", "diabetes_Type2", "diabetes_Mody", "diabetes_Kir62", "diabetes_SekDiabetes", "diabetes_AnnenDiabetes", "diabetes_UkjentDiabetes")
+
+
+
 ## Antall generell
 ##--------------------
 diabDT <- DTtype(DT)
@@ -48,9 +56,11 @@ diabDT <- DTtype(DT)
 dim(diabDT)
 diabDT[, .N, by = diabType]
 
+## Har ingen diagnose registeret
 utDT <- DT[!diabDT, on = .(Pnr, hospID)] #De uten DT type
 dim(utDT)
 utDT[, c(demoVar, diabetesVar, "FNavn"), with = F]
+
 
 hosp.diab <- groupingsets(diabDT,
   j = .(
@@ -61,6 +71,8 @@ hosp.diab <- groupingsets(diabDT,
   ),
   by = c("hosKort"),
   sets = list(c("hosKort"), character(0)))
+
+hosp.diab
 
 hosp.dttot <- cube(diabDT, .(antall = sum(!is.na(dbtype))),
   by = c("hosKort"))
@@ -120,7 +132,7 @@ ggsave("alder_fig.jpg", plot = AlderFig, width = 15, height = 8, units = "cm")
 
 
 ## Alder i grupperinger og antall
-DT[, agegp := ageCat(alder, 0, 15, 5), by = Pnr]
+## DT[, agegp := ageCat(alder, 0, 15, 5), by = Pnr]
 rollup(DT, j = .(n = .N), by = "agegp")
 
 
@@ -313,3 +325,142 @@ dt1[dka == 1 & get(kar) < 5, dkaAlvo := 1]
 dt1[dka == 1 & get(ph) < 7.1, dkaAlvo := 1]
 dt1[, .N, by = dkaAlvo]
 dt1[dkaAlvo == 1, c(ph, kar), with = FALSE]
+
+
+## Insidence for 0 - 14 yrs
+##----------------------------
+norgeAll <- readRDS(file.path(dataSti, "befolkning0_14.rds"))
+insDT <- readRDS(file.path(dataSti, "insidensAge.rds"))
+insData <- readRDS(file.path(dataSti, "Insidens2018data.rds"))
+## insDT[, kk := NULL]
+## insDT[, c("agegp", "N") := NULL]
+## saveRDS(InsDDT, file.path(dataSti, "insidensAge.rds"))
+## saveRDS(norgeAll, file.path(dataSti, "befolkning0_14.rds"))
+## names(insDT)
+## setnames(insDT, c("N.x", "N.y", "nage", "demon"), c("agegpDT", "ageNok", "agegpTot", "agegpDenom"))
+## setnames(insDT, "agegpDT", "ageKjonn")
+insDT
+
+## setkeyv(insDT, c('kjonn', 'agekat'))
+
+insGutt <- insDT[kjonn == 1, ][!duplicated(agekat), ]
+insJente <- insDT[kjonn == 2, ][!duplicated(agekat), ]
+
+dt1[, .N, by = .(Kjonn, agegp)]
+
+## Alle DT1 for 2018 for å beregne insidensen
+dt1[, .N, by = .(agegp)]
+dt1[, .N, by = .(Kjonn, agegp)]
+
+dt12018fra0_14 <- rollup(dt1[agegp != "15+"],
+  j = .(
+    N = .N
+  ), by = c("Kjonn", "agegp"))
+
+dt12018fra0_14
+dt12018fra0_14[is.na(agegp) & Kjonn == 'Jente', agegp := "Alle"] #Total jente
+dt12018fra0_14[is.na(agegp) & Kjonn == 'Gutt', agegp := "Alle"] #Total gutt
+dt12018fra0_14[is.na(agegp), agegp := "Alle"] #Total
+dt12018fra0_14[is.na(Kjonn), Kjonn := "Total"]
+dt12018fra0_14[Kjonn == "Gutt", kjonn := 1] %>%
+  .[Kjonn == "Jente", kjonn := 2]
+dt12018fra0_14[.(agegp = c("0-4", "5-9", "10-14"), to = 1:3), on = "agegp", agekat := i.to]
+dt12018fra0_14[is.na(agekat) & kjonn  %in%  1:2, agekat := 5] #for total
+setkeyv(dt12018fra0_14, c("kjonn", "agekat"))
+
+
+## Fra Årskontroll 2018
+DTars <- readRDS(file.path(dataSti, "dt2018medBlodTrykk.RDS"))
+DTars[, .N, by = .(agekat)]
+DTars[, .N, by = .(Kjonn, agekat)]
+
+all2018fra0_14 <- rollup(DTars[agekat != 4],
+  j = .(
+    N = .N
+  ), by = c("Kjonn", "agekat"))
+
+all2018fra0_14
+all2018fra0_14[is.na(agekat) & Kjonn == 'Jente', agekat := 5] #Total jente
+all2018fra0_14[is.na(agekat) & Kjonn == 'Gutt', agekat := 5] #Total gutt
+all2018fra0_14[is.na(agekat), agekat := 5] #Total
+all2018fra0_14[is.na(Kjonn), Kjonn := "Total"]
+all2018fra0_14[Kjonn == "Gutt", kjonn := 1] %>%
+  .[Kjonn == "Jente", kjonn := 2]
+setkeyv(all2018fra0_14, c('kjonn', 'agekat'))
+
+
+## Merge insidens data
+InsGutt <- merge(insGutt, all2018fra0_14[kjonn == 1, ], by = "agekat")
+igutt <- merge(InsGutt, dt12018fra0_14[kjonn == 1, ], by = "agekat")
+setnames(igutt, c("agegpTot", "N.x", "N.y"), c("ageKjonn", "agegp2018", "ageNyopp"), skip_absent = TRUE)
+igutt[]
+# agegpDT -
+
+dt12018fra0_14
+
+insJente
+
+norgeAll
+setkeyv(norgeAll, c("kjonn", "age"))
+
+## sum per kjønn
+setkeyv(norgeAll, c("kjonn", "age"))
+norgeAll[, nkjonn := sum(N), by = kjonn]
+norgeAll[, nagegp := sum(N), by = .(kjonn, age)]
+
+all2018fra0_14
+InsDT <- all2018fra0_14[norgeAll]
+setkeyv(InsDT, c("kjonn", "agekat"))
+InsDDT <- dt12018fra0_14[InsDT]
+
+toChg <- c("N", "i.N", "i.N.1", "nage", "nkjonn")
+nyChg <- c("nDT1", "nUt", "ageN", "agegpN", "kjonnN")
+setnames(InsDDT, toChg, nyChg)
+InsDDT[, c("i.Kjonn", "kjønn") := NULL]
+
+
+## Lager denominator
+InsDDT <- insDT
+InsDDT
+InsDDT[, id := as.numeric(paste0(kjonn, agekat))]
+InsDDT[, agegpD := agegpN - nUt] #agegroup denominator
+
+InsDDT[!duplicated(id), utKjonn := sum(nUt), by = .(kjonn)]
+InsDDT[!duplicated(id), kjonnD := kjonnN - utKjonn, by = kjonn] #agegroup denominator
+
+## sum insidense per kjønn
+## ------------------------
+InsDDT[!duplicated(id), nKjonn := sum(nDT1), by = kjonn]
+InsDDT
+
+
+## bort irrelevant column
+insData <- InsDDT[!duplicated(id)]
+saveRDS(insData, file.path(dataSti, "Insidens2018data.rds"))
+insData
+
+insData[, `:=`(
+  insAge = nDT1 / agegpD * 100000,
+  insKjonn = nKjonn / kjonnD * 100000
+)]
+
+insData
+
+tabIns <- insData[, .(Kjonn, agegp, insAge, insKjonn)]
+selvar <- c('insAge', 'insKjonn')
+tabIns[, lapply(.SD, function(x) round(x, digits = 1)), .SDcols = selvar]
+tabIns[, (selvar) := lapply(.SD, function(x) round(x, digits = 1)), .SDcols = selvar]
+tabIns
+
+tabhux <- as_hux(tabIns, add_colnames = TRUE) %>%
+  set_bottom_border(1,, TRUE)
+quick_docx(tabhux)
+quick_pdf(tabhux, file = "insidense.pdf")
+## norgeAll
+## norgeAll[kjonn == 1, Nage := sum(N), by = age]
+## norgeAll[kjonn == 2, Nage := sum(N), by = age]
+## norgeAll[, kjN := sum(N), by = kjonn]
+
+## InsDDT
+## gutt = 50 + 321 + 634
+## 481709 - gutt
