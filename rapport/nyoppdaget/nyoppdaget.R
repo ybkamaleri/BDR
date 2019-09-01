@@ -13,9 +13,9 @@ DT <- readRDS(file.path(dataSti, "nyoppdaget20180830.rds"))
 
 dim(DT)
 
-## ## Annonym pasienter fra tilbakemelding fra sykehus
-DT[FNavn == 'Annonym', annonym := 1]
-DT[Pnr == 11070897565, annonym := 1]
+## ## ## Annonym pasienter fra tilbakemelding fra sykehus
+## DT[FNavn == 'Annonym', annonym := 1]
+## DT[Pnr == 11070897565, annonym := 1]
 
 DT[, .N, by = annonym]
 DT[, .N, by = agegp]
