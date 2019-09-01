@@ -379,7 +379,6 @@ dt1[dkaGd == 2, {
 }, by = agegp]
 
 ## Alvorlig
-<<<<<<< HEAD
 dt1[dkaGd == 3, {
   n = .N;
   pro = n / 109 * 100;
