@@ -160,7 +160,10 @@ sykort <- sykehusList[["hosKort"]]
 sykID <- data.table(hosKort = sykort)
 sykID[, id := .I]
 sykID
-sykID[id == 1, fylkeid := 2] %>%
+
+## Gir Diabetes data fylkes id
+DT2018[, id := hospID]
+DT2018[id == 1, fylkeid := 2] %>%
   .[id == 2, fylkeid := 9] %>%
   .[id == 3, fylkeid := 18] %>%
   .[id == 4, fylkeid := 6] %>%
@@ -186,6 +189,8 @@ sykID[id == 1, fylkeid := 2] %>%
   .[id == 24, fylkeid := 7] %>%
   .[id == 25, fylkeid := 15] %>%
   .[id == 26, fylkeid := 1]
+
+DT2018[, id := NULL]
 
 idFylker <- sykID[fylkeList, on = c(fylkeid = "fylke")]
 sykFylker <- sykehusList[idFylker, on = "hosKort"]
