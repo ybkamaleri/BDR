@@ -177,11 +177,11 @@ width(kar.htab) <- 0.6
 kar.htab
 ```
 
-## Nasjonalitet {-}
+## Etnisitet {-}
 
-Nasjonalitet er definert etter hvor barnets foreldre er født. Er en eller begge
+Etnisitet er definert etter hvor barnets foreldre er født. Er en eller begge
 foreldrene født i et av de nordiske landene kategoriseres barnet som Nordisk. I det
-tilfelle hvor informasjon om nasjonalitet ikke finnes blir dette kategorisert som
+tilfelle hvor informasjon om etnisitet ikke finnes blir dette kategorisert som
 *ukjent*. Antall og andel for nasjonalitet delt på kjønn er som følgende:
 
 

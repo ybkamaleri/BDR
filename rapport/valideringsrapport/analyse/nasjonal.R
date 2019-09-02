@@ -35,12 +35,15 @@ nordBarn[.(nordkid = 1L:2L, to = 1L), on = "nordkid", nordiskBarn := i.to]
 ## nordBarn[nordkid %in% 1:2, nordkid := 1]
 
 ## Barns nasjonalitet
-nordBarn[, nasj := trimws(nasj)]
-nordnasj <- c("Norsk", "norsk", "Dansk", "dansk", "Finsk", "Svensk", "svensk", "Island", "Islandsk")
-nordBarn[, barnNasj := ifelse(nasj %in% nordnasj, 1L, 0L)]
+## nordBarn[, nasj := trimws(nasj)]
+## nordnasj <- c("Norsk", "norsk", "Dansk", "dansk", "Finsk", "Svensk", "svensk", "Island", "Islandsk")
+## nordBarn[, barnNasj := ifelse(nasj %in% nordnasj, 1L, 0L)]
 
-## Mix barn og sine foreldre nasjonalitet, hvis missing bruk barns sitt.
-nordBarn[is.na(nordiskBarn), nordiskBarn := barnNasj, by = PasientID]
+## ## Mix barn og sine foreldre nasjonalitet, hvis missing bruk barns sitt.
+## nordBarn[is.na(nordiskBarn), nordiskBarn := barnNasj, by = PasientID]
+
+## Ikke nordisk
+nordBarn[nordkid == 0, nordiskBarn := 0]
 
 # ukjent nasjonalitet
 nordBarn[is.na(nordiskBarn), nordiskBarn := 3]
