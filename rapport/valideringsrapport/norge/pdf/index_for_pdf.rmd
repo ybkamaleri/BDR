@@ -1,0 +1,516 @@
+---
+title: "BDR: Nasjonale tall"
+subtitle: "Årskontroller for data innsamlet i 2018 for hele landet"
+author: "https://bdreg.github.io"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+subtitle: "Årskontroller for data innsamlet i 2018 for hele landet"
+documentclass: book
+site: bookdown::bookdown_site
+header-includes:
+- \usepackage{booktabs}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage{wrapfig}
+- \usepackage{float}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+- \usepackage{threeparttablex}
+- \usepackage[normalem]{ulem}
+- \usepackage{makecell}
+- \usepackage[T1]{fontenc}
+- \usepackage{geometry}
+- \geometry{a4paper, total={6in,8in},}
+- \usepackage[utf8]{inputenc}
+- \renewcommand{\figurename}{Figur}
+- \renewcommand{\tablename}{Tabell}
+- \renewcommand{\contentsname}{BDR Nasjonale tall}
+- \usepackage{titling}
+- \pretitle{\begin{center}\LARGE\includegraphics[width=6cm]{logo.png}\\[\bigskipamount]}
+- \posttitle{\end{center}}
+output:
+  bookdown::gitbook:
+    split_by: section
+    download: ["pdf"]
+    config:
+      toc:
+        collapse: subsection
+        before: |
+          <li><a href="http://bdreg.github.io"><strong>Hjem</strong></a></li>
+        after: |
+          <li><a href="https://bdreg.github.io/rapport" target="blank"><em>Tilbake til sykehusliste</em></a></li>
+  bookdown::pdf_document2:
+    keep_tex: no
+    toc: yes
+---
+
+
+```{r setup1, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.pos = 'H')
+
+## upload functions
+source("./analyseNorge/funksjon.R")
+```
+
+```{r datainn1, include=F}
+inspak <- function(pkg){
+  nypkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(nypkg)) install.packages(nypkg, repos = "http://cran.rstudio.com")
+  sapply(pkg, require, character.only = TRUE)
+}
+
+pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf","huxtable", "dplyr", "kableExtra", "bookdown", "rreg", "colorspace", "pier", "plotly")
+
+inspak(pkgs)
+
+## EMACS
+dataSti <- "~/avid/bdr"
+## ars2018raw <- readRDS(file.path(dataSti, "validert_arskontroll2018_yb.rds"))
+## Load all data
+
+ars2018 <- readRDS(file.path(dataSti, "dt2018medBlodTrykk.RDS"))
+
+## hospital koder
+hospKoder <- unique(ars2018$hospID)
+
+## Blodtrykk kobling
+## bpp <- readRDS(file.path(dataSti,"bloodpressure.RDS"))
+## bpSub <- subset(bpp, select = c("id", "stage"))
+## ars2018 <- merge(ars2018raw, bpSub, by.x = "Pnr", by.y = "id", all.x = TRUE)
+
+
+## data type1 fra 2007 - 2017
+bdrB4 <- readRDS(file.path(dataSti, "allBDRtype1.rds"))
+
+## Data for type1 hele landet
+ars2018dt1 <- subset(ars2018, hospID != 5 & diabetes_Type1 == "Ja")
+
+## Farge valg
+## install.packages("colorspace", repos = "http://R-Forge.R-project.org")
+## hcl_palettes(plot = TRUE) #får å se mulige fargevalg pallettes
+valgCol <- sequential_hcl(4, "Blues 3")
+
+## Dato
+valgDato <- Sys.Date()
+
+## For input tekst
+hospTitle <- "hele landet"
+pdfTitle <- "Norge"
+
+## Disse objektnavn brukes i analysene
+## Norge
+lokal2018 <- ars2018
+
+## diabetes Type 1
+lok2018dt1 <- subset(ars2018, hospID != 5 & diabetes_Type1 == "Ja")
+
+```
+
+
+
+```{r test2, eval=F, include=F }
+## Tilgang til K sensitivt
+inspak <- function(pkg){
+  nypkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(nypkg)) install.packages(nypkg, dependencies = TRUE, repos = "http://cran.rstudio.com")
+  sapply(pkg, require, character.only = TRUE)
+}
+
+pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf", "huxtable")
+
+inspak(pkgs)
+
+## Setup
+## -------
+# source(file.path(kilde, "setup.R", fsep = "\\"))
+## Hente data for årskontroll 2018
+## --------------------------------
+# dt2018 <- readRDS(file.path("../.."), "validert_arskontroll2018.rds")
+dataSti <- "K:\\Sensitivt\\Forskning02\\Barnediabetesregisteret_2015-5739\\Barnediabetes og kvalitet\\Datafiler\\2018"
+ars2018 <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds", fsep = "\\"))
+```
+
+```{r keyinn}
+antall.pas <- dim(ars2018)[1]
+```
+
+\newpage
+
+
+## Typer diabetes {-}
+
+
+```{r diabtype2}
+source("./analyseNorge/type_diabetes.R")
+pros.syk <- round((antall.lokal / antall.pas) * 100, digits = 1)
+```
+Antall registerte pasienter med diabetes (alle typer) for `r hospTitle` er **`r antall.lokal`** pasienter. Dette tilsvarer `r pros.syk` prosent av total
+antall registerte pasienter i hele landet som har tatt årskontroll i 2018 dvs. **`r antall.pas`** pasienter. Antall pasienter for de forskjellige diabetes typer fordelt på kjønn for `r hospTitle` er som følgende:
+
+
+```{r diabetes2, eval=F}
+if (knitr::is_html_output()){
+  kable(diab.lokal, format = "html") %>%
+    kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    row_spec(3, bold = T, color = "black", background = "#c0c0c0")
+}
+
+## if (knitr::opts_knit$get('rmarkdown.pandoc.to') == "latex"){
+##   kable(diab.nasj)
+## }
+
+if (knitr::is_latex_output()){
+##   kable(diab.nasj, format = "latex", booktabs = T) %>%
+##     kable_styling(latex_options = "striped")
+  kable(diab.lokal, "latex", booktabs = T) %>%
+    kable_styling(latex_options = "striped") %>%
+    row_spec(3, bold = T, color = "black", background = "#c0c0c0")
+}
+```
+
+```{r huxtabdt2, eval=T, echo=F}
+hTB <- as_hux(diab.lokal, add_colnames = TRUE)
+## caption(hTB) <- "Antall pasienter med alle type diabetes"
+
+hTB <- hTB %>%
+  set_bottom_border(1,, TRUE) %>%
+  set_bold(1,, TRUE) %>%
+  set_bold(4,, TRUE) %>%
+  set_top_border(4,, TRUE) %>%
+  map_background_color(by_rows("grey95", "white"))
+
+width(hTB) <- 0.6
+latex_float(hTB) <- 'H'
+hTB
+
+```
+
+***Videre analyser inkludere KUN pasienter med Type 1 diabetes.  Helgelandssykehuset
+avd. Sandessjøen har bare en pasient til årskontroll og er også tatt ut fra videre
+analyser (n = `r dim(lok2018dt1)[1]`)***
+
+\newpage
+
+
+## HbA1c {-}
+
+```{r innhba2, include=FALSE}
+source("./analyseNorge/mean_hba1c.R")
+
+## hbaNorge <- bdrB4[yr == 2018, mean(hba1c, na.rm = TRUE)]
+
+```
+
+Figuren viser gjennomsnitts HbA1c målt sentralt på Aker, OUS fordelt på kjønn for perioden fra 2007 til 2018. Analysen inkluderer kun Type 1 diabetes (N = `r alleN`). Gjennomsnitt HbA1c for `r hospTitle` i 2018 er **`r alleHb`** for alle pasienter. Gutter har `r guttHb` (n=`r guttN`) og jenter har `r jenteHb` (n=`r jenteN`).
+
+```{r hba1c2, echo=F}
+if (knitr::is_latex_output()) plotHbc
+if (knitr::is_html_output()) plotHbcWidget
+
+```
+\newpage
+
+## HbA1c og alder {-}
+
+```{r hbaData2}
+source("./analyseNorge/hba1cAge.R")
+```
+
+Tabellen viser HbA1c målt ved OUS, Aker for `r hospTitle` inndelt i aldersgrupper. **`r hbN`** pasienter har HbA1c data.
+
+```{r hbaTabell2}
+latex_float(outTab) <- "H"
+outTab
+```
+
+
+## Pasient-karakteristika {-}
+
+Pasient karakteristika for alle med diabetes type 1 (n = `r dim(lok2018dt1)[1]`) vises i tabellen nedenfor. Antall pasienter kan variere pga. manglende data.
+
+```{r paskar}
+source("./analyseNorge/karakter.R")
+
+lastLine <- dim(kar.tab)[1] + 1
+
+kar.htab <- as_hux(kar.tab, add_colnames = TRUE)
+
+kar.htab <- kar.htab %>%
+  set_bottom_border(1,, TRUE) %>%
+  set_bold(1,, TRUE) %>%
+  set_bottom_border(lastLine,, TRUE) %>%
+  map_background_color(by_rows("grey95", "white")) %>%
+  set_position("left")
+
+width(kar.htab) <- 0.6
+latex_float(kar.htab) <- "H"
+kar.htab
+```
+
+\newpage
+
+## Etnisitet {-}
+
+Etnisitet er definert etter hvor barnets foreldre er født. Er en eller begge
+foreldrene født i et av de nordiske landene kategoriseres barnet som Nordisk. I det
+tilfelle hvor informasjon om etnisitet ikke finnes blir dette kategorisert som
+*ukjent*. Antall og andel for nasjonalitet delt på kjønn er som følgende:
+
+
+```{r nasjonal2, warning=FALSE, message=FALSE}
+source("./analyseNorge/nasjonal.R")
+latex_float(utTabell) <- "H"
+tabOut
+## lastLine <- dim(barnWt)[1] + 1
+
+## nas.htab <- as_hux(barnWt, add_colnames = TRUE)
+
+## nas.htab <- nas.htab %>%
+##   set_bottom_border(1,, TRUE) %>%
+##   set_bold(1,, TRUE) %>%
+##   set_bottom_border(lastLine,, TRUE) %>%
+##   map_background_color(by_rows("grey95", "white")) %>%
+##   set_position("left")
+
+## width(nas.htab) <- 0.7
+## nas.htab
+```
+
+\newpage
+
+## Kompletthet {-}
+
+Figuren viser antall og andel kompletthet av noen utvalgte variabler. For *fysisk
+aktivitet* regner vi kompletthet på alle pasienter fra og med 6 år og eldre.
+
+```{r komplett2, fig.height=4}
+source("./analyseNorge/kompletthet.R")
+fig.komp
+```
+
+\newpage
+
+## Undersøkelser utført {-}
+
+Tabellen nedenfor viser antall og andel undersøkelser utført siste året.
+
+```{r undersk2}
+source("./analyseNorge/undersokelse.R")
+latex_float(und.htab) <- "H"
+und.htab
+```
+
+## ISPAD guidelines {-}
+
+```{r ispad1}
+source("./analyseNorge/ispadguide.R")
+```
+
+Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelines
+(2014) som spesifiserer at pasienter som er 10 år eller eldre med 2 års
+diabetesvarighet eller yngre enn 10 år med 5 års diabetesvarighet (N = `r ispadN`).
+
+```{r ispad200}
+width(isp.htab) <- 0.7
+latex_float(isp.htab) <- "H"
+isp.htab
+```
+\newpage
+
+## Blodtrykk {-}
+
+```{r bp-data2}
+source("./analyseNorge/blodtrykk.R")
+```
+
+Det er **`r pbValid`** pasienter som har komplett data for *alder, høyde, vekt,
+blodtrykk systolisk* og *blodtrykk diastolisk*. Tabellen nedenfor viser fordelingen
+av pasienter med blodtrykk mellom 90 og 94 persentil og pasienter med blodtrykk mer
+eller lik 95 persentil. Analysen inkluderer bare pasienter f.o.m 2 år og eldre.
+
+```{r bp2}
+width(bp.htab) <- 0.8
+latex_float(bp.htab) <- "H"
+bp.htab
+```
+
+## Lipider {-}
+
+```{r lipdata2}
+source("./analyseNorge/lipider.R")
+```
+Tabellen nedenfor gir antall og andel over følgende spesifisert grense hvor N er antall registrerte pasienter:
+
+- **Total kol.** (N = `r lipTab$tklN[1]`) referer til total kolesterol f.o.m 5 mmol/l eller mer.
+- **HDL** (N = `r lipTab$hdlN[1]`) referer til HDL-kolesterol mindre enn 1 mmol/l
+- **LDL 2** (N = `r lipTab$ldlN[1]`) referer til LDL-kolesterol f.o.m 2.6 mmol/l eller mer.
+- **LDL 3** (N = `r lipTab$ldlN[1]`) referer til LDL-kolesterol mer enn 3 mmol/l
+- **Triglycerider** (N = `r lipTab$trigN[1]`) referer til triglycerider mer enn 2.5 mmol/l
+
+```{r liptabell2}
+lastLine <- nrow(lipTabell) + 1
+lip.htab <- as_hux(lipTabell, add_colnames = TRUE)
+
+lip.htab <- lip.htab %>%
+  set_bold(1,, TRUE) %>%
+  set_bold(lastLine,, TRUE) %>%
+  set_bottom_border(1,, TRUE) %>%
+  set_top_border(lastLine,, TRUE) %>%
+  set_align(, 2:5, "right") %>%
+  map_background_color(by_rows("grey95", "white")) %>%
+  set_position("left") %>%
+  set_latex_float("h") %>%
+  set_col_width(value = c(2.5, 1.5, 1.5, 1.5, 1.5, 1.5)) %>%
+  set_width(0.8)
+
+latex_float(lip.htab) <- "H"
+lip.htab
+
+```
+
+
+## Diabetes ketoacidose (DKA) {-}
+
+Antall og andel for akutt komplikasjoner i 2018 delt i aldersgrupper. N er antall pasienter med data.
+
+```{r dka2, warning=F}
+source("./analyseNorge/dka.R")
+
+latex_float(dkaTabell) <- "!h"
+dkaTabell
+```
+
+\newpage
+
+## Insulinsjokk {-}
+
+Antall og andel pasienter som har hatt insulinsjokk i 2018 delt i aldersgrupper. N er antall pasienter med data.
+
+```{r insj2, warning=F}
+source("./analyseNorge/insulinsjokk.R")
+latex_float(insjTabell) <- "H"
+insjTabell
+```
+
+## Føling {-}
+
+Antall og andel pasienter f.o.m 5 år og eldre som har hatt føling med behov for hjelp
+siste 4 uker. N er antall pasienter med data.
+
+```{r foling2, warning=F}
+source("./analyseNorge/foling.R")
+latex_float(folTabell) <- "H"
+folTabell
+```
+
+\newpage
+
+## Helsetjenester {-}
+
+Tabellen viser gjennomsnittlig bruk av helsetjenester i 2018. I tillegg viser det
+også medianen og maksimal bruk av helsetjenester. Missing data defineres som at pasienter
+ikke hadde konsultasjon det siste året. For å ha informasjon angående antall missing
+ligger dataene under *ubesvart* i tabellen nedenfor.
+
+```{r helse2}
+source("./analyseNorge/helsetjeneste.R")
+left_border(utTabell)[, 6] <- 0.4
+latex_float(utTabell) <- "H"
+utTabell
+```
+
+\newpage
+
+## Insulinbehandling {-}
+
+```{r insbehraw2}
+source("./analyseNorge/insulinbeh.R")
+```
+
+Totalt pasienter som har data på insulinbehandling er `r behNtot`. Av disse bruker 
+`r insN` pasienter (`r insPros`%) insulinpumper og `r multN` pasienter (`r multPros`%)
+ multiinjeksjon (pennbehandling).
+ 
+
+```{r pieut2, fig.cap="insulinbehandling", out.extra='', fig.hight=4, fig.width=4}
+if (knitr::is_html_output()) utPieHtml
+if (knitr::is_latex_output()) utPieLtx
+```
+
+\newpage
+
+## Insulindose {-}
+
+Tabellen nedenfor viser gjennomsnittlig antall enheter
+insulin pr.kg/døgn fordelt i aldersgrupper. Analysen inkluderer bare de som har
+data på kroppsvekt og insulindose.
+
+```{r insbeh3}
+latex_float(outTab) <- "H"
+outTab
+```
+
+For å beregne *insulindose*, følgende formel brukes:
+
+$$\frac{1}{kg}*\displaystyle{\sum_{i=1}^n x_i}$$
+
+$x_i$ = Antall enheter insulin
+
+$kg$ = Kroppsvekt (pr.kg/døgn)
+
+
+\newpage
+
+## Type pumpe {-}
+
+```{r pump_data007}
+source("./analyseNorge/pumpe.R")
+```
+
+Tabell som viser antall og andel av type pumpe som blir brukt. Total pasienter med
+registerte data er `r nPump`, mens det mangler data fra `r mispump` pasienter.
+
+```{r pumpe_tab007}
+latex_float(outTab) <- "H"
+outTab
+```
+
+\newpage
+
+## Boluskalkulator {-}
+
+Tabell viser antall og andel pasienter som bruker og ikke bruker boluskalkulator. For pasienter som bruker boluskalkulator blir det også delt til brukfrekvenser. Gjennomsnitt og medianen for HbA1c er også sammenliknes til disse.
+
+```{r bolus007}
+source("./analyseNorge/bolus.R")
+latex_float(outTab) <- "H"
+outTab
+```
+
+## Annen type behandling {-}
+
+Antal og andel pasienter som bruker annen type behandling.
+
+```{r annbeh007}
+source("./analyseNorge/annenbeh.R")
+latex_float(outTab) <- "H"
+outTab
+```
+
+\newpage
+
+## Andre kjente sykdommer {-}
+
+Tabellen viser antall og andel pasienter med andre kjente sykdommer.
+
+```{r sykdom007}
+source("./analyseNorge/sykdom.R")
+latex_float(outTab) <- "H"
+outTab
+```
+
+
+
+
