@@ -14,6 +14,7 @@ DT <- readRDS(file.path(dataSti, "dt2018medBlodTrykk.RDS"))
 ## Load all data nyoppdaget
 DTny <- readRDS(file.path(dataSti, "nyoppdaget20180830.rds"))
 
+
 ## Norsk befolkningsdata
 norskBF <- readRDS("norskbefolkingUnd19.Rds")
 fylkeList <- norskBF[, .N, by = .(region, fylke)][, N := NULL][]
