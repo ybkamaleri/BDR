@@ -1,11 +1,15 @@
 ## nasjonalitet og kjønn
 ## ---------------------
-
-nordLand <- c("Norge", "Danmark", "Finland", "Sverige", "Island")
+## Definition: Land hvor minst en av foreldrene er født,
+## hvis missing bruk barnes nasjonalitet
 
 ## Data kilder
 nasDT <- lok2018dt1
 
+## Nordiske land
+nordLand <- c("Norge", "Danmark", "Finland", "Sverige", "Island")
+
+## Nasjonalitet variabler - Nasjonalitet, mor- og farfødeland
 nasDT[!is.na(fodelandMor) , nordiskMor := ifelse(fodelandMor %in% nordLand, 1L, 0L)]
 nasDT[!is.na(fodelandFar) , nordiskFar := ifelse(fodelandFar %in% nordLand, 1L, 0L)]
 
@@ -14,19 +18,32 @@ nasDT[!is.na(fodelandFar) , nordiskFar := ifelse(fodelandFar %in% nordLand, 1L, 
 ## nasDT[, .N, by=.(nordiskFar)]
 
 nordBarn <- nasDT[, {mor = ifelse(is.na(nordiskMor), 0, nordiskMor);
-  far = ifelse(is.na(nordiskFar), 0, nordiskFar);
+  far = ifelse(is.na(nordiskFar), 0L, nordiskFar);
   barn = mor + far;
   nordiskBarn = ifelse(is.na(nordiskMor) & is.na(nordiskFar), NA, barn);
   list(barn = barn,
-    nordiskBarn = nordiskBarn,
+    nasj = Nasjonalitet,
+    barnland = FodeLand,
+    nordkid = as.integer(nordiskBarn),
     mor = nordiskMor,
     far = nordiskFar,
     kjonn = Kjonn,
     PasientID = PasientID
   )}]
 
-nordBarn[.(nordiskBarn = 1:2, to = 1), on = "nordiskBarn", nordiskBarn := i.to]
-# nordBarn[nordiskBarn %in% 1:2, nordiskBarn := 1]
+nordBarn[.(nordkid = 1L:2L, to = 1L), on = "nordkid", nordiskBarn := i.to]
+## nordBarn[nordkid %in% 1:2, nordkid := 1]
+
+## Barns nasjonalitet
+## nordBarn[, nasj := trimws(nasj)]
+## nordnasj <- c("Norsk", "norsk", "Dansk", "dansk", "Finsk", "Svensk", "svensk", "Island", "Islandsk")
+## nordBarn[, barnNasj := ifelse(nasj %in% nordnasj, 1L, 0L)]
+
+## ## Mix barn og sine foreldre nasjonalitet, hvis missing bruk barns sitt.
+## nordBarn[is.na(nordiskBarn), nordiskBarn := barnNasj, by = PasientID]
+
+## Ikke nordisk
+nordBarn[nordkid == 0, nordiskBarn := 0]
 
 # ukjent nasjonalitet
 nordBarn[is.na(nordiskBarn), nordiskBarn := 3]
@@ -43,6 +60,9 @@ nasAgg <- groupingsets(nordBarn,
     c("kjonn"),
     character(0)
   ))
+
+## Ingen Ukjent?
+noUkjent <- nasAgg[is.na(kjonn), ukjent == 0]
 
 ## Totalt
 nasAgg[is.na(kjonn), kjonn := "Totalt"]
@@ -93,7 +113,10 @@ barnWt <- nasAgg
 ## Kjønn skal være fleretall
 barnWt[.(kjonn = c("Gutt", "Jente"), to = c("Gutter", "Jenter")), on = "kjonn", kjonn := i.to]
 
+## Tar bort kolonne "Ukjent" hvis totalen er 0
+if (noUkjent) barnWt[, Ukjent := NULL]
 
+## Gir kollonnavn
 if (colN == 5) {
   ## reorder columns
   setcolorder(barnWt, c(kol1, koln, kol2, kol3, kol4))
