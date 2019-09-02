@@ -68,10 +68,16 @@ fylkeSykId <- readRDS("sykehusFylker.Rds")
 fylkeSykId
 
 ## Join fylke til sykehus
+sykehusList
 SykFylkeAlle <- fylkeSykId[sykehusList, on = "hospID"]
+SykFylkeAlle[, fylke := fylkeid]
 SykFylkeAlle
 saveRDS(SykFylkeAlle, "FylkeSykehus.Rds")
 
 
 
-FylkeSykhus <- SykFylkeAlle[norskBF, on = c(fylkeid = "fylke")]
+## Merge DTs må skjer bare for Sykehus ID fordi fylkes nivå ikke er unik
+tbls <- list(norskBF, SykFylkeAlle)
+lapply(tbls, function(i) setkey(i, fylke))
+
+mergedDT <- Reduce(function(...) merge(..., all = T), tbls)
