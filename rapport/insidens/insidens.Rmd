@@ -278,11 +278,11 @@ Antall barn med diabetes av alle typer per 10 000 *ins10*.
 
 ```{r}
 
-insDT <- dtFD[NokBF, on = c(fylkeid = "fylke")]
-insDT[, ins10 := N / i.N * 10000] %>%
-  .[, ins := N / i.N * 100]
+preDT <- dtFD[NokBF, on = c(fylkeid = "fylke")]
+preDT[, ins10 := round(N / i.N * 10000, digits = 1)] %>%
+  .[, ins := round(N / i.N * 100, digits = 1)]
 
-insDT
+preDT
 
 ```
 
@@ -290,14 +290,93 @@ insDT
 
 
 ```{r}
-insDT1 <- dt1FD[NokBF, on = c(fylkeid = "fylke")]
-insDT1[, ins10 := N / i.N * 10000] %>%
-  .[, ins := N / i.N * 100]
+preDT1 <- dt1FD[NokBF, on = c(fylkeid = "fylke")]
+preDT1[, ins10 := round(N / i.N * 10000, digits = 1)] %>%
+  .[, ins := round(N / i.N * 100, digits = 1)]
 
-insDT1
+preDT1
 
 ```
 
+# Norgeskart 
+
+
+```{r}
+
+norgeKart <- readRDS("kartNorge_sf.RDS")
+
+```
+
+## Legger helseforetaket
+
+
+```{r}
+
+
+## Legger til HF
+hso <- c("Østfold", "Akershus", "Aust-Agder", "Buskerud", "Hedmark", "Oppland", "Oslo", "Telemark", "Vest-Agder", "Vestfold")
+hsv <- c("Hordaland", "Rogaland", "Sogn og Fjordane")
+hsm <- c("Møre og Romsdal", "Trøndelag")
+hsn <- c("Finnmark", "Nordland", "Troms")
+
+
+kart_sf <- kart_sf %>%
+  mutate(region, helsereg = ifelse(region %in% hso, 1, ifelse(region %in% hsv, 2, ifelse(region %in% hsm, 3, 4))))
+
+
+## dekningsgrad BDR
+kart_sf <- kart_sf %>%
+  mutate(helsereg, helsenavn =
+                     ifelse(fylke == 1, "Helse Sør-Øst",
+                       ifelse(fylke == 2, "Helse Vest",
+                         ifelse(fylke == 3, "Helse Midt", "Helse Nord")))) %>%
+  mutate(helsereg, dekning =
+                     ifelse(fylke == 1, 99,
+                       ifelse(fylke == 2, 98,
+                         ifelse(fylke == 3, 98, 97))))
+
+```
+
+## Alle type diabetes
+
+Legger prevalence tallene.
+
+```{r}
+
+kartDT1 <- kart_sf %>% left_join(preDT1, by = c("fID" = "fylkeid"))
+
+
+library(plotly)
+## ## tooltips ved hoving
+## plot_ly(
+##   kartDT1,
+##   split = ~region, #for at hoveron blir categorisert riktig så må bruke 'Split'
+##   color = ~fID,
+##     text = ~paste("Prevalens pr. 10,000: ", ins10),
+##   hoverinfo = "text",
+##   hoveron = "fill" #brukes for å vise utvalgte tooltips annen enn district
+## )
+
+
+cols <- c("#89C5DA", "#DA5724", "#74D944", "#CE50CA", "#3F4921", "#C0717C", "#CBD588", "#5F7FC7", "#673770", "#D3D93E", "#38333E", "#508578", "#D7C1B1", "#689030", "#AD6F3B", "#CD9BCD", "#D14285", "#6DDE88", "#652926", "#7FDCC0", "#C84248", "#8569D5", "#5E738F", "#D1A33D", "#8A7C64", "#599861")
+
+## tooltips ved hoving
+preDT1Kart <- plot_ly(
+  kartDT1,
+  split = ~fID, #for at hoveron blir categorisert riktig så må bruke 'Split'
+  color = ~region,
+  stroke = I("black"),
+  text = ~paste("Prevalens pr. 10,000: ", ins10),
+  hoverinfo = "text",
+  hoveron = "fill", #brukes for å vise utvalgte tooltips annen enn district
+  colors = cols
+) %>%
+  layout(showlegend = FALSE)
+
+## dt1Kart = api_create(preDT1Kart, filename="sf-1")
+htmlwidgets::saveWidget(as_widget(preDT1Kart), "dt1kart.html")
+
+```
 
 
 
