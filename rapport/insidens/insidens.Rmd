@@ -373,8 +373,12 @@ preDT1Kart <- plot_ly(
 ) %>%
   layout(showlegend = FALSE)
 
+preDT1Kart
+
 ## dt1Kart = api_create(preDT1Kart, filename="sf-1")
 htmlwidgets::saveWidget(as_widget(preDT1Kart), "dt1kart.html")
+
+plotly_IMAGE(preDT1Kart, format = "png", out_file = "dt1kart.png")
 
 ```
 
