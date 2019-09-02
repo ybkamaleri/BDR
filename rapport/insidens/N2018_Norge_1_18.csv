@@ -1,0 +1,801 @@
+"07459: Befolkning, etter region, kjønn, alder, statistikkvariabel og år"
+
+"region";"kjønn";"alder";"Personer 2018"
+"01 Østfold";"Menn";"0 år";1441
+"01 Østfold";"Menn";"1 år";1590
+"01 Østfold";"Menn";"2 år";1570
+"01 Østfold";"Menn";"3 år";1641
+"01 Østfold";"Menn";"4 år";1644
+"01 Østfold";"Menn";"5 år";1713
+"01 Østfold";"Menn";"6 år";1750
+"01 Østfold";"Menn";"7 år";1740
+"01 Østfold";"Menn";"8 år";1960
+"01 Østfold";"Menn";"9 år";1780
+"01 Østfold";"Menn";"10 år";1757
+"01 Østfold";"Menn";"11 år";1904
+"01 Østfold";"Menn";"12 år";1819
+"01 Østfold";"Menn";"13 år";1800
+"01 Østfold";"Menn";"14 år";1802
+"01 Østfold";"Menn";"15 år";1878
+"01 Østfold";"Menn";"16 år";1952
+"01 Østfold";"Menn";"17 år";2021
+"01 Østfold";"Menn";"18 år";1949
+"01 Østfold";"Kvinner";"0 år";1361
+"01 Østfold";"Kvinner";"1 år";1399
+"01 Østfold";"Kvinner";"2 år";1450
+"01 Østfold";"Kvinner";"3 år";1543
+"01 Østfold";"Kvinner";"4 år";1534
+"01 Østfold";"Kvinner";"5 år";1605
+"01 Østfold";"Kvinner";"6 år";1629
+"01 Østfold";"Kvinner";"7 år";1728
+"01 Østfold";"Kvinner";"8 år";1781
+"01 Østfold";"Kvinner";"9 år";1721
+"01 Østfold";"Kvinner";"10 år";1700
+"01 Østfold";"Kvinner";"11 år";1714
+"01 Østfold";"Kvinner";"12 år";1682
+"01 Østfold";"Kvinner";"13 år";1723
+"01 Østfold";"Kvinner";"14 år";1718
+"01 Østfold";"Kvinner";"15 år";1748
+"01 Østfold";"Kvinner";"16 år";1687
+"01 Østfold";"Kvinner";"17 år";1802
+"01 Østfold";"Kvinner";"18 år";1833
+"02 Akershus";"Menn";"0 år";3318
+"02 Akershus";"Menn";"1 år";3655
+"02 Akershus";"Menn";"2 år";3768
+"02 Akershus";"Menn";"3 år";3917
+"02 Akershus";"Menn";"4 år";3885
+"02 Akershus";"Menn";"5 år";4152
+"02 Akershus";"Menn";"6 år";4196
+"02 Akershus";"Menn";"7 år";4326
+"02 Akershus";"Menn";"8 år";4407
+"02 Akershus";"Menn";"9 år";4302
+"02 Akershus";"Menn";"10 år";4185
+"02 Akershus";"Menn";"11 år";4271
+"02 Akershus";"Menn";"12 år";4229
+"02 Akershus";"Menn";"13 år";4221
+"02 Akershus";"Menn";"14 år";4122
+"02 Akershus";"Menn";"15 år";4079
+"02 Akershus";"Menn";"16 år";3966
+"02 Akershus";"Menn";"17 år";4082
+"02 Akershus";"Menn";"18 år";4224
+"02 Akershus";"Kvinner";"0 år";3056
+"02 Akershus";"Kvinner";"1 år";3464
+"02 Akershus";"Kvinner";"2 år";3635
+"02 Akershus";"Kvinner";"3 år";3702
+"02 Akershus";"Kvinner";"4 år";3857
+"02 Akershus";"Kvinner";"5 år";3976
+"02 Akershus";"Kvinner";"6 år";3926
+"02 Akershus";"Kvinner";"7 år";4173
+"02 Akershus";"Kvinner";"8 år";4148
+"02 Akershus";"Kvinner";"9 år";4217
+"02 Akershus";"Kvinner";"10 år";4066
+"02 Akershus";"Kvinner";"11 år";4044
+"02 Akershus";"Kvinner";"12 år";3906
+"02 Akershus";"Kvinner";"13 år";3990
+"02 Akershus";"Kvinner";"14 år";4051
+"02 Akershus";"Kvinner";"15 år";3858
+"02 Akershus";"Kvinner";"16 år";3761
+"02 Akershus";"Kvinner";"17 år";3886
+"02 Akershus";"Kvinner";"18 år";3876
+"03 Oslo";"Menn";"0 år";4779
+"03 Oslo";"Menn";"1 år";4709
+"03 Oslo";"Menn";"2 år";4498
+"03 Oslo";"Menn";"3 år";4336
+"03 Oslo";"Menn";"4 år";4035
+"03 Oslo";"Menn";"5 år";4043
+"03 Oslo";"Menn";"6 år";3871
+"03 Oslo";"Menn";"7 år";3807
+"03 Oslo";"Menn";"8 år";3844
+"03 Oslo";"Menn";"9 år";3746
+"03 Oslo";"Menn";"10 år";3675
+"03 Oslo";"Menn";"11 år";3390
+"03 Oslo";"Menn";"12 år";3309
+"03 Oslo";"Menn";"13 år";3260
+"03 Oslo";"Menn";"14 år";3276
+"03 Oslo";"Menn";"15 år";3020
+"03 Oslo";"Menn";"16 år";2958
+"03 Oslo";"Menn";"17 år";3076
+"03 Oslo";"Menn";"18 år";3162
+"03 Oslo";"Kvinner";"0 år";4456
+"03 Oslo";"Kvinner";"1 år";4362
+"03 Oslo";"Kvinner";"2 år";4015
+"03 Oslo";"Kvinner";"3 år";4075
+"03 Oslo";"Kvinner";"4 år";3791
+"03 Oslo";"Kvinner";"5 år";3808
+"03 Oslo";"Kvinner";"6 år";3730
+"03 Oslo";"Kvinner";"7 år";3757
+"03 Oslo";"Kvinner";"8 år";3720
+"03 Oslo";"Kvinner";"9 år";3520
+"03 Oslo";"Kvinner";"10 år";3427
+"03 Oslo";"Kvinner";"11 år";3440
+"03 Oslo";"Kvinner";"12 år";3261
+"03 Oslo";"Kvinner";"13 år";3188
+"03 Oslo";"Kvinner";"14 år";3020
+"03 Oslo";"Kvinner";"15 år";2936
+"03 Oslo";"Kvinner";"16 år";2913
+"03 Oslo";"Kvinner";"17 år";3078
+"03 Oslo";"Kvinner";"18 år";2910
+"04 Hedmark";"Menn";"0 år";890
+"04 Hedmark";"Menn";"1 år";936
+"04 Hedmark";"Menn";"2 år";953
+"04 Hedmark";"Menn";"3 år";934
+"04 Hedmark";"Menn";"4 år";942
+"04 Hedmark";"Menn";"5 år";1050
+"04 Hedmark";"Menn";"6 år";1050
+"04 Hedmark";"Menn";"7 år";1112
+"04 Hedmark";"Menn";"8 år";1175
+"04 Hedmark";"Menn";"9 år";1130
+"04 Hedmark";"Menn";"10 år";1127
+"04 Hedmark";"Menn";"11 år";1138
+"04 Hedmark";"Menn";"12 år";1079
+"04 Hedmark";"Menn";"13 år";1181
+"04 Hedmark";"Menn";"14 år";1157
+"04 Hedmark";"Menn";"15 år";1119
+"04 Hedmark";"Menn";"16 år";1131
+"04 Hedmark";"Menn";"17 år";1283
+"04 Hedmark";"Menn";"18 år";1328
+"04 Hedmark";"Kvinner";"0 år";821
+"04 Hedmark";"Kvinner";"1 år";842
+"04 Hedmark";"Kvinner";"2 år";844
+"04 Hedmark";"Kvinner";"3 år";884
+"04 Hedmark";"Kvinner";"4 år";936
+"04 Hedmark";"Kvinner";"5 år";1024
+"04 Hedmark";"Kvinner";"6 år";967
+"04 Hedmark";"Kvinner";"7 år";1000
+"04 Hedmark";"Kvinner";"8 år";1074
+"04 Hedmark";"Kvinner";"9 år";1027
+"04 Hedmark";"Kvinner";"10 år";1038
+"04 Hedmark";"Kvinner";"11 år";1094
+"04 Hedmark";"Kvinner";"12 år";1053
+"04 Hedmark";"Kvinner";"13 år";1108
+"04 Hedmark";"Kvinner";"14 år";1103
+"04 Hedmark";"Kvinner";"15 år";1077
+"04 Hedmark";"Kvinner";"16 år";1176
+"04 Hedmark";"Kvinner";"17 år";1184
+"04 Hedmark";"Kvinner";"18 år";1170
+"05 Oppland";"Menn";"0 år";850
+"05 Oppland";"Menn";"1 år";934
+"05 Oppland";"Menn";"2 år";883
+"05 Oppland";"Menn";"3 år";1002
+"05 Oppland";"Menn";"4 år";936
+"05 Oppland";"Menn";"5 år";973
+"05 Oppland";"Menn";"6 år";1036
+"05 Oppland";"Menn";"7 år";1072
+"05 Oppland";"Menn";"8 år";1099
+"05 Oppland";"Menn";"9 år";1100
+"05 Oppland";"Menn";"10 år";1074
+"05 Oppland";"Menn";"11 år";1123
+"05 Oppland";"Menn";"12 år";1153
+"05 Oppland";"Menn";"13 år";1023
+"05 Oppland";"Menn";"14 år";1131
+"05 Oppland";"Menn";"15 år";1128
+"05 Oppland";"Menn";"16 år";1173
+"05 Oppland";"Menn";"17 år";1258
+"05 Oppland";"Menn";"18 år";1302
+"05 Oppland";"Kvinner";"0 år";770
+"05 Oppland";"Kvinner";"1 år";855
+"05 Oppland";"Kvinner";"2 år";911
+"05 Oppland";"Kvinner";"3 år";908
+"05 Oppland";"Kvinner";"4 år";923
+"05 Oppland";"Kvinner";"5 år";964
+"05 Oppland";"Kvinner";"6 år";909
+"05 Oppland";"Kvinner";"7 år";1035
+"05 Oppland";"Kvinner";"8 år";1008
+"05 Oppland";"Kvinner";"9 år";1070
+"05 Oppland";"Kvinner";"10 år";972
+"05 Oppland";"Kvinner";"11 år";1037
+"05 Oppland";"Kvinner";"12 år";990
+"05 Oppland";"Kvinner";"13 år";1085
+"05 Oppland";"Kvinner";"14 år";1112
+"05 Oppland";"Kvinner";"15 år";1095
+"05 Oppland";"Kvinner";"16 år";1129
+"05 Oppland";"Kvinner";"17 år";1136
+"05 Oppland";"Kvinner";"18 år";1152
+"06 Buskerud";"Menn";"0 år";1438
+"06 Buskerud";"Menn";"1 år";1428
+"06 Buskerud";"Menn";"2 år";1563
+"06 Buskerud";"Menn";"3 år";1620
+"06 Buskerud";"Menn";"4 år";1618
+"06 Buskerud";"Menn";"5 år";1668
+"06 Buskerud";"Menn";"6 år";1733
+"06 Buskerud";"Menn";"7 år";1726
+"06 Buskerud";"Menn";"8 år";1799
+"06 Buskerud";"Menn";"9 år";1868
+"06 Buskerud";"Menn";"10 år";1813
+"06 Buskerud";"Menn";"11 år";1832
+"06 Buskerud";"Menn";"12 år";1703
+"06 Buskerud";"Menn";"13 år";1800
+"06 Buskerud";"Menn";"14 år";1731
+"06 Buskerud";"Menn";"15 år";1654
+"06 Buskerud";"Menn";"16 år";1759
+"06 Buskerud";"Menn";"17 år";1851
+"06 Buskerud";"Menn";"18 år";1825
+"06 Buskerud";"Kvinner";"0 år";1382
+"06 Buskerud";"Kvinner";"1 år";1415
+"06 Buskerud";"Kvinner";"2 år";1500
+"06 Buskerud";"Kvinner";"3 år";1572
+"06 Buskerud";"Kvinner";"4 år";1516
+"06 Buskerud";"Kvinner";"5 år";1643
+"06 Buskerud";"Kvinner";"6 år";1635
+"06 Buskerud";"Kvinner";"7 år";1693
+"06 Buskerud";"Kvinner";"8 år";1663
+"06 Buskerud";"Kvinner";"9 år";1714
+"06 Buskerud";"Kvinner";"10 år";1651
+"06 Buskerud";"Kvinner";"11 år";1661
+"06 Buskerud";"Kvinner";"12 år";1706
+"06 Buskerud";"Kvinner";"13 år";1719
+"06 Buskerud";"Kvinner";"14 år";1607
+"06 Buskerud";"Kvinner";"15 år";1606
+"06 Buskerud";"Kvinner";"16 år";1636
+"06 Buskerud";"Kvinner";"17 år";1643
+"06 Buskerud";"Kvinner";"18 år";1710
+"07 Vestfold";"Menn";"0 år";1251
+"07 Vestfold";"Menn";"1 år";1261
+"07 Vestfold";"Menn";"2 år";1331
+"07 Vestfold";"Menn";"3 år";1325
+"07 Vestfold";"Menn";"4 år";1348
+"07 Vestfold";"Menn";"5 år";1428
+"07 Vestfold";"Menn";"6 år";1506
+"07 Vestfold";"Menn";"7 år";1587
+"07 Vestfold";"Menn";"8 år";1536
+"07 Vestfold";"Menn";"9 år";1574
+"07 Vestfold";"Menn";"10 år";1568
+"07 Vestfold";"Menn";"11 år";1588
+"07 Vestfold";"Menn";"12 år";1516
+"07 Vestfold";"Menn";"13 år";1607
+"07 Vestfold";"Menn";"14 år";1583
+"07 Vestfold";"Menn";"15 år";1474
+"07 Vestfold";"Menn";"16 år";1560
+"07 Vestfold";"Menn";"17 år";1652
+"07 Vestfold";"Menn";"18 år";1621
+"07 Vestfold";"Kvinner";"0 år";1088
+"07 Vestfold";"Kvinner";"1 år";1242
+"07 Vestfold";"Kvinner";"2 år";1289
+"07 Vestfold";"Kvinner";"3 år";1279
+"07 Vestfold";"Kvinner";"4 år";1335
+"07 Vestfold";"Kvinner";"5 år";1359
+"07 Vestfold";"Kvinner";"6 år";1390
+"07 Vestfold";"Kvinner";"7 år";1420
+"07 Vestfold";"Kvinner";"8 år";1442
+"07 Vestfold";"Kvinner";"9 år";1453
+"07 Vestfold";"Kvinner";"10 år";1415
+"07 Vestfold";"Kvinner";"11 år";1431
+"07 Vestfold";"Kvinner";"12 år";1496
+"07 Vestfold";"Kvinner";"13 år";1396
+"07 Vestfold";"Kvinner";"14 år";1362
+"07 Vestfold";"Kvinner";"15 år";1409
+"07 Vestfold";"Kvinner";"16 år";1461
+"07 Vestfold";"Kvinner";"17 år";1554
+"07 Vestfold";"Kvinner";"18 år";1607
+"08 Telemark";"Menn";"0 år";779
+"08 Telemark";"Menn";"1 år";877
+"08 Telemark";"Menn";"2 år";855
+"08 Telemark";"Menn";"3 år";914
+"08 Telemark";"Menn";"4 år";928
+"08 Telemark";"Menn";"5 år";968
+"08 Telemark";"Menn";"6 år";1000
+"08 Telemark";"Menn";"7 år";1051
+"08 Telemark";"Menn";"8 år";1019
+"08 Telemark";"Menn";"9 år";1060
+"08 Telemark";"Menn";"10 år";1032
+"08 Telemark";"Menn";"11 år";1047
+"08 Telemark";"Menn";"12 år";1008
+"08 Telemark";"Menn";"13 år";1007
+"08 Telemark";"Menn";"14 år";1095
+"08 Telemark";"Menn";"15 år";983
+"08 Telemark";"Menn";"16 år";1132
+"08 Telemark";"Menn";"17 år";1148
+"08 Telemark";"Menn";"18 år";1161
+"08 Telemark";"Kvinner";"0 år";728
+"08 Telemark";"Kvinner";"1 år";865
+"08 Telemark";"Kvinner";"2 år";809
+"08 Telemark";"Kvinner";"3 år";812
+"08 Telemark";"Kvinner";"4 år";904
+"08 Telemark";"Kvinner";"5 år";900
+"08 Telemark";"Kvinner";"6 år";933
+"08 Telemark";"Kvinner";"7 år";966
+"08 Telemark";"Kvinner";"8 år";970
+"08 Telemark";"Kvinner";"9 år";951
+"08 Telemark";"Kvinner";"10 år";950
+"08 Telemark";"Kvinner";"11 år";955
+"08 Telemark";"Kvinner";"12 år";996
+"08 Telemark";"Kvinner";"13 år";1000
+"08 Telemark";"Kvinner";"14 år";990
+"08 Telemark";"Kvinner";"15 år";1013
+"08 Telemark";"Kvinner";"16 år";1035
+"08 Telemark";"Kvinner";"17 år";1089
+"08 Telemark";"Kvinner";"18 år";1072
+"09 Aust-Agder";"Menn";"0 år";586
+"09 Aust-Agder";"Menn";"1 år";677
+"09 Aust-Agder";"Menn";"2 år";669
+"09 Aust-Agder";"Menn";"3 år";662
+"09 Aust-Agder";"Menn";"4 år";677
+"09 Aust-Agder";"Menn";"5 år";763
+"09 Aust-Agder";"Menn";"6 år";755
+"09 Aust-Agder";"Menn";"7 år";796
+"09 Aust-Agder";"Menn";"8 år";802
+"09 Aust-Agder";"Menn";"9 år";762
+"09 Aust-Agder";"Menn";"10 år";759
+"09 Aust-Agder";"Menn";"11 år";775
+"09 Aust-Agder";"Menn";"12 år";754
+"09 Aust-Agder";"Menn";"13 år";725
+"09 Aust-Agder";"Menn";"14 år";691
+"09 Aust-Agder";"Menn";"15 år";711
+"09 Aust-Agder";"Menn";"16 år";784
+"09 Aust-Agder";"Menn";"17 år";862
+"09 Aust-Agder";"Menn";"18 år";868
+"09 Aust-Agder";"Kvinner";"0 år";551
+"09 Aust-Agder";"Kvinner";"1 år";605
+"09 Aust-Agder";"Kvinner";"2 år";636
+"09 Aust-Agder";"Kvinner";"3 år";622
+"09 Aust-Agder";"Kvinner";"4 år";678
+"09 Aust-Agder";"Kvinner";"5 år";706
+"09 Aust-Agder";"Kvinner";"6 år";732
+"09 Aust-Agder";"Kvinner";"7 år";737
+"09 Aust-Agder";"Kvinner";"8 år";766
+"09 Aust-Agder";"Kvinner";"9 år";780
+"09 Aust-Agder";"Kvinner";"10 år";754
+"09 Aust-Agder";"Kvinner";"11 år";776
+"09 Aust-Agder";"Kvinner";"12 år";684
+"09 Aust-Agder";"Kvinner";"13 år";731
+"09 Aust-Agder";"Kvinner";"14 år";696
+"09 Aust-Agder";"Kvinner";"15 år";680
+"09 Aust-Agder";"Kvinner";"16 år";674
+"09 Aust-Agder";"Kvinner";"17 år";711
+"09 Aust-Agder";"Kvinner";"18 år";759
+"10 Vest-Agder";"Menn";"0 år";1099
+"10 Vest-Agder";"Menn";"1 år";1151
+"10 Vest-Agder";"Menn";"2 år";1145
+"10 Vest-Agder";"Menn";"3 år";1107
+"10 Vest-Agder";"Menn";"4 år";1214
+"10 Vest-Agder";"Menn";"5 år";1314
+"10 Vest-Agder";"Menn";"6 år";1229
+"10 Vest-Agder";"Menn";"7 år";1219
+"10 Vest-Agder";"Menn";"8 år";1328
+"10 Vest-Agder";"Menn";"9 år";1291
+"10 Vest-Agder";"Menn";"10 år";1220
+"10 Vest-Agder";"Menn";"11 år";1232
+"10 Vest-Agder";"Menn";"12 år";1164
+"10 Vest-Agder";"Menn";"13 år";1214
+"10 Vest-Agder";"Menn";"14 år";1114
+"10 Vest-Agder";"Menn";"15 år";1165
+"10 Vest-Agder";"Menn";"16 år";1252
+"10 Vest-Agder";"Menn";"17 år";1312
+"10 Vest-Agder";"Menn";"18 år";1336
+"10 Vest-Agder";"Kvinner";"0 år";952
+"10 Vest-Agder";"Kvinner";"1 år";1064
+"10 Vest-Agder";"Kvinner";"2 år";1095
+"10 Vest-Agder";"Kvinner";"3 år";1056
+"10 Vest-Agder";"Kvinner";"4 år";1093
+"10 Vest-Agder";"Kvinner";"5 år";1125
+"10 Vest-Agder";"Kvinner";"6 år";1183
+"10 Vest-Agder";"Kvinner";"7 år";1199
+"10 Vest-Agder";"Kvinner";"8 år";1276
+"10 Vest-Agder";"Kvinner";"9 år";1203
+"10 Vest-Agder";"Kvinner";"10 år";1184
+"10 Vest-Agder";"Kvinner";"11 år";1227
+"10 Vest-Agder";"Kvinner";"12 år";1153
+"10 Vest-Agder";"Kvinner";"13 år";1094
+"10 Vest-Agder";"Kvinner";"14 år";1130
+"10 Vest-Agder";"Kvinner";"15 år";1149
+"10 Vest-Agder";"Kvinner";"16 år";1181
+"10 Vest-Agder";"Kvinner";"17 år";1162
+"10 Vest-Agder";"Kvinner";"18 år";1266
+"11 Rogaland";"Menn";"0 år";2996
+"11 Rogaland";"Menn";"1 år";3169
+"11 Rogaland";"Menn";"2 år";3192
+"11 Rogaland";"Menn";"3 år";3164
+"11 Rogaland";"Menn";"4 år";3196
+"11 Rogaland";"Menn";"5 år";3311
+"11 Rogaland";"Menn";"6 år";3314
+"11 Rogaland";"Menn";"7 år";3523
+"11 Rogaland";"Menn";"8 år";3432
+"11 Rogaland";"Menn";"9 år";3342
+"11 Rogaland";"Menn";"10 år";3164
+"11 Rogaland";"Menn";"11 år";3300
+"11 Rogaland";"Menn";"12 år";3050
+"11 Rogaland";"Menn";"13 år";3081
+"11 Rogaland";"Menn";"14 år";3057
+"11 Rogaland";"Menn";"15 år";2903
+"11 Rogaland";"Menn";"16 år";3089
+"11 Rogaland";"Menn";"17 år";3255
+"11 Rogaland";"Menn";"18 år";3313
+"11 Rogaland";"Kvinner";"0 år";2934
+"11 Rogaland";"Kvinner";"1 år";2991
+"11 Rogaland";"Kvinner";"2 år";3020
+"11 Rogaland";"Kvinner";"3 år";3071
+"11 Rogaland";"Kvinner";"4 år";3107
+"11 Rogaland";"Kvinner";"5 år";3235
+"11 Rogaland";"Kvinner";"6 år";3216
+"11 Rogaland";"Kvinner";"7 år";3248
+"11 Rogaland";"Kvinner";"8 år";3284
+"11 Rogaland";"Kvinner";"9 år";3197
+"11 Rogaland";"Kvinner";"10 år";3102
+"11 Rogaland";"Kvinner";"11 år";3143
+"11 Rogaland";"Kvinner";"12 år";2961
+"11 Rogaland";"Kvinner";"13 år";2919
+"11 Rogaland";"Kvinner";"14 år";2995
+"11 Rogaland";"Kvinner";"15 år";2891
+"11 Rogaland";"Kvinner";"16 år";2919
+"11 Rogaland";"Kvinner";"17 år";3001
+"11 Rogaland";"Kvinner";"18 år";3067
+"12 Hordaland";"Menn";"0 år";3095
+"12 Hordaland";"Menn";"1 år";3257
+"12 Hordaland";"Menn";"2 år";3370
+"12 Hordaland";"Menn";"3 år";3242
+"12 Hordaland";"Menn";"4 år";3239
+"12 Hordaland";"Menn";"5 år";3283
+"12 Hordaland";"Menn";"6 år";3295
+"12 Hordaland";"Menn";"7 år";3444
+"12 Hordaland";"Menn";"8 år";3416
+"12 Hordaland";"Menn";"9 år";3409
+"12 Hordaland";"Menn";"10 år";3207
+"12 Hordaland";"Menn";"11 år";3214
+"12 Hordaland";"Menn";"12 år";3166
+"12 Hordaland";"Menn";"13 år";3205
+"12 Hordaland";"Menn";"14 år";3154
+"12 Hordaland";"Menn";"15 år";3184
+"12 Hordaland";"Menn";"16 år";3185
+"12 Hordaland";"Menn";"17 år";3370
+"12 Hordaland";"Menn";"18 år";3290
+"12 Hordaland";"Kvinner";"0 år";2894
+"12 Hordaland";"Kvinner";"1 år";3187
+"12 Hordaland";"Kvinner";"2 år";3090
+"12 Hordaland";"Kvinner";"3 år";3038
+"12 Hordaland";"Kvinner";"4 år";2987
+"12 Hordaland";"Kvinner";"5 år";3138
+"12 Hordaland";"Kvinner";"6 år";3201
+"12 Hordaland";"Kvinner";"7 år";3178
+"12 Hordaland";"Kvinner";"8 år";3279
+"12 Hordaland";"Kvinner";"9 år";3199
+"12 Hordaland";"Kvinner";"10 år";3130
+"12 Hordaland";"Kvinner";"11 år";3132
+"12 Hordaland";"Kvinner";"12 år";3061
+"12 Hordaland";"Kvinner";"13 år";3108
+"12 Hordaland";"Kvinner";"14 år";3022
+"12 Hordaland";"Kvinner";"15 år";2985
+"12 Hordaland";"Kvinner";"16 år";3102
+"12 Hordaland";"Kvinner";"17 år";3318
+"12 Hordaland";"Kvinner";"18 år";3217
+"13 Bergen (t.o.m. 1971)";"Menn";"0 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"1 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"2 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"3 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"4 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"5 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"6 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"7 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"8 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"9 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"10 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"11 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"12 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"13 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"14 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"15 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"16 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"17 år";0
+"13 Bergen (t.o.m. 1971)";"Menn";"18 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"0 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"1 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"2 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"3 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"4 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"5 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"6 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"7 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"8 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"9 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"10 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"11 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"12 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"13 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"14 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"15 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"16 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"17 år";0
+"13 Bergen (t.o.m. 1971)";"Kvinner";"18 år";0
+"14 Sogn og Fjordane";"Menn";"0 år";585
+"14 Sogn og Fjordane";"Menn";"1 år";623
+"14 Sogn og Fjordane";"Menn";"2 år";605
+"14 Sogn og Fjordane";"Menn";"3 år";623
+"14 Sogn og Fjordane";"Menn";"4 år";587
+"14 Sogn og Fjordane";"Menn";"5 år";673
+"14 Sogn og Fjordane";"Menn";"6 år";702
+"14 Sogn og Fjordane";"Menn";"7 år";733
+"14 Sogn og Fjordane";"Menn";"8 år";698
+"14 Sogn og Fjordane";"Menn";"9 år";742
+"14 Sogn og Fjordane";"Menn";"10 år";709
+"14 Sogn og Fjordane";"Menn";"11 år";698
+"14 Sogn og Fjordane";"Menn";"12 år";746
+"14 Sogn og Fjordane";"Menn";"13 år";725
+"14 Sogn og Fjordane";"Menn";"14 år";731
+"14 Sogn og Fjordane";"Menn";"15 år";733
+"14 Sogn og Fjordane";"Menn";"16 år";752
+"14 Sogn og Fjordane";"Menn";"17 år";843
+"14 Sogn og Fjordane";"Menn";"18 år";861
+"14 Sogn og Fjordane";"Kvinner";"0 år";516
+"14 Sogn og Fjordane";"Kvinner";"1 år";520
+"14 Sogn og Fjordane";"Kvinner";"2 år";584
+"14 Sogn og Fjordane";"Kvinner";"3 år";598
+"14 Sogn og Fjordane";"Kvinner";"4 år";588
+"14 Sogn og Fjordane";"Kvinner";"5 år";607
+"14 Sogn og Fjordane";"Kvinner";"6 år";673
+"14 Sogn og Fjordane";"Kvinner";"7 år";635
+"14 Sogn og Fjordane";"Kvinner";"8 år";675
+"14 Sogn og Fjordane";"Kvinner";"9 år";656
+"14 Sogn og Fjordane";"Kvinner";"10 år";697
+"14 Sogn og Fjordane";"Kvinner";"11 år";646
+"14 Sogn og Fjordane";"Kvinner";"12 år";710
+"14 Sogn og Fjordane";"Kvinner";"13 år";720
+"14 Sogn og Fjordane";"Kvinner";"14 år";748
+"14 Sogn og Fjordane";"Kvinner";"15 år";676
+"14 Sogn og Fjordane";"Kvinner";"16 år";725
+"14 Sogn og Fjordane";"Kvinner";"17 år";732
+"14 Sogn og Fjordane";"Kvinner";"18 år";726
+"15 Møre og Romsdal";"Menn";"0 år";1373
+"15 Møre og Romsdal";"Menn";"1 år";1437
+"15 Møre og Romsdal";"Menn";"2 år";1459
+"15 Møre og Romsdal";"Menn";"3 år";1532
+"15 Møre og Romsdal";"Menn";"4 år";1541
+"15 Møre og Romsdal";"Menn";"5 år";1595
+"15 Møre og Romsdal";"Menn";"6 år";1637
+"15 Møre og Romsdal";"Menn";"7 år";1601
+"15 Møre og Romsdal";"Menn";"8 år";1763
+"15 Møre og Romsdal";"Menn";"9 år";1672
+"15 Møre og Romsdal";"Menn";"10 år";1701
+"15 Møre og Romsdal";"Menn";"11 år";1643
+"15 Møre og Romsdal";"Menn";"12 år";1628
+"15 Møre og Romsdal";"Menn";"13 år";1738
+"15 Møre og Romsdal";"Menn";"14 år";1740
+"15 Møre og Romsdal";"Menn";"15 år";1616
+"15 Møre og Romsdal";"Menn";"16 år";1761
+"15 Møre og Romsdal";"Menn";"17 år";1854
+"15 Møre og Romsdal";"Menn";"18 år";1861
+"15 Møre og Romsdal";"Kvinner";"0 år";1348
+"15 Møre og Romsdal";"Kvinner";"1 år";1391
+"15 Møre og Romsdal";"Kvinner";"2 år";1432
+"15 Møre og Romsdal";"Kvinner";"3 år";1382
+"15 Møre og Romsdal";"Kvinner";"4 år";1470
+"15 Møre og Romsdal";"Kvinner";"5 år";1540
+"15 Møre og Romsdal";"Kvinner";"6 år";1557
+"15 Møre og Romsdal";"Kvinner";"7 år";1599
+"15 Møre og Romsdal";"Kvinner";"8 år";1648
+"15 Møre og Romsdal";"Kvinner";"9 år";1610
+"15 Møre og Romsdal";"Kvinner";"10 år";1610
+"15 Møre og Romsdal";"Kvinner";"11 år";1602
+"15 Møre og Romsdal";"Kvinner";"12 år";1608
+"15 Møre og Romsdal";"Kvinner";"13 år";1649
+"15 Møre og Romsdal";"Kvinner";"14 år";1594
+"15 Møre og Romsdal";"Kvinner";"15 år";1593
+"15 Møre og Romsdal";"Kvinner";"16 år";1676
+"15 Møre og Romsdal";"Kvinner";"17 år";1664
+"15 Møre og Romsdal";"Kvinner";"18 år";1751
+"50 Trøndelag";"Menn";"0 år";2484
+"50 Trøndelag";"Menn";"1 år";2724
+"50 Trøndelag";"Menn";"2 år";2687
+"50 Trøndelag";"Menn";"3 år";2690
+"50 Trøndelag";"Menn";"4 år";2744
+"50 Trøndelag";"Menn";"5 år";2685
+"50 Trøndelag";"Menn";"6 år";2835
+"50 Trøndelag";"Menn";"7 år";2859
+"50 Trøndelag";"Menn";"8 år";2902
+"50 Trøndelag";"Menn";"9 år";2878
+"50 Trøndelag";"Menn";"10 år";2763
+"50 Trøndelag";"Menn";"11 år";2830
+"50 Trøndelag";"Menn";"12 år";2697
+"50 Trøndelag";"Menn";"13 år";2747
+"50 Trøndelag";"Menn";"14 år";2692
+"50 Trøndelag";"Menn";"15 år";2747
+"50 Trøndelag";"Menn";"16 år";2815
+"50 Trøndelag";"Menn";"17 år";3013
+"50 Trøndelag";"Menn";"18 år";2958
+"50 Trøndelag";"Kvinner";"0 år";2451
+"50 Trøndelag";"Kvinner";"1 år";2445
+"50 Trøndelag";"Kvinner";"2 år";2545
+"50 Trøndelag";"Kvinner";"3 år";2582
+"50 Trøndelag";"Kvinner";"4 år";2635
+"50 Trøndelag";"Kvinner";"5 år";2553
+"50 Trøndelag";"Kvinner";"6 år";2610
+"50 Trøndelag";"Kvinner";"7 år";2758
+"50 Trøndelag";"Kvinner";"8 år";2737
+"50 Trøndelag";"Kvinner";"9 år";2695
+"50 Trøndelag";"Kvinner";"10 år";2644
+"50 Trøndelag";"Kvinner";"11 år";2616
+"50 Trøndelag";"Kvinner";"12 år";2677
+"50 Trøndelag";"Kvinner";"13 år";2567
+"50 Trøndelag";"Kvinner";"14 år";2590
+"50 Trøndelag";"Kvinner";"15 år";2500
+"50 Trøndelag";"Kvinner";"16 år";2669
+"50 Trøndelag";"Kvinner";"17 år";2751
+"50 Trøndelag";"Kvinner";"18 år";2725
+"16 Sør-Trøndelag (-2017)";"Menn";"0 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"1 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"2 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"3 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"4 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"5 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"6 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"7 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"8 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"9 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"10 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"11 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"12 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"13 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"14 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"15 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"16 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"17 år";0
+"16 Sør-Trøndelag (-2017)";"Menn";"18 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"0 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"1 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"2 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"3 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"4 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"5 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"6 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"7 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"8 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"9 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"10 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"11 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"12 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"13 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"14 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"15 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"16 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"17 år";0
+"16 Sør-Trøndelag (-2017)";"Kvinner";"18 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"0 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"1 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"2 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"3 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"4 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"5 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"6 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"7 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"8 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"9 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"10 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"11 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"12 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"13 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"14 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"15 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"16 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"17 år";0
+"17 Nord-Trøndelag (-2017)";"Menn";"18 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"0 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"1 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"2 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"3 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"4 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"5 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"6 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"7 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"8 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"9 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"10 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"11 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"12 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"13 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"14 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"15 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"16 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"17 år";0
+"17 Nord-Trøndelag (-2017)";"Kvinner";"18 år";0
+"18 Nordland";"Menn";"0 år";1190
+"18 Nordland";"Menn";"1 år";1239
+"18 Nordland";"Menn";"2 år";1256
+"18 Nordland";"Menn";"3 år";1271
+"18 Nordland";"Menn";"4 år";1347
+"18 Nordland";"Menn";"5 år";1386
+"18 Nordland";"Menn";"6 år";1407
+"18 Nordland";"Menn";"7 år";1414
+"18 Nordland";"Menn";"8 år";1473
+"18 Nordland";"Menn";"9 år";1471
+"18 Nordland";"Menn";"10 år";1505
+"18 Nordland";"Menn";"11 år";1361
+"18 Nordland";"Menn";"12 år";1437
+"18 Nordland";"Menn";"13 år";1469
+"18 Nordland";"Menn";"14 år";1501
+"18 Nordland";"Menn";"15 år";1454
+"18 Nordland";"Menn";"16 år";1500
+"18 Nordland";"Menn";"17 år";1574
+"18 Nordland";"Menn";"18 år";1774
+"18 Nordland";"Kvinner";"0 år";1115
+"18 Nordland";"Kvinner";"1 år";1165
+"18 Nordland";"Kvinner";"2 år";1250
+"18 Nordland";"Kvinner";"3 år";1236
+"18 Nordland";"Kvinner";"4 år";1294
+"18 Nordland";"Kvinner";"5 år";1259
+"18 Nordland";"Kvinner";"6 år";1303
+"18 Nordland";"Kvinner";"7 år";1355
+"18 Nordland";"Kvinner";"8 år";1402
+"18 Nordland";"Kvinner";"9 år";1353
+"18 Nordland";"Kvinner";"10 år";1355
+"18 Nordland";"Kvinner";"11 år";1308
+"18 Nordland";"Kvinner";"12 år";1373
+"18 Nordland";"Kvinner";"13 år";1341
+"18 Nordland";"Kvinner";"14 år";1352
+"18 Nordland";"Kvinner";"15 år";1408
+"18 Nordland";"Kvinner";"16 år";1401
+"18 Nordland";"Kvinner";"17 år";1519
+"18 Nordland";"Kvinner";"18 år";1535
+"19 Troms - Romsa";"Menn";"0 år";824
+"19 Troms - Romsa";"Menn";"1 år";924
+"19 Troms - Romsa";"Menn";"2 år";896
+"19 Troms - Romsa";"Menn";"3 år";914
+"19 Troms - Romsa";"Menn";"4 år";912
+"19 Troms - Romsa";"Menn";"5 år";935
+"19 Troms - Romsa";"Menn";"6 år";951
+"19 Troms - Romsa";"Menn";"7 år";1030
+"19 Troms - Romsa";"Menn";"8 år";966
+"19 Troms - Romsa";"Menn";"9 år";1039
+"19 Troms - Romsa";"Menn";"10 år";975
+"19 Troms - Romsa";"Menn";"11 år";1035
+"19 Troms - Romsa";"Menn";"12 år";1043
+"19 Troms - Romsa";"Menn";"13 år";972
+"19 Troms - Romsa";"Menn";"14 år";898
+"19 Troms - Romsa";"Menn";"15 år";987
+"19 Troms - Romsa";"Menn";"16 år";1031
+"19 Troms - Romsa";"Menn";"17 år";1122
+"19 Troms - Romsa";"Menn";"18 år";1145
+"19 Troms - Romsa";"Kvinner";"0 år";813
+"19 Troms - Romsa";"Kvinner";"1 år";856
+"19 Troms - Romsa";"Kvinner";"2 år";875
+"19 Troms - Romsa";"Kvinner";"3 år";878
+"19 Troms - Romsa";"Kvinner";"4 år";890
+"19 Troms - Romsa";"Kvinner";"5 år";848
+"19 Troms - Romsa";"Kvinner";"6 år";881
+"19 Troms - Romsa";"Kvinner";"7 år";975
+"19 Troms - Romsa";"Kvinner";"8 år";956
+"19 Troms - Romsa";"Kvinner";"9 år";956
+"19 Troms - Romsa";"Kvinner";"10 år";999
+"19 Troms - Romsa";"Kvinner";"11 år";952
+"19 Troms - Romsa";"Kvinner";"12 år";879
+"19 Troms - Romsa";"Kvinner";"13 år";923
+"19 Troms - Romsa";"Kvinner";"14 år";927
+"19 Troms - Romsa";"Kvinner";"15 år";920
+"19 Troms - Romsa";"Kvinner";"16 år";917
+"19 Troms - Romsa";"Kvinner";"17 år";1040
+"19 Troms - Romsa";"Kvinner";"18 år";979
+"20 Finnmark - Finnmárku";"Menn";"0 år";359
+"20 Finnmark - Finnmárku";"Menn";"1 år";438
+"20 Finnmark - Finnmárku";"Menn";"2 år";415
+"20 Finnmark - Finnmárku";"Menn";"3 år";367
+"20 Finnmark - Finnmárku";"Menn";"4 år";382
+"20 Finnmark - Finnmárku";"Menn";"5 år";405
+"20 Finnmark - Finnmárku";"Menn";"6 år";388
+"20 Finnmark - Finnmárku";"Menn";"7 år";430
+"20 Finnmark - Finnmárku";"Menn";"8 år";473
+"20 Finnmark - Finnmárku";"Menn";"9 år";468
+"20 Finnmark - Finnmárku";"Menn";"10 år";468
+"20 Finnmark - Finnmárku";"Menn";"11 år";438
+"20 Finnmark - Finnmárku";"Menn";"12 år";438
+"20 Finnmark - Finnmárku";"Menn";"13 år";426
+"20 Finnmark - Finnmárku";"Menn";"14 år";460
+"20 Finnmark - Finnmárku";"Menn";"15 år";491
+"20 Finnmark - Finnmárku";"Menn";"16 år";483
+"20 Finnmark - Finnmárku";"Menn";"17 år";565
+"20 Finnmark - Finnmárku";"Menn";"18 år";566
+"20 Finnmark - Finnmárku";"Kvinner";"0 år";392
+"20 Finnmark - Finnmárku";"Kvinner";"1 år";370
+"20 Finnmark - Finnmárku";"Kvinner";"2 år";387
+"20 Finnmark - Finnmárku";"Kvinner";"3 år";412
+"20 Finnmark - Finnmárku";"Kvinner";"4 år";441
+"20 Finnmark - Finnmárku";"Kvinner";"5 år";387
+"20 Finnmark - Finnmárku";"Kvinner";"6 år";418
+"20 Finnmark - Finnmárku";"Kvinner";"7 år";414
+"20 Finnmark - Finnmárku";"Kvinner";"8 år";460
+"20 Finnmark - Finnmárku";"Kvinner";"9 år";425
+"20 Finnmark - Finnmárku";"Kvinner";"10 år";405
+"20 Finnmark - Finnmárku";"Kvinner";"11 år";474
+"20 Finnmark - Finnmárku";"Kvinner";"12 år";422
+"20 Finnmark - Finnmárku";"Kvinner";"13 år";416
+"20 Finnmark - Finnmárku";"Kvinner";"14 år";424
+"20 Finnmark - Finnmárku";"Kvinner";"15 år";484
+"20 Finnmark - Finnmárku";"Kvinner";"16 år";461
+"20 Finnmark - Finnmárku";"Kvinner";"17 år";502
+"20 Finnmark - Finnmárku";"Kvinner";"18 år";485
