@@ -11,6 +11,10 @@ norskBF[, fylke := as.numeric(gsub("([0-9]+).*$", "\\1", region))]
 norskBF[.(kjønn = c("Menn", "Kvinner"), to = 1:2), on = "kjønn", kjonn := i.to]
 
 norskBF[, .N, by = .(fylke, region)]
-saveRDS(norskBF, "norskbefolkingUnd19.Rds")
+## saveRDS(norskBF, "norskbefolkingUnd19.Rds")
+norskBF <- readRDS("norskbefolkingUnd19.Rds")
+norskBF
 
 ## Fylke deling
+
+
