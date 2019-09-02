@@ -149,6 +149,7 @@ et fylker.
 
 
 ```{r}
+
 fylkeList <- norskBF[, .N, by = .(region, fylke)][, N := NULL][]
 fylkeList
 
@@ -213,4 +214,55 @@ SykFylkeAlle
 saveRDS(SykFylkeAlle, "FylkeSykehus.Rds")
 
 ```
+
+# Antall barn
+
+Kun barn fra 0 til 18 år.
+
+
+```{r}
+
+## Antall all per fylker
+nbf <- names(norskBF)[4] #antall befolkningen
+NokBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)), keyby = fylke]
+
+## Antall per kjønn
+KjonnBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)), keyby = .(kjonn, fylke)]
+
+## Antall per alder
+AgeBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)), keyby = .(age, fylke)]
+
+## Antall per alder og kjonn
+AgeKjonnBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)), keyby = .(kjonn, age, fylke)]
+
+
+```
+
+
+
+# Antall pasient per fylker 
+
+Antall pasienter med alle type diabetes og speisfike type. KUN baren under 19 år.
+
+```{r}
+
+dt2018 <- subset(DT2018, alder < 19)
+
+## Alle type DT
+dtFD <- dt2018[, .N, keyby = fylkeid]
+dtKjonnFD <- dt2018[, .N, keyby = .(Kjonn, fylkeid)]
+dtAgeFD <- dt2018[, .N, keyby = .(alder, fylkeid)]
+dtAgeKjonnFD <- dt2018[, .N, keyby = .(Kjonn, alder, fylkeid)]
+
+## Type 1
+dt1FD <- dt2018[dbtype == 1, .N, keyby = fylkeid]
+dt1KjonnFD <- dt2018[dbtype == 1, .N, keyby = .(Kjonn, fylkeid)]
+
+## Type 2
+dt2FD <- dt2018[dbtype == 1, .N, by = fylkeid]
+
+```
+
+
+
 
