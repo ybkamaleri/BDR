@@ -1,6 +1,6 @@
 ## Etnisitet
 
-dt1 <- copy(DT)
+dt1 <- lok2018dt1
 
 ## Nordiske land
 nordLand <- c("Norge", "Danmark", "Finland", "Sverige", "Island")
@@ -93,9 +93,9 @@ tabOut <- tabXX %>%
   set_row_height(.025)
 
 ## quick_pdf(tabOut, file = "test.pdf")
-tabAll[is.na(a0), a0 := 0]
+## tabAll[is.na(a0), a0 := 0]
 
-ikkenordisk <- rreg::regbar(tabAll, hosKort, a0, ylab = "Antall (N)",
-  title = "Antall ikke etnisk nordisk \n med T1D")
+## ikkenordisk <- rreg::regbar(tabAll, hosKort, a0, ylab = "Antall (N)",
+##   title = "Antall ikke etnisk nordisk \n med T1D")
 
-ggsave("ikkenordisk.jpg", plot = ikkenordisk, width = 15, height = 20, units = "cm")
+## ggsave("ikkenordisk.jpg", plot = ikkenordisk, width = 15, height = 20, units = "cm")

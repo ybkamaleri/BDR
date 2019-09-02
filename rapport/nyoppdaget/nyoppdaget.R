@@ -594,4 +594,63 @@ quick_pdf(tabhux, file = "insidense.pdf")
 ## InsDDT
 ## gutt = 50 + 321 + 634
 ## 481709 - gutt
->>>>>>> eba38aa4137d56fb3a2dc39f0270a414c5c1c15c
+
+
+## Behandling
+## ---------------
+behVar <- c("beh_ins_pumpe", "beh_ins_beh")
+dt1[, .N, by = beh_ins_pumpe]
+dt1[, .N, by = beh_ferdig_bland]
+dt1[, .N, by = beh_ins_beh]
+dt1[, .N, by = beh_ins_pumpe_annet]
+dt1[, .N, by = .(beh_ins_pumpe_annet, beh_ins_pumpe)]
+
+rollup(dt1,
+  j = .(
+    nInsUkjent = sum(is.na(beh_ins_pumpe)),
+    nmisInsUkjent = sum(!is.na(beh_ins_pumpe)),
+    nInsbeh = sum(beh_ins_pumpe  %in% c("Ja","Nei")),
+    ins = sum(beh_ins_pumpe == "Ja"),
+    nInsMult = sum(is.na(beh_ins_beh)),
+    nInsMultMis = sum(!is.na(beh_ins_beh)),
+    nInsJa = sum(beh_ins_beh == "Ja"),
+    n =
+    ), by = c("agegp"))
+
+
+dt1[, .N, by = agegp]
+dt1[, .N, by = .(beh_ins_pumpe)]
+dt1[, .N, by = .(beh_ins_pumpe, agegp)]
+
+dt1[, .N, by = .(beh_ins_beh)]
+dt1[, .N, by = .(beh_ins_beh, agegp)]
+
+dt1[, .N, by = get(behVar)]
+
+dt1[is.na(beh_ins_pumpe) & is.na(beh_ins_beh), .N]
+dt1[is.na(beh_ins_pumpe) & is.na(beh_ins_beh), .N, by = agegp]
+
+
+## Insulinpumpe
+pumHosp <- dt1[beh_ins_pumpe == 'Ja', .N, by = hosKort]
+dt1[, .N, by = beh_ins_pumpe]
+pumNhos <- dt1[, .N, by = hosKort]
+
+pumHosp[, pro := N / 123 * 100]
+pumAll <- pumHosp[pumNhos, on = "hosKort"]
+pumAll[, pros := round(N / i.N * 100, digits = 1)]
+all <- data.table (hosKort = 'Hele landet', N = 123, i.N = 403, pros = 31)
+all
+allBeh <- rbindlist(list(pumAll, all))
+
+for(j in names(allBeh)[-1]){
+set(allBeh, which(is.na(allBeh[[j]])), j = j, value = 0)
+}
+
+inspump <- rreg::regbar(allBeh, hosKort, pros, comp = "Hele", ylab = "Aldel (%)",
+  num = N, title = "Andel pasienter med T1D utskrevet \n med insulinpumpe 2018")
+
+
+ggsave("insulinpumpe.jpg", plot = inspump, width = 15, height = 20, units = "cm")
+
+rio::export(pumAll, "behandling.xlsx")

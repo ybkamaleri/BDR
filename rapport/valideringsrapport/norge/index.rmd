@@ -24,13 +24,6 @@ header-includes:
 - \usepackage[utf8]{inputenc}
 - \renewcommand{\figurename}{Figur}
 - \renewcommand{\tablename}{Tabell}
-output:
-  bookdown::gitbook:
-    split_by: section
-    download: ["pdf"]
-  bookdown::pdf_document2:
-    keep_tex: no
-    toc: no
 ---
 
 
@@ -48,27 +41,31 @@ inspak <- function(pkg){
   sapply(pkg, require, character.only = TRUE)
 }
 
-pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf","huxtable", "dplyr", "kableExtra", "bookdown", "rreg", "colorspace", "pier")
+pkgs = c("data.table", "stringi", "validate", "ggplot2", "lubridate", "readxl", "sqldf","huxtable", "dplyr", "kableExtra", "bookdown", "rreg", "colorspace", "pier", "plotly")
 
 inspak(pkgs)
 
 ## EMACS
 dataSti <- "~/avid/bdr"
-ars2018raw <- readRDS(file.path(dataSti, "validert_arskontroll2018_yb.rds"))
+## ars2018raw <- readRDS(file.path(dataSti, "validert_arskontroll2018_yb.rds"))
+## Load all data
+
+ars2018 <- readRDS(file.path(dataSti, "dt2018medBlodTrykk.RDS"))
 
 ## hospital koder
-hospKoder <- unique(ars2018raw$hospID)
+hospKoder <- unique(ars2018$hospID)
 
 ## Blodtrykk kobling
-bpp <- readRDS(file.path(dataSti,"bloodpressure.RDS"))
-bpSub <- subset(bpp, select = c("id", "stage"))
-ars2018 <- merge(ars2018raw, bpSub, by.x = "Pnr", by.y = "id", all.x = TRUE)
+## bpp <- readRDS(file.path(dataSti,"bloodpressure.RDS"))
+## bpSub <- subset(bpp, select = c("id", "stage"))
+## ars2018 <- merge(ars2018raw, bpSub, by.x = "Pnr", by.y = "id", all.x = TRUE)
+
 
 ## data type1 fra 2007 - 2017
 bdrB4 <- readRDS(file.path(dataSti, "allBDRtype1.rds"))
 
 ## Data for type1 hele landet
-ars2018dt1 <- subset(ars2018, diabetes_Type1 == "Ja")
+ars2018dt1 <- subset(ars2018, hospID != 5 & diabetes_Type1 == "Ja")
 
 ## Farge valg
 ## install.packages("colorspace", repos = "http://R-Forge.R-project.org")
@@ -87,7 +84,7 @@ pdfTitle <- "Norge"
 lokal2018 <- ars2018
 
 ## diabetes Type 1
-lok2018dt1 <- subset(ars2018, diabetes_Type1 == "Ja")
+lok2018dt1 <- subset(ars2018, hospID != 5 & diabetes_Type1 == "Ja")
 
 ```
 
@@ -167,7 +164,9 @@ hTB
 
 ```
 
-***Videre analyser inkludere KUN pasienter med Type 1 diabetes (n = `r dim(lok2018dt1)[1]`)***
+***Videre analyser inkludere KUN pasienter med Type 1 diabetes.  Helgelandssykehuset
+avd. Sandessjøen har bare en pasient til årskontroll og er også tatt ut fra videre
+analyser (n = `r dim(lok2018dt1)[1]`)***
 
 
 ## HbA1c {-}
@@ -230,8 +229,8 @@ tilfelle hvor informasjon om nasjonalitet ikke finnes blir dette kategorisert so
 
 
 ```{r nasjonal2, warning=FALSE, message=FALSE}
-source("./analyseNorge/nasjonal.R")
-utTabell
+source("./analyseNorge/pas_etnisk.R")
+tabOut
 ## lastLine <- dim(barnWt)[1] + 1
 
 ## nas.htab <- as_hux(barnWt, add_colnames = TRUE)
