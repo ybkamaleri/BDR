@@ -152,6 +152,7 @@ et fylker.
 
 fylkeList <- norskBF[, .N, by = .(region, fylke)][, N := NULL][]
 fylkeList
+## fylkeList[, fylkeNavn := stringr::str_extract(region, "\\w+")]
 
 sykehusList <- DT[, .N, by = .(hosKort, hospID)][, N := NULL][]
 sykehusList
@@ -257,11 +258,50 @@ dtAgeKjonnFD <- dt2018[, .N, keyby = .(Kjonn, alder, fylkeid)]
 ## Type 1
 dt1FD <- dt2018[dbtype == 1, .N, keyby = fylkeid]
 dt1KjonnFD <- dt2018[dbtype == 1, .N, keyby = .(Kjonn, fylkeid)]
+dt1AgeFD <- dt2018[dbtype == 1, .N, keyby = .(alder, fylkeid)]
+dt1AgeKjonnFD <- dt2018[dbtype == 1, .N, keyby = .(Kjonn, alder, fylkeid)]
+
 
 ## Type 2
-dt2FD <- dt2018[dbtype == 1, .N, by = fylkeid]
+dt2FD <- dt2018[dbtype == 2, .N, keyby = fylkeid]
+dt2KjonnFD <- dt2018[dbtype == 2, .N, keyby = .(Kjonn, fylkeid)]
+dt2AgeFD <- dt2018[dbtype == 2, .N, keyby = .(alder, fylkeid)]
+dt2AgeKjonnFD <- dt2018[dbtype == 2, .N, keyby = .(Kjonn, alder, fylkeid)]
 
 ```
+
+# Prevalence per fylke 
+
+## Alle typer
+
+Antall barn med diabetes av alle typer per 10 000 *ins10*.
+
+```{r}
+
+insDT <- dtFD[NokBF, on = c(fylkeid = "fylke")]
+insDT[, ins10 := N / i.N * 10000] %>%
+  .[, ins := N / i.N * 100]
+
+insDT
+
+```
+
+## Typer 1 
+
+
+```{r}
+insDT1 <- dt1FD[NokBF, on = c(fylkeid = "fylke")]
+insDT1[, ins10 := N / i.N * 10000] %>%
+  .[, ins := N / i.N * 100]
+
+insDT1
+
+```
+
+
+
+
+
 
 
 
