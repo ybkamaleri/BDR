@@ -22,7 +22,8 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALS
 
 
 ```{r}
-list.of.packages <- c("data.table", "stringr", "lubridate", "shiny", "flexdashboard")
+list.of.packages <- c("data.table", "stringr", "lubridate", "shiny", "flexdashboard",
+                      "leaflet","ggplot2","dplyr","sf","ggrepel", "tmap", "mapview")
 
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
@@ -217,10 +218,8 @@ DT2018Fyk[id == 1, fylkeid := 2] %>%
 DT2018Fyk[, .N, by=.(id, hospID, sykehusKort, fylkeid)]
 DT2018Fyk[, id := NULL]
 
-idFylker <- sykID[fylkeList, on = c(fylkeid = "fylke")]
-sykFylker <- sykehusList[idFylker, on = "hosKort"]
 
-fylkSykKob <- sykFylker[, .(region, hospID, fylkeid)]
+fylkSykKob <- kartF[, .(region, hospID, fylkeid)]
 ## Join sykehus til fylke
 fylkSykKob
 ## saveRDS(fylkSykKob, "sykehusFylker.Rds")
@@ -356,6 +355,9 @@ Fil *kartNorge_sf.RDS* har fått Trøndelag med `fID = 50` som ble slått sammen
 ```{r}
 
 norgeKart <- readRDS("kartNorge_sf.RDS")
+
+kartKode <- as.data.table(norgeKart)
+kartKode[, .N, keyby = .(ID_1, fylke)]
 
 ```
 
