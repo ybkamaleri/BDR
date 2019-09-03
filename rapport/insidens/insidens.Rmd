@@ -22,7 +22,8 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALS
 
 
 ```{r}
-list.of.packages <- c("data.table", "stringr", "lubridate")
+list.of.packages <- c("data.table", "stringr", "lubridate", "shiny", "flexdashboard")
+
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
 sapply(list.of.packages, require, character.only = TRUE)
@@ -130,7 +131,14 @@ DT2018 <- rbindlist(list(utDT, utDTny))
 
 # Load Data
 
-Laste opp befolkings- og diabetesdata for 2018.
+Laste opp befolkings- og diabetesdata for 2018. Variablene som skal brukes i **DT2018**:
+
+- hospID : Sykehus ID
+- alder : Pasienten alder
+- Kjonn : Kjønn string
+- kjonn : Kjønn numeric 1=gutt 2=Jente
+- dbtype : Diabetes typer
+- fylkeid : ID for fylker
 
 
 ```{r}
@@ -138,8 +146,12 @@ Laste opp befolkings- og diabetesdata for 2018.
 norskBF <- readRDS("norskbefolkingUnd19.Rds")
 
 ## Diabetes data 2018
+## Data path
+dataSti <- "~/avid/bdr"
 DT2018 <- readRDS(file.path(dataSti, "alleDiabetes2018.Rds"))
 
+## DT2018[.(Kjonn = c("Gutt", "Jente"), to = 1:2), on = "Kjonn", kjonn := i.to]
+## saveRDS(DT2018, file.path(dataSti, "alleDiabetes2018.Rds"))
 ```
 
 # Nøkkel
@@ -200,7 +212,7 @@ sykFylker <- sykehusList[idFylker, on = "hosKort"]
 fylkSykKob <- sykFylker[, .(region, hospID, fylkeid)]
 ## Join sykehus til fylke
 fylkSykKob
-saveRDS(fylkSykKob, "sykehusFylker.Rds")
+## saveRDS(fylkSykKob, "sykehusFylker.Rds")
 
 
 ## Load fylke og sykhehus ID kobling
@@ -212,7 +224,7 @@ sykehusList
 SykFylkeAlle <- fylkeSykId[sykehusList, on = "hospID"]
 SykFylkeAlle[, fylke := fylkeid]
 SykFylkeAlle
-saveRDS(SykFylkeAlle, "FylkeSykehus.Rds")
+## saveRDS(SykFylkeAlle, "FylkeSykehus.Rds")
 
 ```
 
@@ -225,16 +237,20 @@ Kun barn fra 0 til 18 år.
 
 ## Antall all per fylker
 nbf <- names(norskBF)[4] #antall befolkningen
-NokBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)), keyby = fylke]
+NokBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)),
+                 keyby = fylke][N != 0, ][]
 
 ## Antall per kjønn
-KjonnBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)), keyby = .(kjonn, fylke)]
+KjonnBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)),
+                   keyby = .(kjonn, fylke)][N != 0, ][]
 
 ## Antall per alder
-AgeBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)), keyby = .(age, fylke)]
+AgeBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)),
+                 keyby = .(age, fylke)][N != 0, ][]
 
 ## Antall per alder og kjonn
-AgeKjonnBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)), keyby = .(kjonn, age, fylke)]
+AgeKjonnBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)),
+                      keyby = .(kjonn, age, fylke)][N != 0, ][]
 
 
 ```
@@ -251,26 +267,43 @@ dt2018 <- subset(DT2018, alder < 19)
 
 ## Alle type DT
 dtFD <- dt2018[, .N, keyby = fylkeid]
-dtKjonnFD <- dt2018[, .N, keyby = .(Kjonn, fylkeid)]
+dtKjonnFD <- dt2018[, .N, keyby = .(kjonn, fylkeid)]
 dtAgeFD <- dt2018[, .N, keyby = .(alder, fylkeid)]
-dtAgeKjonnFD <- dt2018[, .N, keyby = .(Kjonn, alder, fylkeid)]
+dtAgeKjonnFD <- dt2018[, .N, keyby = .(kjonn, alder, fylkeid)]
 
 ## Type 1
 dt1FD <- dt2018[dbtype == 1, .N, keyby = fylkeid]
-dt1KjonnFD <- dt2018[dbtype == 1, .N, keyby = .(Kjonn, fylkeid)]
+dt1KjonnFD <- dt2018[dbtype == 1, .N, keyby = .(kjonn, fylkeid)]
 dt1AgeFD <- dt2018[dbtype == 1, .N, keyby = .(alder, fylkeid)]
-dt1AgeKjonnFD <- dt2018[dbtype == 1, .N, keyby = .(Kjonn, alder, fylkeid)]
+dt1AgeKjonnFD <- dt2018[dbtype == 1, .N, keyby = .(kjonn, alder, fylkeid)]
 
 
 ## Type 2
 dt2FD <- dt2018[dbtype == 2, .N, keyby = fylkeid]
-dt2KjonnFD <- dt2018[dbtype == 2, .N, keyby = .(Kjonn, fylkeid)]
+dt2KjonnFD <- dt2018[dbtype == 2, .N, keyby = .(kjonn, fylkeid)]
 dt2AgeFD <- dt2018[dbtype == 2, .N, keyby = .(alder, fylkeid)]
-dt2AgeKjonnFD <- dt2018[dbtype == 2, .N, keyby = .(Kjonn, alder, fylkeid)]
+dt2AgeKjonnFD <- dt2018[dbtype == 2, .N, keyby = .(kjonn, alder, fylkeid)]
 
 ```
 
 # Prevalence per fylke 
+
+Lager function to rename columns og gir bare 2 digits.
+
+
+```{r}
+
+renCol <- function(x){
+  tabCol <- names(x)[-1]
+  tabName <- c("case", "pop", "pre10", "pre")
+  setnames(x, tabCol, tabName)
+
+  x[, (tabCol) := lapply(.SD, function(x1) round(x1, digits = 1)),
+    .SDcols = tabName]
+  
+}
+
+```
 
 ## Alle typer
 
@@ -284,6 +317,8 @@ preDT[, ins10 := round(N / i.N * 10000, digits = 1)] %>%
 
 preDT
 
+renCol(preDT)
+
 ```
 
 ## Typer 1 
@@ -295,6 +330,7 @@ preDT1[, ins10 := round(N / i.N * 10000, digits = 1)] %>%
   .[, ins := round(N / i.N * 100, digits = 1)]
 
 preDT1
+renCol(preDT1)
 
 ```
 
@@ -311,7 +347,6 @@ norgeKart <- readRDS("kartNorge_sf.RDS")
 
 
 ```{r}
-
 
 ## Legger til HF
 hso <- c("Østfold", "Akershus", "Aust-Agder", "Buskerud", "Hedmark", "Oppland", "Oslo", "Telemark", "Vest-Agder", "Vestfold")
@@ -337,9 +372,9 @@ kart_sf <- kart_sf %>%
 
 ```
 
-## Alle type diabetes
+## Kart med simple feature
 
-Legger prevalence tallene.
+Legger prevalence tallene med `sf` package (simple feature)
 
 ```{r}
 
@@ -380,6 +415,15 @@ htmlwidgets::saveWidget(as_widget(preDT1Kart), "dt1kart.html")
 
 plotly_IMAGE(preDT1Kart, format = "png", out_file = "dt1kart.png")
 
+```
+
+## Kart med leaflet and co.
+
+Bruker *leaflet, tmap og mapview* pakker.
+
+
+```{r}
+list.of.packages <- c("leaflet","tmap", "mapview")
 ```
 
 
