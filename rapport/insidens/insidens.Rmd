@@ -340,24 +340,21 @@ fylkeList[fylke == 1, kartID := 1] %>%
   .[fylke == 17, kartID := 9] %>%
   .[fylke == 18, kartID := 10] %>%
   .[fylke == 19, kartID := 17] %>%
-  .[fylke == 20, kartID := 20] 
+  .[fylke == 20, kartID := 5] 
 
-## saveRDS(ssbKart, "FylkeogKartID.Rds")
-fylkeList <- readRDS("FylkeogKartID.Rds")
+## saveRDS(fylkeList, "FylkeogKartID.Rds")
+ssbKart <- readRDS("FylkeogKartID.Rds")
 
 ## mixID for å merge Nord og Sør Trøndelag
 fylkeList[, mixID := kartID] %>%
   .[kartID  %in% c(14, 9), mixID := 50]
 
-fylkeList
+fylkeList[, .N, by = .(fylke, kartID, mixID, region)]
 
 
-## Gir kart id i fylkeID
-ssbKart <- fylkeList[norskBF, on = "fylke"][, i.region := NULL][]
-ssbKart[, .N, keyby = .(kartID)]
-
-kartfylke <- 
-
+## ## Gir kart id i fylkeID
+## ssbKart <- fylkeList[norskBF, on = "fylke"][, i.region := NULL][]
+## ssbKart[, .N, keyby = .(kartID)]
 
 
 ```
@@ -528,6 +525,7 @@ Lager function for å regne prevalence per 10,000 og prosent.
 
 ## kartID
 fylkeList <- readRDS("FylkeogKartID.Rds")
+fylkeList[, .N, by = .(fylke, kartID, mixID)]
 
 preCount <- function(x, y){
 
@@ -546,6 +544,7 @@ preCount <- function(x, y){
   preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
     .SDcols = tabName]
 
+  preDT[is.na(kartID), kartID := 50] #for Trøndelag
   return(preDT)
 }
 
@@ -571,8 +570,13 @@ preDT1 <- preCount(dt1FD, NokBF)[]
 preDT1
 
 
-kartDT1 <- norge2018 %>% left_join(preDT1, by = c("fID" = "fylkeid"))
-mapView(kartDT1, zcol = "pre10")
+kartDT1 <- norgeMapFylke %>% left_join(preDT1, by = c("mapID" = "kartID"))
+
+
+dt1map1 <- mapView(kartDT1, zcol = "pre10")
+dt1map1
+htmlwidgets::saveWidget(dt1map1, file = "T1Dpre.html")
+mapshot(dt1map1, url = "T1Dpre.html")
 
 ```
 
