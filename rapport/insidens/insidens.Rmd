@@ -37,6 +37,11 @@ sapply(list.of.packages, require, character.only = TRUE)
 Basis data for befolkningen hentet fra
 [SSB](https://www.ssb.no/statbank/list/folkemengde/ "befolkning"). Når filen er lastet ned så følgende gjøres for å lage fylkes id nr.
 
+- fylke : ID fylke fra SSB
+- kartID : ID fra kart sf
+- mixID : brukes til å merge Trøndelag
+
+
 ```{r }
 
 norskBF <- fread("N2018_Norge_1_18.csv", header = TRUE, encoding = "Latin-1")
@@ -51,6 +56,9 @@ norskBF[.(kjønn = c("Menn", "Kvinner"), to = 1:2), on = "kjønn", kjonn := i.to
 
 norskBF[, .N, by = .(fylke, region)]
 saveRDS(norskBF, "norskbefolkingUnd19.Rds")
+
+## SSB data med kartID og mixID for mering Nord og sør Trøndelag
+ssbKart <- readRDS("FylkeogKartID.Rds")
 
 ```
 
@@ -390,8 +398,19 @@ fylkeList[fylke == 1, kartID := 1] %>%
   .[fylke == 19, kartID := 17] %>%
   .[fylke == 20, kartID := 20] 
 
-## saveRDS(fylkeList, "FylkeogKartID.Rds")
+## saveRDS(ssbKart, "FylkeogKartID.Rds")
 fylkeList <- readRDS("FylkeogKartID.Rds")
+
+## mixID for å merge Nord og Sør Trøndelag
+fylkeList[, mixID := kartID] %>%
+  .[kartID  %in% c(14, 9), mixID := 50]
+
+fylkeList
+
+
+## Gir kart id i ssbfil
+ssbKart <- fylkeList[norskBF, on = "fylke"][, i.region := NULL][]
+ssbKart
 
 ```
 
