@@ -369,26 +369,30 @@ Fylke ID fra SSB data er ikke det samme ID som er fra kart så de må samkjøres
 
 ```{r}
 
-fylkeList[fylke = 1, kartID := 1] %>%
-  .[fylke = 2, kartID := 2] %>%
-  .[fylke = 3, kartID := 12] %>%
-  .[fylke = 4, kartID := 6] %>%
-  .[fylke = 5, kartID := 11] %>%
-  .[fylke = 6, kartID := 4] %>%
-  .[fylke = 7, kartID := 19] %>%
-  .[fylke = 8, kartID := 16] %>%
-  .[fylke = 9, kartID := 3] %>%
-  .[fylke = 10, kartID := 18] %>%
-  .[fylke = 11, kartID := 13] %>%
-  .[fylke = 12, kartID := 7] %>%
-  .[fylke = 14, kartID := 15] %>%
-  .[fylke = 15, kartID := 8] %>%
-  .[fylke = 16, kartID := 14] %>%
-  .[fylke = 17, kartID := 9] %>%
-  .[fylke = 18, kartID := 10] %>%
-  .[fylke = 19, kartID := 17] %>%
-  .[fylke = 20, kartID := 20] 
-  
+fylkeList
+fylkeList[fylke == 1, kartID := 1] %>%
+  .[fylke == 2, kartID := 2] %>%
+  .[fylke == 3, kartID := 12] %>%
+  .[fylke == 4, kartID := 6] %>%
+  .[fylke == 5, kartID := 11] %>%
+  .[fylke == 6, kartID := 4] %>%
+  .[fylke == 7, kartID := 19] %>%
+  .[fylke == 8, kartID := 16] %>%
+  .[fylke == 9, kartID := 3] %>%
+  .[fylke == 10, kartID := 18] %>%
+  .[fylke == 11, kartID := 13] %>%
+  .[fylke == 12, kartID := 7] %>%
+  .[fylke == 14, kartID := 15] %>%
+  .[fylke == 15, kartID := 8] %>%
+  .[fylke == 16, kartID := 14] %>%
+  .[fylke == 17, kartID := 9] %>%
+  .[fylke == 18, kartID := 10] %>%
+  .[fylke == 19, kartID := 17] %>%
+  .[fylke == 20, kartID := 20] 
+
+## saveRDS(fylkeList, "FylkeogKartID.Rds")
+fylkeList <- readRDS("FylkeogKartID.Rds")
+
 ```
 
 
