@@ -169,10 +169,10 @@ DT2018 <- readRDS(file.path(dataSti, "alleDiabetes2018.Rds"))
 ## saveRDS(DT2018Fyk, file.path(dataSti, "alleDiabetes2018.Rds"))
 ```
 
-# Nøkkel
-Lager nøkkel for kobling mellom sykehus og fylker. Koblingen må gjøres gjennom
-sykehus ID fordi fylker har ikke unik nøkkel siden flere sykehus høres til i samme
-et fylker.
+# Nøkkel SSB data og Diabetes data 
+Lager nøkkel for kobling mellom sykehus og fylker fra SSB befolkingstall. Koblingen
+må gjøres gjennom sykehus ID fordi fylker har ikke unik nøkkel siden flere sykehus
+høres til i samme et fylker.
 
 
 ```{r}
@@ -247,10 +247,46 @@ SykFylkeAlle
 
 # Norgeskart 
 
+Load fra ferdig behandlet kart med *mapID* og *fylkeid*
+
+
+```{r}
+## saveRDS(norge2018, "NorgeMapFylkeID.Rds")
+norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
+
+```
+
+Evt. kan laste opp fra start ved bruk Shapefile kart.
+
+
+```{r}
+#kart fylke
+NorgeMap = sf::st_read("~/Git-personal/Rujukan-R/norge/NOR_adm1.shp", stringsAsFactors = FALSE)
+
+
+## bytte Åstfold to Østfold
+library(dplyr)
+NorgeMap <- NorgeMap %>%
+  mutate(NAME_1, fylke=ifelse(ID_1==1, 'Østfold', NAME_1))
+
+## sør- og nord Trøndelag slår sammen siden jan 2018 - gi kode 50
+## siden kode fra SSB for Trøndelag er 50
+NorgeMap <- NorgeMap %>%
+  mutate(ID_1, mapID = ifelse(ID_1 %in% c(9, 14), 50, ID_1))
+
+## gir navn som Trøndelag
+NorgeMap <- NorgeMap %>%
+  mutate(fylke, region=ifelse(mapID==50, 'Trøndelag', fylke))
+
+## saveRDS(NorgeMap, "kartNorge_sf.RDS")
+
+```
+
+
 Fil *kartNorge_sf.RDS* har fått Trøndelag med `fID = 50` som ble slått sammen i Jan. 2018. Variablene som skal brukes her:
 
-- region : Oppdatert regionnavn
-- fID : Ny fylkes id kobinert nord og sør Trøndelag
+- region : Oppdatert regionnavn med Trøndelag
+- mapID : Ny fylkes id kobinert nord og sør Trøndelag
 
 
 ```{r}
@@ -259,11 +295,26 @@ norgeKart <- readRDS("kartNorge_sf.RDS")
 
 ## fylke id fra kart
 kartKode <- as.data.table(norgeKart)
-kartKode[, .N, keyby = .(ID_1, fylke, fID)]
+kartKode[, .N, keyby = .(ID_1, fylke, mapID, region)]
 
 ```
 
-## Legger samme id fra SSB og Kart
+## Merge kart for Trøndelag
+
+Nord og Sør-Trøndelag slåss sammen til Trøndelag fra jan 2018. Bruk *mapID* og
+*region* til gruppering.
+
+```{r}
+norge2018 <- norgeKart %>%
+  group_by(mapID, region) %>%
+  summarize()
+
+mapView(norge2018, zcol = 'region')
+
+```
+
+
+# Legger samme id fra SSB og Kart
 
 Fylke ID fra SSB data er ikke det samme ID som er fra kart så de må samkjøres først.
 
@@ -301,9 +352,11 @@ fylkeList[, mixID := kartID] %>%
 fylkeList
 
 
-## Gir kart id i ssbfil
+## Gir kart id i fylkeID
 ssbKart <- fylkeList[norskBF, on = "fylke"][, i.region := NULL][]
 ssbKart[, .N, keyby = .(kartID)]
+
+kartfylke <- 
 
 
 
@@ -405,19 +458,6 @@ mapView(kartDT1, zcol = "pre10")
 
 ```
 
-# Merge trøndelag
-
-Nord og Sør-Trøndelag slåss sammen til Trøndelag fra jan 2018. Bruk *fID* til
-gruppering.
-
-```{r}
-norge2018 <- norgeKart %>%
-  group_by(fID, region) %>%
-  summarize()
-
-mapView(norge2018)
-
-```
 
 
 # Antall barn
