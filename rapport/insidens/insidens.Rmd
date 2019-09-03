@@ -136,8 +136,6 @@ DT2018 <- rbindlist(list(utDT, utDTny))
 ```
 
 
-
-
 # Load Data
 
 Laste opp befolkings- og diabetesdata for 2018. Variablene som skal brukes i **DT2018**:
@@ -366,7 +364,7 @@ norgeKart <- readRDS("kartNorge_sf.RDS")
 
 ## fylke id fra kart
 kartKode <- as.data.table(norgeKart)
-kartKode[, .N, keyby = .(ID_1, fylke)]
+kartKode[, .N, keyby = .(ID_1, fylke, fID)]
 
 ```
 
@@ -410,7 +408,9 @@ fylkeList
 
 ## Gir kart id i ssbfil
 ssbKart <- fylkeList[norskBF, on = "fylke"][, i.region := NULL][]
-ssbKart
+ssbKart[, .N, keyby = .(kartID)]
+
+
 
 ```
 
@@ -444,7 +444,7 @@ kart_sf <- kart_sf %>%
 
 ```
 
-## Kart med simple feature
+# Kart med simple feature
 
 Legger prevalence tallene med `sf` package (simple feature)
 
@@ -489,7 +489,7 @@ plotly_IMAGE(preDT1Kart, format = "png", out_file = "dt1kart.png")
 
 ```
 
-## Kart med leaflet and co.
+# Kart med leaflet and co.
 
 Bruker *leaflet, tmap og mapview* pakker.
 
@@ -507,6 +507,20 @@ kartDT2 <- kartDT1 %>%
 kartDT2
 
 mapView(kartDT1, zcol = "pre10")
+
+```
+
+# Merge trøndelag
+
+Nord og Sør-Trøndelag slåss sammen til Trøndelag fra jan 2018. Bruk *fID* til
+gruppering.
+
+```{r}
+norge2018 <- norgeKart %>%
+  group_by(fID, region) %>%
+  summarize()
+
+mapView(norge2018)
 
 ```
 
