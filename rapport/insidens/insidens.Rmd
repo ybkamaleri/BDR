@@ -134,6 +134,7 @@ DT2018 <- rbindlist(list(utDT, utDTny))
 Laste opp befolkings- og diabetesdata for 2018. Variablene som skal brukes i **DT2018**:
 
 - hospID : Sykehus ID
+- sykehusKort : Kort navn for sykehusene
 - alder : Pasienten alder
 - Kjonn : Kjønn string
 - kjonn : Kjønn numeric 1=gutt 2=Jente
@@ -150,8 +151,14 @@ norskBF <- readRDS("norskbefolkingUnd19.Rds")
 dataSti <- "~/avid/bdr"
 DT2018 <- readRDS(file.path(dataSti, "alleDiabetes2018.Rds"))
 
+
+## DT2018[.(hospID = sykehusList[["hospID"]], to = sykehusList[["hosKort"]]),
+##        on = "hospID", sykehusKort := i.to]
+
+## DT2018[, .N, by = sykehusKort]
+
 ## DT2018[.(Kjonn = c("Gutt", "Jente"), to = 1:2), on = "Kjonn", kjonn := i.to]
-## saveRDS(DT2018, file.path(dataSti, "alleDiabetes2018.Rds"))
+## saveRDS(DT2018Fyk, file.path(dataSti, "alleDiabetes2018.Rds"))
 ```
 
 # Nøkkel
@@ -166,18 +173,21 @@ fylkeList <- norskBF[, .N, by = .(region, fylke)][, N := NULL][]
 fylkeList
 ## fylkeList[, fylkeNavn := stringr::str_extract(region, "\\w+")]
 
-sykehusList <- DT[, .N, by = .(hosKort, hospID)][, N := NULL][]
+sykehusList <- DT2018[, .N, keyby = .(sykehusKort, hospID)][, N := NULL][]
 sykehusList
 
+## sykehusList[!sykehusList, on = "hospID"]
+## sykehusList[, .N, by = hospID]
+
 ## Kobling sykehus og fylke
-sykort <- sykehusList[["hosKort"]]
-sykID <- data.table(hosKort = sykort)
+sykort <- sykehusList[["sykehusKort"]]
+sykID <- data.table(sykehusKort = sykort)
 sykID[, id := .I]
 sykID
 
 ## Gir Diabetes data fylkes id
-DT2018[, id := hospID]
-DT2018[id == 1, fylkeid := 2] %>%
+DT2018Fyk <- sykID[DT2018, on = "sykehusKort"]
+DT2018Fyk[id == 1, fylkeid := 2] %>%
   .[id == 2, fylkeid := 9] %>%
   .[id == 3, fylkeid := 18] %>%
   .[id == 4, fylkeid := 6] %>%
@@ -204,7 +214,8 @@ DT2018[id == 1, fylkeid := 2] %>%
   .[id == 25, fylkeid := 15] %>%
   .[id == 26, fylkeid := 1]
 
-DT2018[, id := NULL]
+DT2018Fyk[, .N, by=.(id, hospID, sykehusKort, fylkeid)]
+DT2018Fyk[, id := NULL]
 
 idFylker <- sykID[fylkeList, on = c(fylkeid = "fylke")]
 sykFylker <- sykehusList[idFylker, on = "hosKort"]
@@ -295,6 +306,8 @@ Lager function for å regne prevalence per 10,000 og prosent.
 
 preCount <- function(x, y){
 
+  ## x = DB data
+  ## y = fylke data
   preDT <- x[y, on = c(fylkeid = "fylke")]
 
   preDT[, ins10 := round(N / i.N * 10000, digits = 1)] %>%
@@ -327,16 +340,17 @@ preDT
 
 
 ```{r}
-preDT1 <- dt1FD[NokBF, on = c(fylkeid = "fylke")]
-preDT1[, ins10 := round(N / i.N * 10000, digits = 1)] %>%
-  .[, ins := round(N / i.N * 100, digits = 1)]
 
-preDT1
-renCol(preDT1)
+preDT1 <- preCount(dt1FD, NokBF)[]
 
 ```
 
 # Norgeskart 
+
+Fil *kartNorge_sf.RDS* har fått Trøndelag med `fID = 50` som ble slått sammen i Jan. 2018. Variablene som skal brukes her:
+
+- region : Oppdatert regionnavn
+- fID : Ny fylkes id kobinert nord og sør Trøndelag
 
 
 ```{r}
@@ -379,8 +393,8 @@ kart_sf <- kart_sf %>%
 Legger prevalence tallene med `sf` package (simple feature)
 
 ```{r}
-
-kartDT1 <- kart_sf %>% left_join(preDT1, by = c("fID" = "fylkeid"))
+library('dplyr')
+kartDT1 <- norgeKart %>% left_join(preDT1, by = c("fID" = "fylkeid"))
 
 
 library(plotly)
@@ -426,7 +440,22 @@ Bruker *leaflet, tmap og mapview* pakker.
 
 ```{r}
 list.of.packages <- c("leaflet","tmap", "mapview")
+
+norDT1 <- tmap::tm_shape(kartDT1) +
+  tmap::tm_polygons() +
+  tm_shape(preDT1, is.master = TRUE)
+
+kartDT2 <- kartDT1 %>%
+  mutate(ID_1 = pre10)
+
+kartDT2
+
+mapView(kartDT1, zcol = "pre10")
+
 ```
+
+
+
 
 
 
