@@ -54,11 +54,12 @@ norskBF[, fylke := as.numeric(gsub("([0-9]+).*$", "\\1", region))]
 ## Kjonn
 norskBF[.(kjønn = c("Menn", "Kvinner"), to = 1:2), on = "kjønn", kjonn := i.to]
 
-norskBF[, .N, by = .(fylke, region)]
-saveRDS(norskBF, "norskbefolkingUnd19.Rds")
-
 ## SSB data med kartID og mixID for mering Nord og sør Trøndelag
 ssbKart <- readRDS("FylkeogKartID.Rds")
+
+## norskBF[, .N, by = .(fylke, region)]
+## saveRDS(norskBF, "norskbefolkingUnd19.Rds")
+
 
 ```
 
@@ -427,21 +428,21 @@ Kun barn fra 0 til 18 år.
 ```{r}
 
 ## Antall all per fylker
-nbf <- names(norskBF)[4] #antall befolkningen
-NokBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)),
-                 keyby = fylke][N != 0, ][]
+nbf <- grep("^Personer", names(ssbKart), value = T) #antall befolkningen
+NokBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
+                 keyby = .(fylke, kartID)][N != 0, ][]
 
 ## Antall per kjønn
-KjonnBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)),
-                   keyby = .(kjonn, fylke)][N != 0, ][]
+KjonnBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
+                   keyby = .(kjonn, fylke, kartID)][N != 0, ][]
 
 ## Antall per alder
-AgeBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)),
-                 keyby = .(age, fylke)][N != 0, ][]
+AgeBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
+                 keyby = .(age, fylke, kartID)][N != 0, ][]
 
 ## Antall per alder og kjonn
-AgeKjonnBF <- norskBF[, .(N = sum(get(nbf), na.rm = TRUE)),
-                      keyby = .(kjonn, age, fylke)][N != 0, ][]
+AgeKjonnBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
+                      keyby = .(kjonn, age, fylke, kartID)][N != 0, ][]
 
 
 ```
@@ -485,16 +486,20 @@ Lager function for å regne prevalence per 10,000 og prosent.
 
 ```{r}
 
+## kartID
+fylkeList <- readRDS("FylkeogKartID.Rds")
+
 preCount <- function(x, y){
 
   ## x = DB data
   ## y = fylke data
   preDT <- x[y, on = c(fylkeid = "fylke")]
 
-  preDT[, ins10 := round(N / i.N * 10000, digits = 1)] %>%
-  .[, ins := round(N / i.N * 100, digits = 1)]
+  preDT[, ins10 := N / i.N * 10000] %>%
+    .[, ins := N / i.N * 100]
 
-  tabCol <- names(preDT)[-1]
+  utCol <- grep("id$", names(preDT), ignore.case = TRUE)
+  tabCol <- names(preDT)[-utCol]
   tabName <- c("case", "pop", "pre10", "pre")
   setnames(preDT, tabCol, tabName)
 
