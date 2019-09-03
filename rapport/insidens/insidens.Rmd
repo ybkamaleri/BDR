@@ -572,7 +572,6 @@ preDT1
 
 kartDT1 <- norgeMapFylke %>% left_join(preDT1, by = c("mapID" = "kartID"))
 
-
 dt1map1 <- mapView(kartDT1, zcol = "pre10")
 dt1map1
 htmlwidgets::saveWidget(dt1map1, file = "T1Dpre.html")
