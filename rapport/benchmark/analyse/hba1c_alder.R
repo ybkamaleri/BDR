@@ -1,7 +1,9 @@
 ## HbA1c og aldersgruppe
 valgVar <- "lab_HbA1cAkerVerdi"
 
-tabraw <- cube(dt1[!is.na(valgVar), ],
+## ddt1 <- subset(dt1, !is.na(valgVar))
+
+tabraw <- cube(dt1[!is.na(get(valgVar)), ],
   j = .(
     mean = round(mean(get(valgVar), na.rm = TRUE), digits = 2),
     n = .N

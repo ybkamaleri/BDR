@@ -1,7 +1,7 @@
 ---
 title: "Årskontrollrapport for 2018"
 author: ""
-date: "29.08.2019"
+date: "`r format(Sys.time(), '%d %B %Y')`"
 site: bookdown::bookdown_site
 documentclass: book
 link-citations: yes
@@ -32,9 +32,6 @@ url: 'http\://bdreg.github.io/'
 cover-image: "logo.png"
 description: "Benchmark rapport for Barnediabetesregisteret"
 ---
-
-   
-# Forord
 
 
 ```{r setup, include=FALSE}
@@ -112,6 +109,11 @@ document.write(\'<div class="logos">',img,'</div>\')
 readr::write_lines(htmlhead, path = "header.html")
 
 ```
+
+
+
+
+# Forord
 
 
 Denne rapporten fra Barnediabetesregisteret inneholder analyser fra årskontroller i 2018. Alle

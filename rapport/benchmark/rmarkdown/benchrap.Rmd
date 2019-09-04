@@ -32,7 +32,7 @@ cover-image: "logo.png"
 description: "Benchmark rapport for Barnediabetesregisteret"
 output:
   pdf_document:
-    keep_tex: true
+    keep_tex: false
     toc: true
     number_sections: true
     includes:

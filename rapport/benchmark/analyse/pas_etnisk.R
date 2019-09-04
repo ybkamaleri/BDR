@@ -66,18 +66,20 @@ setcolorder(tabAll, c("hosKort", "a1", "m1", "a0", "m0"))
 tabAll[, m1 := sprintf("  %0.2f", m1)]
 tabAll[, m0 := sprintf("  %0.2f", m0)]
 tabAll[, a0 := as.character(`a0`)][is.na(a0), a0 := "-"]
-tabAll[m0 == 'NA', m0 := "-"]
-
+tabAll[grep('NA', m0), m0 := "-"]
 nyNavn <- c("", "Antall", "Gj.snitt", "Antall", "Gj.snitt")
 setnames(tabAll, names(tabAll), nyNavn)
 
-## Tabell
 
+
+## Tabell
 tabXX <- as_hux(tabAll, add_colnames = TRUE)
 tabXX <- map_background_color(tabXX, by_rows("grey90", "white"))
 
 lastRow <- nrow(tabXX)
 lastCol <- ncol(tabXX)
+
+
 
 tabXX <- tabXX %>%
   map_background_color(by_rows("grey90", "white")) %>%
@@ -93,9 +95,9 @@ tabOut <- tabXX %>%
   set_row_height(.025)
 
 ## quick_pdf(tabOut, file = "test.pdf")
-tabAll[is.na(a0), a0 := 0]
+## tabAll[is.na(a0), a0 := 0]
 
-ikkenordisk <- rreg::regbar(tabAll, hosKort, a0, ylab = "Antall (N)",
-  title = "Antall ikke etnisk nordisk \n med T1D")
+## ikkenordisk <- rreg::regbar(tabAll, hosKort, a0, ylab = "Antall (N)",
+##   title = "Antall ikke etnisk nordisk \n med T1D")
 
-ggsave("ikkenordisk.jpg", plot = ikkenordisk, width = 15, height = 20, units = "cm")
+## ggsave("ikkenordisk.jpg", plot = ikkenordisk, width = 15, height = 20, units = "cm")
