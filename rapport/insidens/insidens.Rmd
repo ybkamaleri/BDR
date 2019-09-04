@@ -584,6 +584,14 @@ mapshot(dt1map1, url = "T1Dpre.html")
 
 ```
 
+# Anonymisering
+
+
+```{r}
+dt2018ANON <- DT2018[, .(alder, Kjonn, diabType, dbtype, fylkeid)]
+## saveRDS(dt2018ANON, "dt2018.rds")
+## saveRDS(dt2018ANON, file.path(dataSti, "AnnonymDBtype.rds"))
+```
 
 
 
