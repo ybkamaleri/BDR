@@ -21,7 +21,7 @@ delColRaw <- grep("1$", names(rawtab))
 rawtab[, (delColRaw) := NULL]
 
 ## Totalt
-hosTab <- cube(dt1,
+hosTab <- cube(dt1[!is.na(get(valgVar))],
   j = list(
     n = .N,
     und6 = sum(get(valgVar) < 7, na.rm = TRUE),
@@ -70,7 +70,9 @@ tabOut <- exp.tabel(tabRaw,
   total = 1, valgCol = 2:7, valgAlign = "left",
   rowHeight = .025, mixCol = 2:7)
 
-## quick_pdf(tabOut, file = "test.pdf")
+## quick_pdf(tabOut, file = "hba1cRaw.pdf")
+## huxtable::quick_xlsx(tabOut, file = "hba1cRaw.xlsx")
+
 
 ## ## per sykehus
 ## hostab <- dt1[, {

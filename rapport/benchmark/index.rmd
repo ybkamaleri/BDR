@@ -33,6 +33,9 @@ cover-image: "logo.png"
 description: "Benchmark rapport for Barnediabetesregisteret"
 ---
 
+   
+# Forord
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.pos = 'H')
@@ -109,11 +112,6 @@ document.write(\'<div class="logos">',img,'</div>\')
 readr::write_lines(htmlhead, path = "header.html")
 
 ```
-
-
-
-
-# Forord
 
 
 Denne rapporten fra Barnediabetesregisteret inneholder analyser fra årskontroller i 2018. Alle
