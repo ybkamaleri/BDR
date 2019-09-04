@@ -43,20 +43,26 @@ Basis data for befolkningen hentet fra
 
 
 ```{r }
-
-norskBF <- fread("N2018_Norge_1_18.csv", header = TRUE, encoding = "Latin-1")
+## norsk baren 1-18 år
+norskBF18 <- fread("N2018_Norge_1_18.csv", header = TRUE, encoding = "Latin-1")
 
 ## Extract Alder
-norskBF[, age := stringr::str_extract(alder, "\\d+")]
+norskBF18[, age := stringr::str_extract(alder, "\\d+")]
 ## Extract tall for fylke med gsub
-norskBF[, fylke := as.numeric(gsub("([0-9]+).*$", "\\1", region))]
+norskBF18[, fylke := as.numeric(gsub("([0-9]+).*$", "\\1", region))]
 
 ## Kjonn
-norskBF[.(kjønn = c("Menn", "Kvinner"), to = 1:2), on = "kjønn", kjonn := i.to]
+norskBF18[.(kjønn = c("Menn", "Kvinner"), to = 1:2), on = "kjønn", kjonn := i.to]
+
+## Beholder bare de under 15 år
+norskBF15 <- subset(norskBF, age < 15)
+## saveRDS(norskBF15, "NorgeBF_und15.Rds")
+norskBF <- readRDS("NorgeBF_und15.Rds")
 
 ## SSB data med kartID og mixID for mering Nord og sør Trøndelag
 ssbKart <- readRDS("FylkeogKartID.Rds")
-
+ssbKart15 <- subset(ssbKart, age < 15)
+## saveRDS(ssbKart15, "FylkeogKartID.Rds")
 ## norskBF[, .N, by = .(fylke, region)]
 ## saveRDS(norskBF, "norskbefolkingUnd19.Rds")
 
@@ -131,7 +137,6 @@ DTny <- readRDS(file.path(dataSti, "nyoppdaget20180830.rds"))
 utDT <- selectdiab(DT)
 utDTny <- selectdiab(DTny)
 DT2018 <- rbindlist(list(utDT, utDTny))
-
 ## saveRDS(DT2018, (file.path(dataSti, "alleDiabetes2018.Rds")))
 
 ```
@@ -152,13 +157,13 @@ Laste opp befolkings- og diabetesdata for 2018. Variablene som skal brukes i **D
 
 ```{r}
 ## Befolkningsdata
-norskBF <- readRDS("norskbefolkingUnd19.Rds")
+norskBF <- readRDS("NorgeBF_und15.Rds")
 
 ## Diabetes data 2018
 ## Data path
 dataSti <- "~/avid/bdr"
-DT2018 <- readRDS(file.path(dataSti, "alleDiabetes2018.Rds"))
-
+DT2018Alle <- readRDS(file.path(dataSti, "alleDiabetes2018.Rds"))
+DT2018 <- subset(DT2018Alle, alder < 15) #bare de som er under 15 år
 
 ## DT2018[.(hospID = sykehusList[["hospID"]], to = sykehusList[["hosKort"]]),
 ##        on = "hospID", sykehusKort := i.to]
@@ -488,11 +493,11 @@ AgeKjonnBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
 
 # Antall pasient per fylker 
 
-Antall pasienter med alle type diabetes og speisfike type. KUN baren under 19 år.
+Antall pasienter med alle type diabetes og speisfike type. KUN barn under 15 år.
 
 ```{r}
 
-dt2018 <- subset(DT2018, alder < 19)
+dt2018 <- subset(DT2018, alder < 15)
 dt2018[.(Kjonn = c("Gutt", "Jente"), to = 1:2), on = "Kjonn", kjonn := i.to]
 
 ## Alle type DT
@@ -538,7 +543,7 @@ preCount <- function(x, y){
 
   utCol <- grep("id$", names(preDT), ignore.case = TRUE)
   tabCol <- names(preDT)[-utCol]
-  tabName <- c("case", "pop", "pre10", "pre")
+  tabName <- c("n", "N", "pr10000", "pr100")
   setnames(preDT, tabCol, tabName)
 
   preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
@@ -572,7 +577,7 @@ preDT1
 
 kartDT1 <- norgeMapFylke %>% left_join(preDT1, by = c("mapID" = "kartID"))
 
-dt1map1 <- mapView(kartDT1, zcol = "pre10")
+dt1map1 <- mapView(kartDT1, zcol = "pr10000")
 dt1map1
 htmlwidgets::saveWidget(dt1map1, file = "T1Dpre.html")
 mapshot(dt1map1, url = "T1Dpre.html")
