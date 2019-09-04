@@ -54,3 +54,4 @@ checkboxGroupInput("valg_kjonn",
 ```
 
 
+
