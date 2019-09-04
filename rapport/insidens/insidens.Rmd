@@ -31,6 +31,23 @@ sapply(list.of.packages, require, character.only = TRUE)
 
 ```
 
+# Endelig datasettet
+
+Disse datasetter er den endelige:
+
+- **Data_withID_MapSSB.rds**: Befolkningstall med fylke og kart ID for kobling
+- **dt2018.rds**: Datasett for diabetes med fylkeid
+- **NorgeMapFylkeID**: Kart med fylkeid
+
+
+```{r}
+mapssb <- readRDS("Data_withID_MapSSB.rds")
+dt2018 <- readRDS("dt2018.rds")
+norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
+```
+
+
+
 
 # Befolkningstall
 
@@ -354,6 +371,8 @@ fylkeList[fylke == 1, kartID := 1] %>%
 ## saveRDS(fylkeList, "FylkeogKartID.Rds")
 ssbKart <- readRDS("FylkeogKartID.Rds")
 
+
+
 ## mixID for å merge Nord og Sør Trøndelag
 fylkeList[, mixID := kartID] %>%
   .[kartID  %in% c(14, 9), mixID := 50]
@@ -475,6 +494,10 @@ Kun barn fra 0 til 18 år.
 
 ## Antall all per fylker
 nbf <- grep("^Personer", names(ssbKart), value = T) #antall befolkningen
+MapSsb <- ssbKart[, .(fylke, kartID, mixID, age, kjonn, N = get(nbf))]
+## saveRDS(MapSsb, "Data_withID_MapSSB.rds")
+
+
 NokBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
                  keyby = .(fylke, kartID)][N != 0, ][]
 
