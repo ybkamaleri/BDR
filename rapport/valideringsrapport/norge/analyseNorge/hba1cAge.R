@@ -17,7 +17,9 @@ hbN <- lokalDT[!is.na(lab_HbA1cAkerVerdi), .N]
 ##   ),
 ##   by = .(agecat, agekat)]
 
-hbaTab <- rollup(lokalDT,
+lokalDD <- subset(lokalDT, !is.na(lab_HbA1cAkerVerdi))
+
+hbaTab <- rollup(lokalDD,
   j = list(
     n = .N,
     mean = mean(lab_HbA1cAkerVerdi, na.rm = TRUE),
