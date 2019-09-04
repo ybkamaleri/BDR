@@ -15,6 +15,10 @@ if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r
 sapply(list.pkg, require, character.only = TRUE)
 ```
 
+```{r data}
+
+```
+
 
 Sidebar {.sidebar}
 ===================================
@@ -40,8 +44,8 @@ selectInput("valg_diab",
 sliderInput("valg_age",
            "Alder:",
            min = 0,
-           max = 14.99,
-           value = c(1, 5),
+           max = 14,
+           value = c(0, 14),
            step = 1)
 
 checkboxGroupInput("valg_kjonn",
@@ -55,4 +59,36 @@ checkboxGroupInput("valg_kjonn",
 ```
 
 
+Prevalens
+===================================
 
+
+Row
+-----------------------------------
+
+### Landets prevalens
+
+
+```{r}
+renderValueBox({
+valueBox("Landets prevalens", value = 30, color = "lightblue")
+  
+})
+```
+
+### Percentage of survivors
+
+```{r}
+valueBox("31.6 %", icon = "fa-heart", color="rgb(200,100,100)")
+```
+
+### Water temperature
+
+```{r}
+valueBox("-2°C", icon = "fa-life-ring",color="rgb(26,110,204)")
+```
+
+
+## Row 2 {data-height=400}  
+
+### Age
