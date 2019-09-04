@@ -33,7 +33,8 @@ selectInput("valg_diab",
             "Valg diabetes type:",
             choices = list("Type I" = 1,
                            "Type II" = 2,
-                           "Annen type" = 3),
+                           "Annen" = 3,
+                           "Alle" = 4),
             selected = 1)
 
 sliderInput("valg_age",
@@ -46,10 +47,10 @@ sliderInput("valg_age",
 checkboxGroupInput("valg_kjonn",
                    "Kjønn:",
                    choices = list("Gutter" = 1,
-                                  "Jenter" = 2,
-                                  "Alle" = 3),
-                   selected = 3,
-                   inline = T)
+                                  "Jenter" = 2
+                                  ),
+                   selected = c(1, 2),
+                   inline = TRUE)
 
 ```
 
