@@ -1,0 +1,56 @@
+---
+title: "BDR: Prevalens og insidens"
+runtime: shiny
+output:
+  flexdashboard::flex_dashboard:
+    orientation: row
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+list.pkg <- c("flexdashboard", "shiny", "data.table", "dplyr", "plotly", "DT", "leaflet", "lubridate")
+new.packages <- list.pkg[!(list.pkg %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
+## reqopt <- function(x) require(x, quietly = TRUE)
+sapply(list.pkg, require, character.only = TRUE)
+```
+
+
+Sidebar {.sidebar}
+===================================
+
+```{r inspre}
+selectInput("valg_inspre",
+            "Valg data:",
+            choices = list("Prevalens" = 1,
+                           "Insidens" = 2),
+            selected = 1)
+```
+<hr/>
+
+```{r typeDiab}
+selectInput("valg_diab",
+            "Valg diabetes type:",
+            choices = list("Type I" = 1,
+                           "Type II" = 2,
+                           "Annen type" = 3),
+            selected = 1)
+
+sliderInput("valg_age",
+           "Alder:",
+           min = 0,
+           max = 14.99,
+           value = c(1, 5),
+           step = 1)
+
+checkboxGroupInput("valg_kjonn",
+                   "Kjønn:",
+                   choices = list("Gutter" = 1,
+                                  "Jenter" = 2,
+                                  "Alle" = 3),
+                   selected = 3,
+                   inline = T)
+
+```
+
+
