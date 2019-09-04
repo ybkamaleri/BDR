@@ -1,8 +1,11 @@
 ## ISPAD guideline for øye og urin
 
 dt1[, ispad := 0] %>%
-  .[alder >= 10 & diagVar >= 2, ispad  := 1] %>%
-  .[alder < 10 & diagVar >= 5, ispad := 1]
+  .[alder >= 10 & diagVar >= 2, ispad  := 1]
+
+## %>%
+##   .[alder < 10 & diagVar >= 5, ispad := 1]
+
 
 ## Antall kvalifisert til ISPAD definisjon hele landet
 ispadN <- dt1[ispad == 1, .N]
@@ -36,4 +39,6 @@ setnames(tabRaw, names(tabRaw), nyNavn)
 
 tabOut <- exp.tabel(tabRaw, "Undersøkelse utført: n(%)", ncol = 4, size = 0.9, total = 2, rowHeight = 0.025, mixCol = 2:3, valgCol = 2:3, valgAlign = "right")
 
-## quick_pdf(tabOut, file = "test.pdf")
+
+## quick_pdf(tabOut, file = "ispad.pdf")
+## huxtable::quick_docx(tabOut, file = "ispad.docx")
