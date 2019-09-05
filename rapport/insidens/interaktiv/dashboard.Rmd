@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-list.pkg <- c("flexdashboard", "shiny", "data.table", "dplyr", "plotly", "DT", "leaflet", "lubridate", "magrittr")
+list.pkg <- c("flexdashboard", "shiny", "data.table", "dplyr", "plotly", "DT", "leaflet", "lubridate", "magrittr", "tmap", "mapview")
 new.packages <- list.pkg[!(list.pkg %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
 ## reqopt <- function(x) require(x, quietly = TRUE)
@@ -121,6 +121,15 @@ valueBox("-2°C", icon = "fa-life-ring",color="rgb(26,110,204)")
 
 Row 
 ---------------------------------------------------
+
+### 
+
+```{r }
+renderMapview({
+
+  mapView(norgeMapFylke)
+})
+```
 
 
 
