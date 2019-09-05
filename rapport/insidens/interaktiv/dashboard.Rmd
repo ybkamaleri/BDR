@@ -8,16 +8,45 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-list.pkg <- c("flexdashboard", "shiny", "data.table", "dplyr", "plotly", "DT", "leaflet", "lubridate")
+list.pkg <- c("flexdashboard", "shiny", "data.table", "dplyr", "plotly", "DT", "leaflet", "lubridate", "magrittr")
 new.packages <- list.pkg[!(list.pkg %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
 ## reqopt <- function(x) require(x, quietly = TRUE)
 sapply(list.pkg, require, character.only = TRUE)
 ```
 
-```{r data}
 
+```{r load_data}
+## load data
+mapssb <- readRDS("Data_withID_MapSSB.rds")
+dt2018 <- readRDS("dt2018.rds")
+norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
 ```
+
+```{r populasjon}
+
+dt_pop_ut <- reactive({
+
+  if (input$valg_diab != 3){
+    dt1 <- dt2018[db12 == input$valg_diab, ]
+  } else {
+    dt1 <- dt2018
+  }
+  
+  diabDT <- dt1[kjonn %in% input$valg_kjonn, ] %>%
+    .[age >= input$valg_age[1] & age <= input$valg_age[2], ]
+
+  
+  dt <- mapssb[kjonn %in% input$valg_kjonn, ] %>%
+    .[age >= input$valg_age[1] & age <= input$valg_age[2], ]
+
+  popDT <- dt[, sum(N), by = .(fylke)]
+    
+
+  return(diabDT)
+})
+```
+
 
 
 Sidebar {.sidebar}
@@ -36,16 +65,15 @@ selectInput("valg_inspre",
 selectInput("valg_diab",
             "Valg diabetes type:",
             choices = list("Type I" = 1,
-                           "Type II" = 2,
-                           "Annen" = 3,
-                           "Alle" = 4),
+                           "Annen" = 2,
+                           "Alle" = 3),
             selected = 1)
 
 sliderInput("valg_age",
            "Alder:",
-           min = 0,
-           max = 14,
-           value = c(0, 14),
+           min = 0L,
+           max = 14L,
+           value = c(0L, 14L),
            step = 1)
 
 checkboxGroupInput("valg_kjonn",
@@ -59,7 +87,7 @@ checkboxGroupInput("valg_kjonn",
 ```
 
 
-Prevalens
+Pr. 1000 personer
 ===================================
 
 
@@ -71,7 +99,8 @@ Row
 
 ```{r}
 renderValueBox({
-valueBox("Landets prevalens", value = 30, color = "lightblue")
+  npop <- nrow(dt_pop_ut())
+valueBox("Hele landet", value = npop, color = "lightblue")
   
 })
 ```
@@ -89,6 +118,14 @@ valueBox("-2°C", icon = "fa-life-ring",color="rgb(26,110,204)")
 ```
 
 
-## Row 2 {data-height=400}  
 
-### Age
+Row 
+---------------------------------------------------
+
+
+
+
+Pr. 10,000 personer
+===================================
+
+
