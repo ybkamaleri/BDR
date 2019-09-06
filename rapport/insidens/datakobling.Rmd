@@ -76,6 +76,10 @@ norskBF18[.(kjønn = c("Menn", "Kvinner"), to = 1:2), on = "kjønn", kjonn := i.
 ## Alder
 norskBF18[, age := as.integer(age)]
 
+## Variabel 'Personer 2018' bytt til 'N'
+nbf <- grep("^Personer", names(norskBF18), value = T) #antall befolkningen
+norskBF18[, N := get(nbf)]
+
 ## str(norskBF18)
 
 ## Beholder bare de under 15 år

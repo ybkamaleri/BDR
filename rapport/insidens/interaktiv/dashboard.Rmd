@@ -42,21 +42,28 @@ preCount <- function(x, y){
 
 ```{r load_data}
 ## load data
-mapssb <- readRDS("DiabFylke.RDS")
-dt2018 <- readRDS("dt2018.rds")
+mapssb <- readRDS("SSBmedMapID.Rds")
+dt2018 <- readRDS("dtAnnonym.rds")
 norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
+
+## omkode diabetes til T1D og Andre
+dt2018[, diab12  :=  dbtype] %>%
+  .[dbtype != 1, diab12 := 2]
+
 ```
+
+
+
 
 ```{r reaktiv}
 
 ## populasjon
 pop_ut <- reactive({
 
-   
   dt <- mapssb[kjonn %in% input$valg_kjonn, ] %>%
     .[age >= as.integer(input$valg_age[1]) & age <= as.integer(input$valg_age[2]), ]
 
-  popDT <- dt[, .(N = sum(N)), keyby = .(fylke, kartID)]
+  popDT <- dt[, .(N = sum(N)), keyby = .(fylke, mapID)]
   
   return(popDT)
     
@@ -67,7 +74,7 @@ pop_ut <- reactive({
 diab_ut <- reactive({
 
   if (input$valg_diab != 3){
-    dt1 <- dt2018[db12 == input$valg_diab, ]
+    dt1 <- dt2018[diab12 == input$valg_diab, ]
   } else {
     dt1 <- dt2018
   }
@@ -83,9 +90,9 @@ diab_ut <- reactive({
 ## kart
 kart_ut <- reactive({
 
-  utDT <- preCount(diab_ut(), pop_ut())
+  utPre <- preCount(diab_ut(), pop_ut())
 
-  kartDT1 <- norgeMapFylke %>% left_join(preDT1, by = c("mapID" = "kartID"))
+  kartDT1 <- norgeMapFylke %>% left_join(utPre, by = c("mapID" = "mapID"))
 
 
 })
