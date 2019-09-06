@@ -47,6 +47,8 @@ DT2018 <- readRDS(file.path(dataSti, "alleDiabetes2018_med_fylkeid.Rds"))
 ssbKart <- readRDS("SSBmedMapID.Rds")
 #Kart med fylkeID som i SSB
 NorgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
+#Kart med fylke og helseregion
+NorgeFylkReg <- readRDS("NorgeMapInt.Rds")
 
 ```
 
@@ -317,26 +319,25 @@ Fylke ID fra SSB data er ikke det samme ID som er fra kart så de må samkjøres
 
 
 ```{r}
-
-norskBF[fylke == 1, mapID := 1] %>%
-  .[fylke == 2, mapID := 2] %>%
-  .[fylke == 3, mapID := 12] %>%
-  .[fylke == 4, mapID := 6] %>%
-  .[fylke == 5, mapID := 11] %>%
-  .[fylke == 6, mapID := 4] %>%
-  .[fylke == 7, mapID := 19] %>%
-  .[fylke == 8, mapID := 16] %>%
-  .[fylke == 9, mapID := 3] %>%
-  .[fylke == 10, mapID := 18] %>%
-  .[fylke == 11, mapID := 13] %>%
-  .[fylke == 12, mapID := 7] %>%
-  .[fylke == 14, mapID := 15] %>%
-  .[fylke == 15, mapID := 8] %>%
-  .[fylke == 16, mapID := 14] %>%
-  .[fylke == 17, mapID := 9] %>%
-  .[fylke == 18, mapID := 10] %>%
-  .[fylke == 19, mapID := 17] %>%
-  .[fylke == 20, mapID := 5] 
+norskBF[fylkeID == 1, mapID := 1] %>%
+  .[fylkeID == 2, mapID := 2] %>%
+  .[fylkeID == 3, mapID := 12] %>%
+  .[fylkeID == 4, mapID := 6] %>%
+  .[fylkeID == 5, mapID := 11] %>%
+  .[fylkeID == 6, mapID := 4] %>%
+  .[fylkeID == 7, mapID := 19] %>%
+  .[fylkeID == 8, mapID := 16] %>%
+  .[fylkeID == 9, mapID := 3] %>%
+  .[fylkeID == 10, mapID := 18] %>%
+  .[fylkeID == 11, mapID := 13] %>%
+  .[fylkeID == 12, mapID := 7] %>%
+  .[fylkeID == 14, mapID := 15] %>%
+  .[fylkeID == 15, mapID := 8] %>%
+  .[fylkeID == 16, mapID := 14] %>%
+  .[fylkeID == 17, mapID := 9] %>%
+  .[fylkeID == 18, mapID := 10] %>%
+  .[fylkeID == 19, mapID := 17] %>%
+  .[fylkeID == 20, mapID := 5] 
 
 ## saveRDS(norskBF, "SSBmedMapID.Rds")
 ssbKart <- readRDS("SSBmedMapID.Rds")
@@ -350,6 +351,8 @@ ssbKart <- readRDS("SSBmedMapID.Rds")
 
 ```{r}
 
+norgeMapFylkeNY <- readRDS("NorgeMapFylkeID.Rds")
+
 ## Legger til HF
 hso <- c("Østfold", "Akershus", "Aust-Agder", "Buskerud", "Hedmark", "Oppland", "Oslo", "Telemark", "Vest-Agder", "Vestfold")
 hsv <- c("Hordaland", "Rogaland", "Sogn og Fjordane")
@@ -357,8 +360,11 @@ hsm <- c("Møre og Romsdal", "Trøndelag")
 hsn <- c("Finnmark", "Nordland", "Troms")
 
 
-kart_sf <- kart_sf %>%
+NorgeHF <- norgeMapFylkeNY %>%
   mutate(region, helsereg = ifelse(region %in% hso, 1, ifelse(region %in% hsv, 2, ifelse(region %in% hsm, 3, 4))))
+
+## Kart med helseforetaket
+## saveRDS(NorgeHF, "NorgeMapInt.Rds")
 
 
 ## dekningsgrad BDR
@@ -384,24 +390,24 @@ Kun barn fra 0 til 14 år.
 
 ## Antall all per fylker
 nbf <- grep("^Personer", names(ssbKart), value = T) #antall befolkningen
-MapSsb <- ssbKart[, .(fylke, kartID, mixID, age, kjonn, N = get(nbf))]
+MapSsb <- ssbKart[, .(fylkeID, mapID, age, kjonn, N = get(nbf))]
 ## saveRDS(MapSsb, "Data_withID_MapSSB.rds")
 
 
 NokBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
-                 keyby = .(fylke, kartID)][N != 0, ][]
+                 keyby = .(fylkeID, mapID)][N != 0, ][]
 
 ## Antall per kjønn
 KjonnBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
-                   keyby = .(kjonn, fylke, kartID)][N != 0, ][]
+                   keyby = .(kjonn, fylkeID, mapID)][N != 0, ][]
 
 ## Antall per alder
 AgeBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
-                 keyby = .(age, fylke, kartID)][N != 0, ][]
+                 keyby = .(age, fylkeID, mapID)][N != 0, ][]
 
 ## Antall per alder og kjonn
 AgeKjonnBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
-                      keyby = .(kjonn, age, fylke, kartID)][N != 0, ][]
+                      keyby = .(kjonn, age, fylkeID, mapID)][N != 0, ][]
 
 
 ```
@@ -415,7 +421,7 @@ Antall pasienter med alle type diabetes og speisfike type. KUN barn under 15 år
 ```{r}
 ## DT2018 <- DT2018Alle
 dt2018 <- subset(DT2018, alder < 15)
-dt2018[.(Kjonn = c("Gutt", "Jente"), to = 1:2), on = "Kjonn", kjonn := i.to]
+## dt2018[.(Kjonn = c("Gutt", "Jente"), to = 1:2), on = "Kjonn", kjonn := i.to]
 
 ## Alle type DT
 dtFD <- dt2018[, .N, keyby = .(fylkeid)]
@@ -445,20 +451,22 @@ Lager function for å regne prevalence per 10,000 og prosent.
 
 ```{r}
 
-## kartID
+## mapID
 fylkeList <- readRDS("FylkeogKartID.Rds")
 fylkeList[, .N, by = .(fylke, kartID, mixID)]
 
 preCount <- function(x, y){
-
+  
   ## x = DB data
   ## y = fylke data
-  preDT <- x[y, on = c(fylkeid = "fylke")]
+  preDT <- x[y, on = c(fylkeid = "fylkeID")]
 
   preDT[, ins10 := N / i.N * 10000] %>%
     .[, ins := N / i.N * 100]
 
+  ## columns for fylkeid og mapID
   utCol <- grep("id$", names(preDT), ignore.case = TRUE)
+
   tabCol <- names(preDT)[-utCol]
   tabName <- c("n", "N", "pr10000", "pr100")
   setnames(preDT, tabCol, tabName)
@@ -466,7 +474,7 @@ preCount <- function(x, y){
   preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
     .SDcols = tabName]
 
-  preDT[is.na(kartID), kartID := 50] #for Trøndelag
+  preDT[is.na(mapID), mapID := 50] #for Trøndelag
   return(preDT)
 }
 
@@ -500,4 +508,11 @@ htmlwidgets::saveWidget(dt1map1, file = "T1Dpre.html")
 mapshot(dt1map1, url = "T1Dpre.html")
 
 ```
+
+
+
+
+
+
+
 

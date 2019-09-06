@@ -16,16 +16,19 @@ sapply(list.pkg, require, character.only = TRUE)
 
 ## function
 
-preCount <- function(x, y){
 
+preCount <- function(x, y){
+  
   ## x = DB data
   ## y = fylke data
-  preDT <- x[y, on = c(fylkeid = "fylke")]
+  preDT <- x[y, on = c(fylkeid = "fylkeID")]
 
   preDT[, ins10 := N / i.N * 10000] %>%
     .[, ins := N / i.N * 100]
 
+  ## columns for fylkeid og mapID
   utCol <- grep("id$", names(preDT), ignore.case = TRUE)
+
   tabCol <- names(preDT)[-utCol]
   tabName <- c("n", "N", "pr10000", "pr100")
   setnames(preDT, tabCol, tabName)
@@ -33,7 +36,7 @@ preCount <- function(x, y){
   preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
     .SDcols = tabName]
 
-  preDT[is.na(kartID), kartID := 50] #for Trøndelag
+  preDT[is.na(mapID), mapID := 50] #for Trøndelag
   return(preDT)
 }
 
@@ -63,7 +66,7 @@ pop_ut <- reactive({
   dt <- mapssb[kjonn %in% input$valg_kjonn, ] %>%
     .[age >= as.integer(input$valg_age[1]) & age <= as.integer(input$valg_age[2]), ]
 
-  popDT <- dt[, .(N = sum(N)), keyby = .(fylke, mapID)]
+  popDT <- dt[, .(N = sum(N)), keyby = .(fylkeID, mapID)]
   
   return(popDT)
     
@@ -87,14 +90,33 @@ diab_ut <- reactive({
 })
 
 
+## landet
+pre_ut <- reactive({
+
+  n <- nrow(diab_ut())
+  N <- sum(pop_ut(), na.rm = TRUE)
+
+  pre1 <- round(n / N * 100, digits = 2)
+  pre10 <- round(n / N * 10000, digits = 0)
+
+  preTall <- c(pre1, pre10)
+
+  return(preTall)
+})
+
+
 ## kart
 kart_ut <- reactive({
 
-  utPre <- preCount(diab_ut(), pop_ut())
+  preNorge <- pop_ut()[, .(N = sum(N), na.rm = TRUE), keyby = .(fylkeID, mapID)][N != 0, ][]
+  preDiab <- diab_ut()[, .N, keyby = .(fylkeid)]
+  utPre <- preCount(preDiab, preNorge)
 
-  kartDT1 <- norgeMapFylke %>% left_join(utPre, by = c("mapID" = "mapID"))
+  kartDT <- norgeMapFylke %>% left_join(utPre, by = "mapID")
 
-
+  ## kartUt <- mapView(kartDT)
+  return(kartUt)
+  
 })
 
 ```
@@ -148,13 +170,13 @@ Pr. 1000 personer
 Row
 -----------------------------------
 
-### Landets prevalens
+### 
 
 
 ```{r}
 renderValueBox({
   npop <- nrow(diab_ut())
-valueBox("Hele landet", value = npop, color = "lightblue")
+  valueBox("Antall Pasienter", value = npop, color = "lightblue")
   
 })
 ```
@@ -169,10 +191,14 @@ renderValueBox({
 
 ```
 
-### Water temperature
+### 
 
 ```{r}
-valueBox("-2°C", icon = "fa-life-ring",color="rgb(26,110,204)")
+renderValueBox({
+  txtInn <- ifelse(input$valg_inspre == 1, "Landet Prevalens", "Landet Insidens")
+  valueBox(paste0(txtInn), value = pre_ut()[1],  icon = "fa-life-ring",color="rgb(26,110,204)")
+})
+## valueBox("-2°C", icon = "fa-life-ring",color="rgb(26,110,204)")
 ```
 
 
@@ -185,6 +211,8 @@ Row
 ```{r }
 renderMapview({
 
+  ## kart_ut()
+  ## outMap <- kart_ut()
   mapView(norgeMapFylke)
 })
 ```
