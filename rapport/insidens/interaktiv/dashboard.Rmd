@@ -106,16 +106,13 @@ pre_ut <- reactive({
 
 
 ## kart
-kart_ut <- reactive({
+preData_ut <- reactive({
 
-  preNorge <- pop_ut()[, .(N = sum(N), na.rm = TRUE), keyby = .(fylkeID, mapID)][N != 0, ][]
+  preNorge <- pop_ut()[, .(N = sum(N, na.rm = TRUE)), keyby = .(fylkeID, mapID)][N != 0, ][]
   preDiab <- diab_ut()[, .N, keyby = .(fylkeid)]
   utPre <- preCount(preDiab, preNorge)
 
-  kartDT <- norgeMapFylke %>% left_join(utPre, by = "mapID")
-
-  ## kartUt <- mapView(kartDT)
-  return(kartUt)
+  return(utPre)
   
 })
 
@@ -163,7 +160,7 @@ checkboxGroupInput("valg_kjonn",
 ```
 
 
-Pr. 1000 personer
+Pr. 100 personer (%)
 ===================================
 
 
@@ -208,12 +205,22 @@ Row
 
 ### 
 
-```{r }
-renderMapview({
-
+```{r}
+renderLeaflet({
+  
+  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
+  ## kartUt <- mapView(kartDT)
   ## kart_ut()
   ## outMap <- kart_ut()
-  mapView(norgeMapFylke)
+  mapview(kartDT, zcol = "pr100")@map
+  ## mapView(kartDT)
+})
+```
+
+
+```{r eval=FALSE}
+renderPrint({
+ preData_ut()
 })
 ```
 
