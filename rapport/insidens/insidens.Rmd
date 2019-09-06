@@ -71,8 +71,11 @@ norskBF18[, fylke := as.numeric(gsub("([0-9]+).*$", "\\1", region))]
 ## Kjonn
 norskBF18[.(kjønn = c("Menn", "Kvinner"), to = 1:2), on = "kjønn", kjonn := i.to]
 
+## Alder
+norskBF18[, age := as.integer(age)]
+
 ## Beholder bare de under 15 år
-norskBF15 <- subset(norskBF, age < 15)
+norskBF15 <- subset(norskBF18, age < 15)
 ## saveRDS(norskBF15, "NorgeBF_und15.Rds")
 norskBF <- readRDS("NorgeBF_und15.Rds")
 
@@ -207,20 +210,20 @@ fylkeList <- norskBF[, .N, by = .(region, fylke)][, N := NULL][]
 fylkeList
 ## fylkeList[, fylkeNavn := stringr::str_extract(region, "\\w+")]
 
-sykehusList <- DT2018[, .N, keyby = .(sykehusKort, hospID)][, N := NULL][]
+sykehusList <- DT[, .N, keyby = .(hosKort, hospID)][, N := NULL][]
 sykehusList
 
 ## sykehusList[!sykehusList, on = "hospID"]
 ## sykehusList[, .N, by = hospID]
 
 ## Kobling sykehus og fylke
-sykort <- sykehusList[["sykehusKort"]]
-sykID <- data.table(sykehusKort = sykort)
+sykort <- sykehusList[["hosKort"]]
+sykID <- data.table(hosKort = sykort)
 sykID[, id := .I]
 sykID
 
 ## Gir Diabetes data fylkes id
-DT2018Fyk <- sykID[DT2018, on = "sykehusKort"]
+DT2018Fyk <- sykID[DT2018, on = "hosKort"]
 DT2018Fyk[id == 1, fylkeid := 2] %>%
   .[id == 2, fylkeid := 9] %>%
   .[id == 3, fylkeid := 18] %>%
@@ -248,14 +251,17 @@ DT2018Fyk[id == 1, fylkeid := 2] %>%
   .[id == 25, fylkeid := 15] %>%
   .[id == 26, fylkeid := 1]
 
+DT2018Fyk
 DT2018Fyk[, .N, by=.(id, hospID, sykehusKort, fylkeid)]
 DT2018Fyk[, id := NULL]
 
 
-fylkSykKob <- kartF[, .(region, hospID, fylkeid)]
+fylkSykKob <- DT2018Fyk[, .(hospID, fylkeid)]
 ## Join sykehus til fylke
 fylkSykKob
 ## saveRDS(fylkSykKob, "sykehusFylker.Rds")
+fylkSykKob[, .N, keyby = .(hospID, fylkeid)]
+
 
 
 ## Load fylke og sykhehus ID kobling

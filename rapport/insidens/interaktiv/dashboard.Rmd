@@ -13,19 +13,58 @@ new.packages <- list.pkg[!(list.pkg %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
 ## reqopt <- function(x) require(x, quietly = TRUE)
 sapply(list.pkg, require, character.only = TRUE)
+
+## function
+
+preCount <- function(x, y){
+
+  ## x = DB data
+  ## y = fylke data
+  preDT <- x[y, on = c(fylkeid = "fylke")]
+
+  preDT[, ins10 := N / i.N * 10000] %>%
+    .[, ins := N / i.N * 100]
+
+  utCol <- grep("id$", names(preDT), ignore.case = TRUE)
+  tabCol <- names(preDT)[-utCol]
+  tabName <- c("n", "N", "pr10000", "pr100")
+  setnames(preDT, tabCol, tabName)
+
+  preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
+    .SDcols = tabName]
+
+  preDT[is.na(kartID), kartID := 50] #for Trøndelag
+  return(preDT)
+}
+
 ```
 
 
 ```{r load_data}
 ## load data
-mapssb <- readRDS("Data_withID_MapSSB.rds")
+mapssb <- readRDS("DiabFylke.RDS")
 dt2018 <- readRDS("dt2018.rds")
 norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
 ```
 
-```{r populasjon}
+```{r reaktiv}
 
-dt_pop_ut <- reactive({
+## populasjon
+pop_ut <- reactive({
+
+   
+  dt <- mapssb[kjonn %in% input$valg_kjonn, ] %>%
+    .[age >= as.integer(input$valg_age[1]) & age <= as.integer(input$valg_age[2]), ]
+
+  popDT <- dt[, .(N = sum(N)), keyby = .(fylke, kartID)]
+  
+  return(popDT)
+    
+})
+
+
+## diabetes pop
+diab_ut <- reactive({
 
   if (input$valg_diab != 3){
     dt1 <- dt2018[db12 == input$valg_diab, ]
@@ -33,19 +72,27 @@ dt_pop_ut <- reactive({
     dt1 <- dt2018
   }
   
-  diabDT <- dt1[kjonn %in% input$valg_kjonn, ] %>%
+  diabData <- dt1[kjonn %in% input$valg_kjonn, ] %>%
     .[age >= input$valg_age[1] & age <= input$valg_age[2], ]
 
+  return(diabData)
   
-  dt <- mapssb[kjonn %in% input$valg_kjonn, ] %>%
-    .[age >= input$valg_age[1] & age <= input$valg_age[2], ]
-
-  popDT <- dt[, sum(N), by = .(fylke)]
-    
-
-  return(diabDT)
 })
+
+
+## kart
+kart_ut <- reactive({
+
+  utDT <- preCount(diab_ut(), pop_ut())
+
+  kartDT1 <- norgeMapFylke %>% left_join(preDT1, by = c("mapID" = "kartID"))
+
+
+})
+
 ```
+
+
 
 
 
@@ -99,16 +146,20 @@ Row
 
 ```{r}
 renderValueBox({
-  npop <- nrow(dt_pop_ut())
+  npop <- nrow(diab_ut())
 valueBox("Hele landet", value = npop, color = "lightblue")
   
 })
 ```
 
-### Percentage of survivors
+### Totalt populasjon
 
 ```{r}
-valueBox("31.6 %", icon = "fa-heart", color="rgb(200,100,100)")
+renderValueBox({
+  valueBox(value = sum(pop_ut()$N), icon = "fa-heart", color="rgb(200,100,100)")
+})
+
+
 ```
 
 ### Water temperature
