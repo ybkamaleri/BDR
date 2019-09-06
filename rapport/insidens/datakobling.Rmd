@@ -45,6 +45,9 @@ dataSti <- "~/avid/bdr"
 DT2018 <- readRDS(file.path(dataSti, "alleDiabetes2018_med_fylkeid.Rds"))
 #Norges befolkning
 ssbKart <- readRDS("SSBmedMapID.Rds")
+#Kart med fylkeID som i SSB
+NorgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
+
 ```
 
 
@@ -304,7 +307,6 @@ mapView(norgeMapFylkeNY, zcol = 'region')
 ```
 
 
-
 # Legger mapID i SSB data
 
 Fylke ID fra SSB data er ikke det samme ID som er fra kart så de må samkjøres først.
@@ -339,7 +341,6 @@ ssbKart <- readRDS("SSBmedMapID.Rds")
 ```
 
 
-
 ## Legger helseforetaket
 
 
@@ -369,4 +370,130 @@ kart_sf <- kart_sf %>%
 
 ```
 
+
+# Antall barn i Norge
+
+Kun barn fra 0 til 14 år.
+
+
+```{r}
+
+## Antall all per fylker
+nbf <- grep("^Personer", names(ssbKart), value = T) #antall befolkningen
+MapSsb <- ssbKart[, .(fylke, kartID, mixID, age, kjonn, N = get(nbf))]
+## saveRDS(MapSsb, "Data_withID_MapSSB.rds")
+
+
+NokBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
+                 keyby = .(fylke, kartID)][N != 0, ][]
+
+## Antall per kjønn
+KjonnBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
+                   keyby = .(kjonn, fylke, kartID)][N != 0, ][]
+
+## Antall per alder
+AgeBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
+                 keyby = .(age, fylke, kartID)][N != 0, ][]
+
+## Antall per alder og kjonn
+AgeKjonnBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
+                      keyby = .(kjonn, age, fylke, kartID)][N != 0, ][]
+
+
+```
+
+
+
+# Antall pasient per fylker 
+
+Antall pasienter med alle type diabetes og speisfike type. KUN barn under 15 år.
+
+```{r}
+## DT2018 <- DT2018Alle
+dt2018 <- subset(DT2018, alder < 15)
+dt2018[.(Kjonn = c("Gutt", "Jente"), to = 1:2), on = "Kjonn", kjonn := i.to]
+
+## Alle type DT
+dtFD <- dt2018[, .N, keyby = .(fylkeid)]
+dtKjonnFD <- dt2018[, .N, keyby = .(kjonn, fylkeid)]
+dtAgeFD <- dt2018[, .N, keyby = .(alder, fylkeid)]
+dtAgeKjonnFD <- dt2018[, .N, keyby = .(kjonn, alder, fylkeid)]
+
+## Type 1
+dt1FD <- dt2018[dbtype == 1, .N, keyby = fylkeid]
+dt1KjonnFD <- dt2018[dbtype == 1, .N, keyby = .(kjonn, fylkeid)]
+dt1AgeFD <- dt2018[dbtype == 1, .N, keyby = .(alder, fylkeid)]
+dt1AgeKjonnFD <- dt2018[dbtype == 1, .N, keyby = .(kjonn, alder, fylkeid)]
+
+
+## Type 2
+dt2FD <- dt2018[dbtype == 2, .N, keyby = fylkeid]
+dt2KjonnFD <- dt2018[dbtype == 2, .N, keyby = .(kjonn, fylkeid)]
+dt2AgeFD <- dt2018[dbtype == 2, .N, keyby = .(alder, fylkeid)]
+dt2AgeKjonnFD <- dt2018[dbtype == 2, .N, keyby = .(kjonn, alder, fylkeid)]
+
+```
+
+# Prevalence per fylke 
+
+Lager function for å regne prevalence per 10,000 og prosent.
+
+
+```{r}
+
+## kartID
+fylkeList <- readRDS("FylkeogKartID.Rds")
+fylkeList[, .N, by = .(fylke, kartID, mixID)]
+
+preCount <- function(x, y){
+
+  ## x = DB data
+  ## y = fylke data
+  preDT <- x[y, on = c(fylkeid = "fylke")]
+
+  preDT[, ins10 := N / i.N * 10000] %>%
+    .[, ins := N / i.N * 100]
+
+  utCol <- grep("id$", names(preDT), ignore.case = TRUE)
+  tabCol <- names(preDT)[-utCol]
+  tabName <- c("n", "N", "pr10000", "pr100")
+  setnames(preDT, tabCol, tabName)
+
+  preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
+    .SDcols = tabName]
+
+  preDT[is.na(kartID), kartID := 50] #for Trøndelag
+  return(preDT)
+}
+
+```
+
+## Alle typer
+
+Antall barn med diabetes av alle typer per 10 000 *ins10*.
+
+```{r}
+
+preDT <- preCount(dtFD, NokBF)[]
+preDT
+
+```
+
+## Typer 1 
+
+
+```{r}
+
+preDT1 <- preCount(dt1FD, NokBF)[]
+preDT1
+
+
+kartDT1 <- norgeMapFylke %>% left_join(preDT1, by = c("mapID" = "kartID"))
+
+dt1map1 <- mapView(kartDT1, zcol = "pr10000")
+dt1map1
+htmlwidgets::saveWidget(dt1map1, file = "T1Dpre.html")
+mapshot(dt1map1, url = "T1Dpre.html")
+
+```
 
