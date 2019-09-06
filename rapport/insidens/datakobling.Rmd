@@ -1,0 +1,258 @@
+---
+title: "Datakobling for fylke, SSB og BDR"
+output:
+  pdf_document:
+    toc: yes
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: yes
+date: "`r format(Sys.time(), '%d %B %Y')`"
+---
+
+
+# Oppsett
+
+Oppsett for Rmarkdown.
+
+```{r r setup, include=F}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+```
+
+# Load pakker
+
+
+```{r}
+list.of.packages <- c("data.table", "stringr", "lubridate", "shiny", "flexdashboard",
+                      "leaflet","ggplot2","dplyr","sf","ggrepel", "tmap", "mapview")
+
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
+sapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+# Load Data
+
+Disse er ferdig behandlet data fra prossesen nedenfor begynner fra [SSB](#ssb).
+
+
+```{r}
+## Data path
+dataSti <- "~/avid/bdr"
+
+DT2018 <- readRDS(file.path(dataSti, "alleDiabetes2018_med_fylkeid.Rds"))
+```
+
+
+
+# SSB {#ssb}
+
+Basis data for befolkningen hentet fra
+[SSB](https://www.ssb.no/statbank/list/folkemengde/ "befolkning"). Når filen er
+lastet ned så følgende gjøres for å lage fylkes id nr. Sjekk struktur datasettet at
+de som skal være numerisk er ikke i string format.
+
+
+```{r }
+
+## norsk baren 1-18 år
+norskBF18 <- fread("N2018_Norge_1_18.csv", header = TRUE, encoding = "Latin-1")
+
+## Extract Alder
+norskBF18[, age := stringr::str_extract(alder, "\\d+")]
+## Extract tall for fylke med gsub
+norskBF18[, fylkeID := as.integer(gsub("([0-9]+).*$", "\\1", region))]
+
+## Kjonn
+norskBF18[.(kjønn = c("Menn", "Kvinner"), to = 1:2), on = "kjønn", kjonn := i.to]
+
+## Alder
+norskBF18[, age := as.integer(age)]
+
+## str(norskBF18)
+
+## Beholder bare de under 15 år
+norskBF15 <- subset(norskBF18, age < 15)
+## saveRDS(norskBF15, "NorgeBF_und15.Rds")
+norskBF <- readRDS("NorgeBF_und15.Rds")
+```
+
+# Diabetes data 
+
+Raw data kommer fra årsrapport og nyoppdaget. De skal slås sammen for prevalens mens
+insidens brukes bare nyoppdaget minus antall årsrapport i nevnet (denominator). Bruke
+`selectdiab()` funksjon for å kategorisere diabetes type på en kolonne.
+
+
+## Funksjons
+
+For å hente bare relevant data og kategorisere diabetes type.
+
+
+```{r}
+
+selectdiab <- function(x){
+
+  ## Demografisk variabler
+  demoVar <-  c("PasientID", "Pnr", "hospital", "hospID", "hosKort", "alder", "Kjonn")
+
+  ## diabetes variabler
+  diabetesVar = c("diabetes_Type1", "diabetes_Type2", "diabetes_Mody", "diabetes_Kir62", "diabetes_SekDiabetes", "diabetes_AnnenDiabetes", "diabetes_UkjentDiabetes")
+
+  ## lage subset
+  diabDT <- x[, c(demoVar, diabetesVar), with = F]
+
+
+  ## --- Pasienter uten diagnoser ----
+  diabDTx <- copy(diabDT)
+  diabDTx[, (diabetesVar) := lapply(.SD, function(x) ifelse(x == "Ja", 1, 0)), .SDcols = diabetesVar]
+
+  diabDTx[, diaSum := sum(.SD, na.rm = TRUE), .SDcols = diabetesVar, by = Pnr]
+
+  ## diabDTx[diaSum == 0, .(Pnr, hosKort)]
+
+  ## Lage en long dataset
+  diabLg <- melt(data = diabDT,
+                 id.vars = demoVar,
+                 measure.vars = diabetesVar,
+                 variable.name = "diabType",
+                 value.name = "janei")
+
+
+  ## Omkode diabetes type til tall fra 1 til 7
+  diabLg[.(janei = "Ja", diabType = diabetesVar, to = 1:7), on = c("janei", "diabType"), dbt := i.to]
+
+  ## Beholder bare de som svarte Ja
+  diabJa <-  diabLg[janei == "Ja", ]
+
+  ## rekode annen type diabetes
+  ## 1 = DT1, 2 = DT2, 3 = Mody, 4 = Annen type
+  diabJa[, dbtype := dbt][dbt > 3, dbtype := 4]
+
+  return(diabJa)
+
+}
+
+```
+
+
+## Antall pasienter
+
+Diabetes data for 2018. 
+
+```{r}
+## Diabetes data
+## Data path
+dataSti <- "~/avid/bdr"
+## Load all data årskontroll
+DT <- readRDS(file.path(dataSti, "dt2018medBlodTrykk.RDS"))
+## Load all data nyoppdaget
+DTny <- readRDS(file.path(dataSti, "nyoppdaget20180830.rds"))
+
+utDT <- selectdiab(DT)
+utDT[, valg := 1L] # årskontroll
+utDTny <- selectdiab(DTny)
+utDTny[, valg := 2L] #nyoppdaget
+
+DT2018 <- rbindlist(list(utDT, utDTny))
+
+## alder rund tall og floor verdi dvs. 4.9 skal blir 4 år
+DT2018[, age := as.integer(floor(alder))]
+
+## Kjonn
+DT2018[.(Kjonn = c("Gutt", "Jente"), to = 1:2), on = "Kjonn", kjonn := i.to]
+
+```
+
+# Kobling SSB og Diabetes data
+
+Legger inn fylkeID i diabetesdata og hospID i SSB data. Ikke bruk *hosKort* for merged data *(DT2018)* fordi de inneholder
+forskjellige sykehus forkortelse *(hosKort)* på samme sykehus. bruke **BARE** variable *hospID*.
+
+
+```{r}
+
+sykehusList <- utDT[, .N, keyby = .(hosKort, hospID)][, N := NULL][]
+sykehusList
+
+## Kobling sykehus og fylke
+sykort <- sykehusList[["hosKort"]]
+## sykort
+sykID <- data.table(hosKort = sykort)
+sykID[, id := .I] #midlertidig id til kobling mot fylke
+sykDumID <- sykID[sykehusList, on = "hosKort"]
+
+## Slett hosKort pga. forskjellige forkortelse navn på sammme sykehus
+## og for å merge med sykDumID eller blir det konflikt hvis hosKort er på begge datasettet
+DT2018[, hosKort := NULL]
+
+## Gir Diabetes data fylkes id
+DT2018Fyk <- sykDumID[DT2018, on = "hospID"]
+
+DT2018Fyk[id == 1, fylkeid := 2] %>%
+  .[id == 2, fylkeid := 9] %>%
+  .[id == 3, fylkeid := 18] %>%
+  .[id == 4, fylkeid := 6] %>%
+  .[id == 5, fylkeid := 4] %>%
+  .[id == 6, fylkeid := 20] %>%
+  .[id == 7, fylkeid := 14] %>%
+  .[id == 8, fylkeid := 5] %>%
+  .[id == 9, fylkeid := 19] %>%
+  .[id == 10, fylkeid := 11] %>%
+  .[id == 11, fylkeid := 12] %>%
+  .[id == 12, fylkeid := 10] %>%
+  .[id == 13, fylkeid := 15] %>%
+  .[id == 14, fylkeid := 50] %>%
+  .[id == 15, fylkeid := 5] %>%
+  .[id == 16, fylkeid := 15] %>%
+  .[id == 17, fylkeid := 50] %>%
+  .[id == 18, fylkeid := 19] %>%
+  .[id == 19, fylkeid := 18] %>%
+  .[id == 20, fylkeid := 11] %>%
+  .[id == 21, fylkeid := 8] %>%
+  .[id == 22, fylkeid := 50] %>%
+  .[id == 23, fylkeid := 3] %>%
+  .[id == 24, fylkeid := 7] %>%
+  .[id == 25, fylkeid := 15] %>%
+  .[id == 26, fylkeid := 1]
+
+
+## saveRDS(DT2018Fyk, "DiabFylke.RDS")
+saveRDS(DT2018Fyk, (file.path(dataSti, "alleDiabetes2018_med_fylkeid.Rds")))
+
+```
+
+## Annonymisering av diabetes data
+
+Til offentlig bruk 
+
+
+```{r}
+
+## Annonymisering
+dt2018ANON <- DT2018[, .(alder, age, Kjonn, kjonn, diabType, dbtype, fylkeid, hospID, valg)]
+## saveRDS(dt2018ANON, "dtAnnonym.rds")
+## saveRDS(dt2018ANON, file.path(dataSti, "AnnonymDBtypeFylkeID.rds"))
+
+```
+
+# Norgeskart
+
+Les kart fra shapefile og konvertere til simple feature (sf) format.
+
+
+```{r}
+#kart fylke
+NorgeMap = sf::st_read("~/Git-personal/Rujukan-R/norge/NOR_adm1.shp", stringsAsFactors = FALSE)
+
+## bytte Åstfold to Østfold
+library(dplyr)
+NorgeMap <- NorgeMap %>%
+  mutate(NAME_1, fylke=ifelse(ID_1==1, 'Østfold', NAME_1))
+
+```
+
+
+
+
