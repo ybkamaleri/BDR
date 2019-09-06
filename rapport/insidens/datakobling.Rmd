@@ -41,7 +41,10 @@ Disse er ferdig behandlet data fra prossesen nedenfor begynner fra [SSB](#ssb).
 ## Data path
 dataSti <- "~/avid/bdr"
 
+#Diabetes pasienter
 DT2018 <- readRDS(file.path(dataSti, "alleDiabetes2018_med_fylkeid.Rds"))
+#Norges befolkning
+ssbKart <- readRDS("SSBmedMapID.Rds")
 ```
 
 
@@ -246,13 +249,124 @@ Les kart fra shapefile og konvertere til simple feature (sf) format.
 #kart fylke
 NorgeMap = sf::st_read("~/Git-personal/Rujukan-R/norge/NOR_adm1.shp", stringsAsFactors = FALSE)
 
+```
+
+Endring av navn og fylkesfordeling dvs. Østfold og Trøndelag. To nye kolloner lages:
+
+ - mapID : for nye sammenslåing av fylker
+ - region : for nye navn av fylke ie. Trøndelag fra Nord- og Sør-Trøndelag
+
+
+```{r}
 ## bytte Åstfold to Østfold
 library(dplyr)
 NorgeMap <- NorgeMap %>%
   mutate(NAME_1, fylke=ifelse(ID_1==1, 'Østfold', NAME_1))
 
+
+## sør- og nord Trøndelag slår sammen siden jan 2018 - gi kode 50
+## siden kode fra SSB for Trøndelag er 50
+NorgeMap <- NorgeMap %>%
+  mutate(ID_1, mapID = ifelse(ID_1 %in% c(9, 14), 50, ID_1))
+
+## gir navn som Trøndelag
+NorgeMap <- NorgeMap %>%
+  mutate(fylke, region=ifelse(mapID==50, 'Trøndelag', fylke))
+
+## saveRDS(NorgeMap, "kartNorge_sf.RDS")
+```
+
+## Gruppere fylke
+
+Nord og Sør-Trøndelag slåss sammen til Trøndelag fra jan 2018. Bruk *mapID* og
+*region* til gruppering. Disse må grupperes på nytt på kartet.
+
+```{r}
+norge2018 <- NorgeMap %>%
+  group_by(mapID, region) %>%
+  summarize()
+
+## saveRDS(norge2018, "NorgeMapFylkeID.Rds")
+
+
+```
+
+Sjekk hvordan det ser ut nå
+
+
+```{r}
+## gamle kart med Sør-og Nord-Trøndelag
+mapView(NorgeMap, zcol = 'fylke')
+
+## nye kart med bare Trøndelag
+norgeMapFylkeNY <- readRDS("NorgeMapFylkeID.Rds")
+mapView(norgeMapFylkeNY, zcol = 'region')
 ```
 
 
+
+# Legger mapID i SSB data
+
+Fylke ID fra SSB data er ikke det samme ID som er fra kart så de må samkjøres først.
+
+
+```{r}
+
+norskBF[fylke == 1, mapID := 1] %>%
+  .[fylke == 2, mapID := 2] %>%
+  .[fylke == 3, mapID := 12] %>%
+  .[fylke == 4, mapID := 6] %>%
+  .[fylke == 5, mapID := 11] %>%
+  .[fylke == 6, mapID := 4] %>%
+  .[fylke == 7, mapID := 19] %>%
+  .[fylke == 8, mapID := 16] %>%
+  .[fylke == 9, mapID := 3] %>%
+  .[fylke == 10, mapID := 18] %>%
+  .[fylke == 11, mapID := 13] %>%
+  .[fylke == 12, mapID := 7] %>%
+  .[fylke == 14, mapID := 15] %>%
+  .[fylke == 15, mapID := 8] %>%
+  .[fylke == 16, mapID := 14] %>%
+  .[fylke == 17, mapID := 9] %>%
+  .[fylke == 18, mapID := 10] %>%
+  .[fylke == 19, mapID := 17] %>%
+  .[fylke == 20, mapID := 5] 
+
+## saveRDS(norskBF, "SSBmedMapID.Rds")
+ssbKart <- readRDS("SSBmedMapID.Rds")
+
+
+```
+
+
+
+## Legger helseforetaket
+
+
+```{r}
+
+## Legger til HF
+hso <- c("Østfold", "Akershus", "Aust-Agder", "Buskerud", "Hedmark", "Oppland", "Oslo", "Telemark", "Vest-Agder", "Vestfold")
+hsv <- c("Hordaland", "Rogaland", "Sogn og Fjordane")
+hsm <- c("Møre og Romsdal", "Trøndelag")
+hsn <- c("Finnmark", "Nordland", "Troms")
+
+
+kart_sf <- kart_sf %>%
+  mutate(region, helsereg = ifelse(region %in% hso, 1, ifelse(region %in% hsv, 2, ifelse(region %in% hsm, 3, 4))))
+
+
+## dekningsgrad BDR
+kart_sf <- kart_sf %>%
+  mutate(helsereg, helsenavn =
+                     ifelse(fylke == 1, "Helse Sør-Øst",
+                       ifelse(fylke == 2, "Helse Vest",
+                         ifelse(fylke == 3, "Helse Midt", "Helse Nord")))) %>%
+  mutate(helsereg, dekning =
+                     ifelse(fylke == 1, 99,
+                       ifelse(fylke == 2, 98,
+                         ifelse(fylke == 3, 98, 97))))
+
+```
 
 
