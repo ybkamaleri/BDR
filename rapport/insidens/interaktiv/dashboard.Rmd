@@ -125,6 +125,11 @@ preData_ut <- reactive({
 Sidebar {.sidebar}
 ===================================
 
+
+**For barn fra 0 til 14 år**
+
+<hr/>
+
 ```{r inspre}
 selectInput("valg_inspre",
             "Valg data:",
@@ -132,7 +137,7 @@ selectInput("valg_inspre",
                            "Insidens" = 2),
             selected = 1)
 ```
-<hr/>
+
 
 ```{r typeDiab}
 selectInput("valg_diab",
@@ -159,6 +164,9 @@ checkboxGroupInput("valg_kjonn",
 
 ```
 
+<hr/>
+
+*Doubelklikk valgte fylke for mer informasjon*
 
 Pr. 100 personer (%)
 ===================================
