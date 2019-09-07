@@ -518,23 +518,29 @@ mapshot(dt1map1, url = "T1Dpre.html")
 ssbKart
 DTannon
 
+insPas <- DTannon[valg == 2, .(n = .N), keyby = .(fylkeid)]
+sykPas <- DTannon[valg == 1, .(ut = .N), keyby = .(fylkeid)]
+sykPas
+insPas
+
+insDT <- merge(insPas, sykPas, by = "fylkeid", all = TRUE)
+
+ssbDT <- ssbKart[, .(pop = sum(N, na.rm = T)), keyby = .(fylkeID, mapID)]
+ssbDT
+
+insLand <- merge(insDT, ssbDT, by.x = "fylkeid", by.y = "fylkeID", all.y = TRUE)
+insLand
+tabIns <- insLand[pop != 0, ]
+tabIns[is.na(mapID), mapID := 50]
+tabIns[, denom := pop - ut]
+tabIns[, `:=`(ins = n / denom * 100, ins10 = n / denom * 10000), by = fylkeid]
+tabIns
+
+utKart <- NorgeMapFylke %>% left_join(tabIns, by = "mapID")
+utKart
 
 
 ```
-
-
-
-```{r}
-
-ui <- fluidPage(
-)
-
-server <- function(input, output, session){
-}
-
-shinyApp(ui, server)
-```
-
 
 
 
