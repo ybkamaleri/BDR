@@ -152,28 +152,15 @@ preData_ut <- reactive({
 
 ## landet
 pre_ut <- reactive({
+  
+  n <- preData_ut()[, sum(Case, na.rm = TRUE)]
+  N <- preData_ut()[, sum(Populasjon, na.rm = TRUE)]
 
-  if (input$valg_inspre == 1){
-    # prevalens
-    n <- preData_ut()[, sum(Case, na.rm = TRUE)]
-    N <- preData_ut()[, sum(Populasjon, na.rm = TRUE)]
+  pre1 <- round(n / N * 100, digits = 2)
+  pre10 <- round(n / N * 10000, digits = 0)
 
-    pre1 <- round(n / N * 100, digits = 2)
-    pre10 <- round(n / N * 10000, digits = 0)
+  preTall = c(pre1, pre10)
 
-    preTall <- c(pre1, pre10)
-
-  } else {
-
-    n = preData_ut()[, sum(Case, na.rm = TRUE)]
-    N = preData_ut()[, sum(Populasjon, na.rm = TRUE)]
-
-    ins1 = round(n / N * 100, digits = 2)
-    ins10 = round(n / N * 10000, digits = 0)
-
-    preTall = c(ins1, ins10)
-    
-  }
 
   return(preTall)
 })
@@ -247,13 +234,7 @@ Row
 ```{r}
 renderValueBox({
   
-  if (input$valg_inspre == 1){
-    #prevalens
-    npop = nrow(diab_ut())
-  } else {
-    #insidens
-    npop = diab_ut()[valg == 2, .N]
-  }
+  npop = preData_ut()[, sum(Case, na.rm = TRUE)]
   
   barnTxt <- paste0("Antall pasienter: ", input$valg_age[1], " - ", input$valg_age[2], " år")
   valueBox(barnTxt, value = npop, icon = "fa-child")
@@ -339,18 +320,28 @@ Row
 
 
 ```{r}
+
 renderValueBox({
-  npop <- nrow(diab_ut())
-  valueBox("Antall Pasienter", value = npop, icon = "fa-child")
+  
+  npop = preData_ut()[, sum(Case, na.rm = TRUE)]
+  
+  barnTxt <- paste0("Antall pasienter: ", input$valg_age[1], " - ", input$valg_age[2], " år")
+  valueBox(barnTxt, value = npop, icon = "fa-child")
   
 })
+
 ```
 
 ### Totalt populasjon
 
 ```{r}
+
 renderValueBox({
-  valueBox(value = sum(pop_ut()$N), icon = "fa-user-friends")
+
+  antallPas = preData_ut()[, sum(Populasjon, na.rm = TRUE)]
+  
+  barnTxt <- paste0("Total populasjon: ", input$valg_age[1], " - ", input$valg_age[2], " år")
+  valueBox(barnTxt, value = antallPas, icon = "fa-user-friends")
 })
 
 
