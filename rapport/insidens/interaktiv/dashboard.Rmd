@@ -181,7 +181,7 @@ Row
 ```{r}
 renderValueBox({
   npop <- nrow(diab_ut())
-  valueBox("Antall Pasienter", value = npop, color = "lightblue")
+  valueBox("Antall Pasienter", value = npop, icon = "fa-child")
   
 })
 ```
@@ -190,7 +190,7 @@ renderValueBox({
 
 ```{r}
 renderValueBox({
-  valueBox(value = sum(pop_ut()$N), icon = "fa-heart", color="rgb(200,100,100)")
+  valueBox(value = sum(pop_ut()$N), icon = "fa-user-friends")
 })
 
 
@@ -201,7 +201,7 @@ renderValueBox({
 ```{r}
 renderValueBox({
   txtInn <- ifelse(input$valg_inspre == 1, "Landet Prevalens", "Landet Insidens")
-  valueBox(paste0(txtInn), value = pre_ut()[1],  icon = "fa-life-ring",color="rgb(26,110,204)")
+  valueBox(paste0(txtInn), value = pre_ut()[1],  icon = "fa-pie-chart",color="warning")
 })
 ## valueBox("-2°C", icon = "fa-life-ring",color="rgb(26,110,204)")
 ```
