@@ -148,7 +148,7 @@ Sidebar {.sidebar}
 ===================================
 
 
-**For barn fra 0 til 14 år**
+**For barn fra 0 til 14 år i 2018**
 
 <hr/>
 
@@ -207,16 +207,18 @@ Row
 ```{r}
 renderValueBox({
   npop <- nrow(diab_ut())
-  valueBox("Antall Pasienter", value = npop, icon = "fa-child")
+  barnTxt <- paste0("Antall pasienter: ", input$valg_age[1], " - ", input$valg_age[2], " år")
+  valueBox(barnTxt, value = npop, icon = "fa-child")
   
 })
 ```
 
-### Totalt populasjon
+### Totalt populasjon {.no-title}
 
 ```{r}
 renderValueBox({
-  valueBox(value = sum(pop_ut()$N), icon = "fa-user-friends")
+  barnTxt <- paste0("Total populasjon: ", input$valg_age[1], " - ", input$valg_age[2], " år")
+  valueBox(barnTxt, value = sum(pop_ut()$N), icon = "fa-user-friends")
 })
 
 
