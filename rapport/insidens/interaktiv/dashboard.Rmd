@@ -10,7 +10,7 @@ output:
 ---
 
 ```{r setup_manual, include=FALSE, eval=FALSE}
-list.pkg <- c("flexdashboard", "shiny", "data.table", "dplyr", "plotly", "DT", "leaflet", "lubridate", "magrittr", "tmap", "mapview", "leafpop")
+list.pkg <- c("flexdashboard", "shiny", "data.table", "dplyr", "plotly", "DT", "leaflet", "lubridate", "magrittr", "tmap", "mapview", "leafpop", "shinycssloaders")
 new.packages <- list.pkg[!(list.pkg %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
 ## reqopt <- function(x) require(x, quietly = TRUE)
@@ -28,6 +28,7 @@ library(magrittr)
 library(tmap)
 library(mapview)
 library(leafpop)
+library(shinycssloaders)
 
 pdf(NULL)
 ```
@@ -265,7 +266,9 @@ output[["kartDT"]] <- renderLeaflet({
   
 })
 
+## leafletOutput("kartDT") %>% shinycssloaders::withSpinner()
 leafletOutput("kartDT")
+
 ```
 
 
@@ -342,6 +345,7 @@ output[["kartDT2"]] <- renderLeaflet({
   
 })
 
+## leafletOutput("kartDT2") %>% shinycssloaders::withSpinner()
 leafletOutput("kartDT2")
 
 ```
