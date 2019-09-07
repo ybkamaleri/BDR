@@ -351,8 +351,19 @@ Row
 renderValueBox({
   
   npop = preData_ut()[, sum(Case, na.rm = TRUE)]
+
+      
+  kjonnLg = length(input$valg_kjonn)
+
+  if (kjonnLg == 2) {
+    kjonn = " "
+  } else {
+    kjonn = switch(as.character(input$valg_kjonn),
+      "1" = " : Gutter",
+      "2" = " : Jenter")
+  }
   
-  barnTxt <- paste0("Antall pasienter: ", input$valg_age[1], " - ", input$valg_age[2], " år")
+  barnTxt <- paste0("Antall pasienter: ", input$valg_age[1], " - ", input$valg_age[2], " år", kjonn)
   valueBox(barnTxt, value = npop, icon = "fa-child")
   
 })
