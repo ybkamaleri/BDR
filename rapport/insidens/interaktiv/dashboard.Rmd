@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-list.pkg <- c("flexdashboard", "shiny", "data.table", "dplyr", "plotly", "DT", "leaflet", "lubridate", "magrittr", "tmap", "mapview")
+list.pkg <- c("flexdashboard", "shiny", "data.table", "dplyr", "plotly", "DT", "leaflet", "lubridate", "magrittr", "tmap", "mapview", "leafpop")
 new.packages <- list.pkg[!(list.pkg %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
 ## reqopt <- function(x) require(x, quietly = TRUE)
@@ -30,7 +30,7 @@ preCount <- function(x, y){
   utCol <- grep("id$", names(preDT), ignore.case = TRUE)
 
   tabCol <- names(preDT)[-utCol]
-  tabName <- c("n", "N", "pr10000", "pr100")
+  tabName <- c("Case:", "Populasjon:", "pr.10000", "pr.100")
   setnames(preDT, tabCol, tabName)
 
   preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
@@ -166,7 +166,7 @@ checkboxGroupInput("valg_kjonn",
 
 <hr/>
 
-*Doubelklikk valgte fylke for mer informasjon*
+<sub> Klikk valgte fylke for mer informasjon</sub>
 
 Pr. 100 personer (%)
 ===================================
@@ -215,20 +215,19 @@ Row
 
 ```{r}
 renderLeaflet({
+
+  txtLeg <- ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
   
   kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
-  ## kartUt <- mapView(kartDT)
-  ## kart_ut()
-  ## outMap <- kart_ut()
-  mapview(kartDT, zcol = "pr100")@map
-  ## mapView(kartDT)
-})
-```
+  
+  ## mapview(kartDT, zcol = "pr100")@map
 
-
-```{r eval=FALSE}
-renderPrint({
- preData_ut()
+  mapview(kartDT, zcol = "pr.100",
+    popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.100", "Case:", "Populasjon:"),
+      feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
+  
+    ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
+  
 })
 ```
 
@@ -239,3 +238,14 @@ Pr. 10,000 personer
 ===================================
 
 
+
+
+```{r eval=TRUE}
+renderPrint({
+  
+  ## preData_ut()
+  ## norgeMapFylke
+  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
+  kartDT
+})
+```
