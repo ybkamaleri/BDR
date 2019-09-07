@@ -536,12 +536,27 @@ tabIns[, denom := pop - ut]
 tabIns[, `:=`(ins = n / denom * 100, ins10 = n / denom * 10000), by = fylkeid]
 tabIns
 
+n = tabIns[, sum(n, na.rm = T)]
+N = tabIns[, sum(denom, na.rm = T)]
+
+n / N * 100000
+
 utKart <- NorgeMapFylke %>% left_join(tabIns, by = "mapID")
 utKart
 
 
 ```
 
+
+
+```{r}
+
+ui <- fluidPage()
+server <- function(input, output, session){}
+shinyApp(ui, server)
+
+
+```
 
 
 

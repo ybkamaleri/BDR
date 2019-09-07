@@ -395,3 +395,12 @@ leafletOutput("kartDT2")
 ```
 
 
+
+```{r}
+
+ui <- fluidPage()
+server <- function(input, output, session){}
+shinyApp(ui, server)
+
+
+```
