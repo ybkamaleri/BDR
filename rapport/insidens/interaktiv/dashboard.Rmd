@@ -168,6 +168,8 @@ checkboxGroupInput("valg_kjonn",
 
 <sub> Klikk valgte fylke for mer informasjon</sub>
 
+
+
 Pr. 100 personer (%)
 ===================================
 
@@ -201,7 +203,7 @@ renderValueBox({
 ```{r}
 renderValueBox({
   txtInn <- ifelse(input$valg_inspre == 1, "Landet Prevalens", "Landet Insidens")
-  valueBox(paste0(txtInn), value = pre_ut()[1],  icon = "fa-pie-chart",color="warning")
+  valueBox(paste0(txtInn, " (%)"), value = pre_ut()[1],  icon = "fa-pie-chart",color="warning")
 })
 ## valueBox("-2°C", icon = "fa-life-ring",color="rgb(26,110,204)")
 ```
@@ -238,6 +240,74 @@ Pr. 10,000 personer
 ===================================
 
 
+
+Row
+-----------------------------------
+
+### Antall pasienter {.no-title}
+
+
+```{r}
+renderValueBox({
+  npop <- nrow(diab_ut())
+  valueBox("Antall Pasienter", value = npop, icon = "fa-child")
+  
+})
+```
+
+### Totalt populasjon
+
+```{r}
+renderValueBox({
+  valueBox(value = sum(pop_ut()$N), icon = "fa-user-friends")
+})
+
+
+```
+
+### Prevalens eller Insidens {.no-title}
+
+```{r}
+renderValueBox({
+  txtInn <- ifelse(input$valg_inspre == 1, "Landet Prevalens", "Landet Insidens")
+  valueBox(paste0(txtInn, " pr. 10,000 personer"), value = pre_ut()[2],  icon = "fa-pie-chart",color="warning")
+})
+## valueBox("-2°C", icon = "fa-life-ring",color="rgb(26,110,204)")
+```
+
+
+
+Row 
+---------------------------------------------------
+
+### 
+
+```{r}
+renderLeaflet({
+
+  txtLeg <- ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
+  
+  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
+  
+  ## mapview(kartDT, zcol = "pr100")@map
+
+  mapview(kartDT, zcol = "pr.10000",
+    popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.10000", "Case:", "Populasjon:"),
+      feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
+  
+    ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
+  
+})
+```
+
+
+
+
+
+
+
+Test
+===================================
 
 
 ```{r eval=TRUE}
