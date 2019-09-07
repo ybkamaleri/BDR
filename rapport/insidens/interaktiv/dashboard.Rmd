@@ -222,13 +222,16 @@ checkboxGroupInput("valg_kjonn",
                    inline = TRUE)
 
 ## submitButton("Oppdatere", icon("refresh"))
-actionButton("go", " Oppdatere", icon("refresh"))
+actionButton("go", " Oppdatere kart", icon("refresh"))
 
 ```
 
+<sub>Kart oppdatering kan ta litt tid før fremvisning</sub>
+<sub> Klikk valgte fylke for mer informasjon</sub>
+
 <hr/>
 
-<sub> Klikk valgte fylke for mer informasjon</sub>
+[Tilbake til BDR hjemmeside](https://bdreg.github.io)
 
 
 
@@ -246,8 +249,19 @@ Row
 renderValueBox({
   
   npop = preData_ut()[, sum(Case, na.rm = TRUE)]
+
+    
+  kjonnLg = length(input$valg_kjonn)
+
+  if (kjonnLg == 2) {
+    kjonn = " "
+  } else {
+    kjonn = switch(as.character(input$valg_kjonn),
+      "1" = " : Gutter",
+      "2" = " : Jenter")
+  }
   
-  barnTxt <- paste0("Antall pasienter: ", input$valg_age[1], " - ", input$valg_age[2], " år")
+  barnTxt <- paste0("Antall pasienter: ", input$valg_age[1], " - ", input$valg_age[2], " år", kjonn)
   valueBox(barnTxt, value = npop, icon = "fa-child")
   
 })
@@ -421,10 +435,11 @@ Row {data-height=650}
 options(DT.options = list(pageLength = 10))
 DT::renderDT({
   utTabell <- merge(preData_ut(), fylkeID, by = "mapID")
-  utTabell[, fylkeid := NULL]
+  utTabell[, fylkeid := NULL] %>%
+    .[, mapID := NULL]
 
   if(input$valg_inspre == 2){
-    setnames(utTabell, c("Case", "ut", "pop", "Populasjon"), c("Ny pas.", "Allede med diab.", "Populasjon", "Friske pop."))
+    setnames(utTabell, c("Case", "ut", "pop", "Populasjon"), c("Ny pas.", "Allede med diab.", "Populasjon", "'Friske' pop."))
   }
 
   return(utTabell)
