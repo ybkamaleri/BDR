@@ -1,0 +1,44 @@
+<style>
+ .busy {
+     position: fixed;
+     z-index: 1000;
+     top: 50%;
+     left: 50%;
+     margin-top: -100px;
+     margin-left: -50px;
+     display: none;
+     background-color: hsla(89, 43%, 51%, 0);
+     text-align: center;
+     padding-top: 10px;
+     padding-left: 20px;
+     padding-bottom: 30px;
+     padding-right: 20px;
+     border-radius: 4px;
+ }
+</style>
+
+<script>
+ $(document).ready(function(){
+     $("#kartDT").on("shiny:recalculating", function(e){
+         $(".busy").show();
+     }).on("shiny:recalculated", function(e){
+         $(".busy").hide();
+     });
+ });
+</script>
+
+
+<script>
+ $(document).ready(function(){
+     $("#kartDT2").on("shiny:recalculating", function(e){
+         $(".busy").show();
+     }).on("shiny:recalculated", function(e){
+         $(".busy").hide();
+     });
+ });
+</script>
+
+
+<div class = "busy">
+    <img src = "https://loading.io/spinners/dna/lg.dna-spinner.gif"/>
+</div>

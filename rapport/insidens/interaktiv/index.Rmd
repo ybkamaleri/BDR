@@ -1,0 +1,69 @@
+---
+title: "BDR: Prevalens og insidens"
+runtime: shiny
+output:
+  flexdashboard::flex_dashboard:
+    orientation: row
+    vertical_layout: fill
+    includes:
+      after_body: "busy.html"
+---
+
+
+```{r setup, include=FALSE}
+
+library(flexdashboard)
+library(shiny)
+library(data.table)
+library(dplyr)
+library(leaflet)
+library(magrittr)
+library(tmap)
+library(mapview)
+library(leafpop)
+library(shinycssloaders)
+
+pdf(NULL)
+
+```
+
+
+
+```{r load_data, include=FALSE}
+## load data
+mapssb <- readRDS("SSBmedMapID.Rds")
+dt2018 <- readRDS("dtAnnonym.rds")
+norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
+
+## omkode diabetes til T1D og Andre
+dt2018[, diab12  :=  dbtype] %>%
+  .[dbtype != 1, diab12 := 2]
+
+
+## function
+preCount <- function(x, y, stat = 1, by = 100){
+  ## stat: 1=prevalens 2=insidens
+  ## x = DB data
+  ## y = fylke data
+  preDT <- x[y, on = c(fylkeid = "fylkeID")]
+
+  preDT[, ins10 := N / i.N * 10000] %>%
+    .[, ins := N / i.N * 100]
+
+  ## columns for fylkeid og mapID
+  utCol <- grep("id$", names(preDT), ignore.case = TRUE)
+
+  tabCol <- names(preDT)[-utCol]
+  tabName <- c("Case", "Populasjon", "pr.10000", "pr.100")
+  setnames(preDT, tabCol, tabName)
+
+  preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
+    .SDcols = tabName]
+
+  preDT[is.na(mapID), mapID := 50] #for Trøndelag
+  return(preDT)
+}
+
+
+```
+
