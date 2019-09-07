@@ -183,7 +183,7 @@ checkboxGroupInput("valg_kjonn",
                    selected = c(1, 2),
                    inline = TRUE)
 
-actionButton("go", "Oppdatere kart")
+## submitButton("Oppdatere", icon("refresh"))
 
 ```
 
@@ -240,19 +240,23 @@ Row
 
 ```{r}
 
-mapData <- eventReactive(input$go, {
+## mapData <- eventReactive(input$go, {
 
-  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
+##   kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
 
-})
+## })
+
 
 
 output[["kartDT"]] <- renderLeaflet({
 
-  txtLeg <- ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
-   
+  
+  valgTxt = ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
+  txtLeg <- paste0(valgTxt, " (", input$valg_age[1], " - ", input$valg_age[2], " år)")
+  
+  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
   ## mapview(kartDT, zcol = "pr100")@map
-  kartDT <- mapData()
+  ## kartDT <- mapData()
   mapview(kartDT, zcol = "pr.100",
     popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.100", "Case:", "Populasjon:"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
@@ -315,20 +319,21 @@ Row
 
 ```{r}
 
-mapData <- eventReactive(input$go, {
-
-  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
-
-})
+## mapData <- eventReactive(input$go, {
+##   kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
+## })
 
 output[["kartDT2"]] <- renderLeaflet({
 
-  txtLeg <- ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
   
+  valgTxt = ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
+  txtLeg <- paste0(valgTxt, " (", input$valg_age[1], " - ", input$valg_age[2], " år)")
+
+  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
   ## kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
   
   ## mapview(kartDT, zcol = "pr100")@map
-  kartDT <- mapData()
+  ## kartDT <- mapData()
   mapview(kartDT, zcol = "pr.10000",
     popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.10000", "Case:", "Populasjon:"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
