@@ -28,7 +28,7 @@ library(magrittr)
 library(tmap)
 library(mapview)
 library(leafpop)
-library(shinycssloaders)
+library(DT)
 
 pdf(NULL)
 ```
@@ -42,6 +42,7 @@ pdf(NULL)
 mapssb <- readRDS("SSBmedMapID.Rds")
 dt2018 <- readRDS("dtAnnonym.rds")
 norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
+fylkeID <- readRDS("FylkeID.rds")
 
 ## omkode diabetes til T1D og Andre
 dt2018[, diab12  :=  dbtype] %>%
@@ -81,7 +82,7 @@ preCount <- function(x, y){
 
 
 ```{r reaktiv}
-## prevalens populasjon
+## populasjon
 pop_ut <- reactive({
 
   dt <- mapssb[kjonn %in% input$valg_kjonn, ] %>%
@@ -94,7 +95,7 @@ pop_ut <- reactive({
 })
 
 
-## prevalens diabetes pop
+## diabetes pop
 diab_ut <- reactive({
   
   if (input$valg_diab != 3){
@@ -109,7 +110,6 @@ diab_ut <- reactive({
   return(diabData)
   
 })
-
 
 
 
@@ -165,6 +165,15 @@ pre_ut <- reactive({
   return(preTall)
 })
 
+
+## Kart og data
+kartDT_ut <- eventReactive(input$go, {
+  req(input$valg_inspre)
+  kartUT = norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
+
+  return(kartUT)
+})
+
 ```
 
 
@@ -203,6 +212,7 @@ sliderInput("valg_age",
            value = c(0L, 14L),
            step = 1)
 
+
 checkboxGroupInput("valg_kjonn",
                    "Kjønn:",
                    choices = list("Gutter" = 1,
@@ -212,7 +222,7 @@ checkboxGroupInput("valg_kjonn",
                    inline = TRUE)
 
 ## submitButton("Oppdatere", icon("refresh"))
-actionButton("go", "Oppdatere", icon("refresh"))
+actionButton("go", " Oppdatere", icon("refresh"))
 
 ```
 
@@ -290,16 +300,15 @@ output[["kartDT"]] <- renderLeaflet({
   valgTxt = ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
   txtLeg <- paste0(valgTxt, " (", input$valg_age[1], " - ", input$valg_age[2], " år)")
   
-  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
+  ## kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
   ## mapview(kartDT, zcol = "pr100")@map
   ## kartDT <- mapData()
 
-  observeEvent(input$go, {
   
-  mapview(kartDT, zcol = "pr.100",
-    popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.100", "Case", "Populasjon"),
+  mapview(kartDT_ut(), zcol = "pr.100",
+    popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.100", "Case", "Populasjon"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
-  })
+      
     ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
   
 })
@@ -380,13 +389,13 @@ output[["kartDT2"]] <- renderLeaflet({
   valgTxt = ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
   txtLeg <- paste0(valgTxt, " (", input$valg_age[1], " - ", input$valg_age[2], " år)")
 
-  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
+  ## kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
   ## kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
   
   ## mapview(kartDT, zcol = "pr100")@map
   ## kartDT <- mapData()
-  mapview(kartDT, zcol = "pr.10000",
-    popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.10000", "Case", "Populasjon"),
+  mapview(kartDT_ut(), zcol = "pr.10000",
+    popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.10000", "Case", "Populasjon"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
   
     ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
@@ -399,12 +408,30 @@ leafletOutput("kartDT2")
 ```
 
 
+Tabell
+===================================
+
+<h3>Tabell for basis tall</h3>
+
+Row {data-height=650}
+-----------------------------------
 
 ```{r}
 
-ui <- fluidPage()
-server <- function(input, output, session){}
-shinyApp(ui, server)
+options(DT.options = list(pageLength = 10))
+DT::renderDT({
+  utTabell <- merge(preData_ut(), fylkeID, by = "mapID")
+  utTabell[, fylkeid := NULL]
 
+  if(input$valg_inspre == 2){
+    setnames(utTabell, c("Case", "ut", "pop", "Populasjon"), c("Ny pas.", "Allede med diab.", "Populasjon", "Friske pop."))
+  }
+
+  return(utTabell)
+})
 
 ```
+
+
+
+
