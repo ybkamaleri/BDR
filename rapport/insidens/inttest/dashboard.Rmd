@@ -212,6 +212,7 @@ checkboxGroupInput("valg_kjonn",
                    inline = TRUE)
 
 ## submitButton("Oppdatere", icon("refresh"))
+actionButton("go", "Oppdatere", icon("refresh"))
 
 ```
 
@@ -292,10 +293,13 @@ output[["kartDT"]] <- renderLeaflet({
   kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
   ## mapview(kartDT, zcol = "pr100")@map
   ## kartDT <- mapData()
+
+  observeEvent(input$go, {
+  
   mapview(kartDT, zcol = "pr.100",
     popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.100", "Case", "Populasjon"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
-  
+  })
     ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
   
 })
