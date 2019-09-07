@@ -175,7 +175,7 @@ Pr. 100 personer (%)
 Row
 -----------------------------------
 
-### 
+### Antall pasienter {.no-title}
 
 
 ```{r}
@@ -196,7 +196,7 @@ renderValueBox({
 
 ```
 
-### 
+### Prevalens eller Insidens {.no-title}
 
 ```{r}
 renderValueBox({
