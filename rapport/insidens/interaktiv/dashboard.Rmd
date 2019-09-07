@@ -183,6 +183,8 @@ checkboxGroupInput("valg_kjonn",
                    selected = c(1, 2),
                    inline = TRUE)
 
+actionButton("go", "Oppdatere kart")
+
 ```
 
 <hr/>
@@ -238,14 +240,19 @@ Row
 
 ```{r}
 
+mapData <- eventReactive(input$go, {
+
+  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
+
+})
+
+
 output[["kartDT"]] <- renderLeaflet({
 
   txtLeg <- ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
-  
-  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
-  
+   
   ## mapview(kartDT, zcol = "pr100")@map
-
+  kartDT <- mapData()
   mapview(kartDT, zcol = "pr.100",
     popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.100", "Case:", "Populasjon:"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
@@ -307,14 +314,21 @@ Row
 ### 
 
 ```{r}
+
+mapData <- eventReactive(input$go, {
+
+  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
+
+})
+
 output[["kartDT2"]] <- renderLeaflet({
 
   txtLeg <- ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
   
-  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
+  ## kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
   
   ## mapview(kartDT, zcol = "pr100")@map
-
+  kartDT <- mapData()
   mapview(kartDT, zcol = "pr.10000",
     popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.10000", "Case:", "Populasjon:"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
