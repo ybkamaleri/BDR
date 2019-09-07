@@ -425,6 +425,8 @@ Antall pasienter med alle type diabetes og speisfike type. KUN barn under 15 år
 dt2018 <- subset(DT2018, alder < 15)
 ## dt2018[.(Kjonn = c("Gutt", "Jente"), to = 1:2), on = "Kjonn", kjonn := i.to]
 
+dt2018 <- DTannon
+
 ## Alle type DT
 dtFD <- dt2018[, .N, keyby = .(fylkeid)]
 dtKjonnFD <- dt2018[, .N, keyby = .(kjonn, fylkeid)]
@@ -457,23 +459,25 @@ Lager function for å regne prevalence per 10,000 og prosent.
 fylkeList <- readRDS("FylkeogKartID.Rds")
 fylkeList[, .N, by = .(fylke, kartID, mixID)]
 
-preCount <- function(x, y){
-  
+# prevalens
+preCount <- function(x, y, by = 100){
+
+  ##by: per 100 person osv.
   ## x = DB data
   ## y = fylke data
+  
   preDT <- x[y, on = c(fylkeid = "fylkeID")]
 
-  preDT[, ins10 := N / i.N * 10000] %>%
-    .[, ins := N / i.N * 100]
+  preDT[, ins  := N / i.N * by]
 
   ## columns for fylkeid og mapID
   utCol <- grep("id$", names(preDT), ignore.case = TRUE)
 
   tabCol <- names(preDT)[-utCol]
-  tabName <- c("n", "N", "pr10000", "pr100")
+  tabName <- c("Case", "Ins", "Populasjon")
   setnames(preDT, tabCol, tabName)
 
-  preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
+  preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 2)),
     .SDcols = tabName]
 
   preDT[is.na(mapID), mapID := 50] #for Trøndelag
