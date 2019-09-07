@@ -43,6 +43,9 @@ dataSti <- "~/avid/bdr"
 
 #Diabetes pasienter
 DT2018 <- readRDS(file.path(dataSti, "alleDiabetes2018_med_fylkeid.Rds"))
+
+#Annonym pasientlister
+DTannon <- readRDS("dtAnnonym.rds")
 #Norges befolkning
 ssbKart <- readRDS("SSBmedMapID.Rds")
 #Kart med fylkeID som i SSB
@@ -63,7 +66,6 @@ de som skal være numerisk er ikke i string format.
 
 
 ```{r }
-
 ## norsk baren 1-18 år
 norskBF18 <- fread("N2018_Norge_1_18.csv", header = TRUE, encoding = "Latin-1")
 
@@ -509,6 +511,29 @@ mapshot(dt1map1, url = "T1Dpre.html")
 
 ```
 
+# Insidens
+
+
+```{r}
+ssbKart
+DTannon
+
+
+
+```
+
+
+
+```{r}
+
+ui <- fluidPage(
+)
+
+server <- function(input, output, session){
+}
+
+shinyApp(ui, server)
+```
 
 
 

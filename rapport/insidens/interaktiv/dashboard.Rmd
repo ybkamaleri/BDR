@@ -307,7 +307,7 @@ Row
 ### 
 
 ```{r}
-renderLeaflet({
+output[["kartDT2"]] <- renderLeaflet({
 
   txtLeg <- ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
   
@@ -322,6 +322,9 @@ renderLeaflet({
     ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
   
 })
+
+leafletOutput("kartDT2")
+
 ```
 
 

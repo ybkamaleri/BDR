@@ -27,6 +27,18 @@
  });
 </script>
 
+
+<script>
+ $(document).ready(function(){
+     $("#kartDT2").on("shiny:recalculating", function(e){
+         $(".busy").show();
+     }).on("shiny:recalculated", function(e){
+         $(".busy").hide();
+     });
+ });
+</script>
+
+
 <div class = "busy">
     <img src = "https://loading.io/spinners/wave/lg.wave-spinner.gif"/>
 </div>
