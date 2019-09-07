@@ -64,7 +64,7 @@ preCount <- function(x, y){
   utCol <- grep("id$", names(preDT), ignore.case = TRUE)
 
   tabCol <- names(preDT)[-utCol]
-  tabName <- c("Case:", "Populasjon:", "pr.10000", "pr.100")
+  tabName <- c("Case", "Populasjon", "pr.10000", "pr.100")
   setnames(preDT, tabCol, tabName)
 
   preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
@@ -81,30 +81,29 @@ preCount <- function(x, y){
 
 
 ```{r reaktiv}
-
-## populasjon
+## prevalens populasjon
 pop_ut <- reactive({
 
   dt <- mapssb[kjonn %in% input$valg_kjonn, ] %>%
-    .[age >= as.integer(input$valg_age[1]) & age <= as.integer(input$valg_age[2]), ]
+      .[age >= as.integer(input$valg_age[1]) & age <= as.integer(input$valg_age[2]), ]
 
-  popDT <- dt[, .(N = sum(N)), keyby = .(fylkeID, mapID)]
-  
+    popDT <- dt[, .(N = sum(N)), keyby = .(fylkeID, mapID)]
+
   return(popDT)
     
 })
 
 
-## diabetes pop
+## prevalens diabetes pop
 diab_ut <- reactive({
-
+  
   if (input$valg_diab != 3){
     dt1 <- dt2018[diab12 == input$valg_diab, ]
   } else {
     dt1 <- dt2018
   }
-  
-  diabData <- dt1[kjonn %in% input$valg_kjonn, ] %>%
+
+  diabData = dt1[kjonn %in% input$valg_kjonn, ] %>%
     .[age >= input$valg_age[1] & age <= input$valg_age[2], ]
 
   return(diabData)
@@ -112,30 +111,71 @@ diab_ut <- reactive({
 })
 
 
-## landet
-pre_ut <- reactive({
-
-  n <- nrow(diab_ut())
-  N <- sum(pop_ut(), na.rm = TRUE)
-
-  pre1 <- round(n / N * 100, digits = 2)
-  pre10 <- round(n / N * 10000, digits = 0)
-
-  preTall <- c(pre1, pre10)
-
-  return(preTall)
-})
 
 
 ## kart
 preData_ut <- reactive({
-
-  preNorge <- pop_ut()[, .(N = sum(N, na.rm = TRUE)), keyby = .(fylkeID, mapID)][N != 0, ][]
-  preDiab <- diab_ut()[, .N, keyby = .(fylkeid)]
-  utPre <- preCount(preDiab, preNorge)
-
-  return(utPre)
   
+  if (input$valg_inspre == 1) {
+    preNorge <- pop_ut()[, .(N = sum(N, na.rm = TRUE)), keyby = .(fylkeID, mapID)][N != 0, ][]
+    preDiab <- diab_ut()[, .N, keyby = .(fylkeid)]
+    utDataKart <- preCount(preDiab, preNorge)
+
+  } else {
+
+    #pasienter
+    insPas = diab_ut()[valg == 2, .(n = .N), keyby = .(fylkeid)]
+    sykPas = diab_ut()[valg == 1, .(ut = .N), keyby = .(fylkeid)]
+    insDT = merge(insPas, sykPas, by = "fylkeid", all = TRUE)
+
+    #norges populasjon
+    insPop = pop_ut()[, .(pop = sum(N, na.rm = T)), keyby = .(fylkeID, mapID)]
+    
+    insLand = merge(insDT, insPop, by.x = "fylkeid", by.y = "fylkeID", all.y = TRUE)
+    
+    tabIns = insLand[pop != 0, ]
+    tabIns[is.na(mapID), mapID := 50]
+    tabIns[, denom := pop - ut]
+    tabIns[, `:=`(ins = round(n / denom * 100, digits = 3), ins10 = round(n / denom * 10000, digits = 2)), by = fylkeid]
+
+    tabName <- c("Case", "Populasjon", "pr.10000", "pr.100")
+    setnames(tabIns, c("n", "denom", "ins10", "ins"), tabName)
+    utDataKart = tabIns
+    
+  }
+
+  return(utDataKart)
+  
+})
+
+
+
+## landet
+pre_ut <- reactive({
+
+  if (input$valg_inspre == 1){
+    # prevalens
+    n <- preData_ut()[, sum(Case, na.rm = TRUE)]
+    N <- preData_ut()[, sum(Populasjon, na.rm = TRUE)]
+
+    pre1 <- round(n / N * 100, digits = 2)
+    pre10 <- round(n / N * 10000, digits = 0)
+
+    preTall <- c(pre1, pre10)
+
+  } else {
+
+    n = preData_ut()[, sum(Case, na.rm = TRUE)]
+    N = preData_ut()[, sum(Populasjon, na.rm = TRUE)]
+
+    ins1 = round(n / N * 100, digits = 2)
+    ins10 = round(n / N * 10000, digits = 0)
+
+    preTall = c(ins1, ins10)
+    
+  }
+
+  return(preTall)
 })
 
 ```
@@ -206,7 +246,15 @@ Row
 
 ```{r}
 renderValueBox({
-  npop <- nrow(diab_ut())
+  
+  if (input$valg_inspre == 1){
+    #prevalens
+    npop = nrow(diab_ut())
+  } else {
+    #insidens
+    npop = diab_ut()[valg == 2, .N]
+  }
+  
   barnTxt <- paste0("Antall pasienter: ", input$valg_age[1], " - ", input$valg_age[2], " år")
   valueBox(barnTxt, value = npop, icon = "fa-child")
   
@@ -217,8 +265,11 @@ renderValueBox({
 
 ```{r}
 renderValueBox({
+
+  antallPas = preData_ut()[, sum(Populasjon, na.rm = TRUE)]
+  
   barnTxt <- paste0("Total populasjon: ", input$valg_age[1], " - ", input$valg_age[2], " år")
-  valueBox(barnTxt, value = sum(pop_ut()$N), icon = "fa-user-friends")
+  valueBox(barnTxt, value = antallPas, icon = "fa-user-friends")
 })
 
 
@@ -261,7 +312,7 @@ output[["kartDT"]] <- renderLeaflet({
   ## mapview(kartDT, zcol = "pr100")@map
   ## kartDT <- mapData()
   mapview(kartDT, zcol = "pr.100",
-    popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.100", "Case:", "Populasjon:"),
+    popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.100", "Case", "Populasjon"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
   
     ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
@@ -340,7 +391,7 @@ output[["kartDT2"]] <- renderLeaflet({
   ## mapview(kartDT, zcol = "pr100")@map
   ## kartDT <- mapData()
   mapview(kartDT, zcol = "pr.10000",
-    popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.10000", "Case:", "Populasjon:"),
+    popup = leafpop::popupTable(kartDT, zcol = c("region", "pr.10000", "Case", "Populasjon"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
   
     ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
@@ -353,21 +404,3 @@ leafletOutput("kartDT2")
 ```
 
 
-
-
-
-
-
-Test
-===================================
-
-
-```{r eval=TRUE}
-renderPrint({
-  
-  ## preData_ut()
-  ## norgeMapFylke
-  kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
-  kartDT
-})
-```
