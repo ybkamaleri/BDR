@@ -5,14 +5,47 @@ output:
   flexdashboard::flex_dashboard:
     orientation: row
     vertical_layout: fill
+    includes:
+      after_body: "busy.html"
 ---
 
-```{r setup, include=FALSE}
+```{r setup_manual, include=FALSE, eval=FALSE}
 list.pkg <- c("flexdashboard", "shiny", "data.table", "dplyr", "plotly", "DT", "leaflet", "lubridate", "magrittr", "tmap", "mapview", "leafpop")
 new.packages <- list.pkg[!(list.pkg %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
 ## reqopt <- function(x) require(x, quietly = TRUE)
 sapply(list.pkg, require, character.only = TRUE)
+
+```
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(data.table)
+library(dplyr)
+library(leaflet)
+library(magrittr)
+library(tmap)
+library(mapview)
+library(leafpop)
+
+pdf(NULL)
+```
+
+
+
+
+
+```{r load_data, include=FALSE}
+## load data
+mapssb <- readRDS("SSBmedMapID.Rds")
+dt2018 <- readRDS("dtAnnonym.rds")
+norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
+
+## omkode diabetes til T1D og Andre
+dt2018[, diab12  :=  dbtype] %>%
+  .[dbtype != 1, diab12 := 2]
+
 
 ## function
 
@@ -40,18 +73,6 @@ preCount <- function(x, y){
   return(preDT)
 }
 
-```
-
-
-```{r load_data}
-## load data
-mapssb <- readRDS("SSBmedMapID.Rds")
-dt2018 <- readRDS("dtAnnonym.rds")
-norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
-
-## omkode diabetes til T1D og Andre
-dt2018[, diab12  :=  dbtype] %>%
-  .[dbtype != 1, diab12 := 2]
 
 ```
 
@@ -216,7 +237,8 @@ Row
 ### 
 
 ```{r}
-renderLeaflet({
+
+output[["kartDT"]] <- renderLeaflet({
 
   txtLeg <- ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
   
@@ -231,6 +253,8 @@ renderLeaflet({
     ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
   
 })
+
+leafletOutput("kartDT")
 ```
 
 
