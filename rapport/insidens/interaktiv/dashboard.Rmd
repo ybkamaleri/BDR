@@ -38,11 +38,12 @@ pdf(NULL)
 
 
 ```{r load_data, include=FALSE}
-## load data
+## load data med HF
 mapssb <- readRDS("SSBmedMapID.Rds")
-dt2018 <- readRDS("dtAnnonym.rds")
-norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
+dt2018 <- readRDS("DTannonHF.rds")
+norgeMapFylke <- readRDS("NorgeMapInt.Rds")
 fylkeID <- readRDS("FylkeID.rds")
+
 
 ## omkode diabetes til T1D og Andre
 dt2018[, diab12  :=  dbtype] %>%
@@ -184,11 +185,17 @@ Sidebar {.sidebar}
 ===================================
 
 
-**For barn fra 0 til 14 år i 2018**
-
-<hr/>
 
 ```{r inspre}
+
+checkboxGroupInput("valg_data",
+                   "Valg nivå: ",
+                   choices = list("HF" = 1,
+                                  "Fylke" = 2
+                                  ),
+                   selected =  2,
+                   inline = TRUE)
+
 selectInput("valg_inspre",
             "Valg data:",
             choices = list("Prevalens" = 1,
