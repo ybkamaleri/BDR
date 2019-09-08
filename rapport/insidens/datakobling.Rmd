@@ -49,10 +49,11 @@ DTannon <- readRDS("dtAnnonym.rds")
 DTAnoHF <- readRDS("DTannonHF.rds") #med HF
 #Norges befolkning
 ssbKart <- readRDS("SSBmedMapID.Rds")
+ssbKartHF <- readRDS( "SSBmedHFogKartID.rds")
 #Kart med fylkeID som i SSB
 NorgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
-#Kart med fylke og helseregion
-NorgeFylkReg <- readRDS("NorgeMapInt.Rds")
+#Kart med helseregion
+NorgeHFReg <- readRDS("KartHF.rds")
 
 ```
 
@@ -381,6 +382,16 @@ kart_sf <- kart_sf %>%
                      ifelse(fylke == 1, 99,
                        ifelse(fylke == 2, 98,
                          ifelse(fylke == 3, 98, 97))))
+
+
+## Merge kart på HF
+kartmHF <- NorgeFylkReg %>%
+  group_by(helsereg) %>%
+  summarise()
+
+mapView(kartmHF)
+
+## saveRDS(kartmHF, "KartHF.rds")
 
 ```
 
