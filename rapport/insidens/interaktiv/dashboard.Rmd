@@ -61,8 +61,8 @@ preCount <- function(x, y, byid = "fylkeid"){
   ## y = fylke data
   preDT <- merge(x, y, by = byid)
 
-  preDT[, ins10 := N.x / N.y * 10000] %>%
-    .[, ins := N.x / N.y * 100]
+  preDT[, ins10 := round(N.x / N.y * 10000, digits = 1)] %>%
+    .[, ins := round(N.x / N.y * 100, digits = 3)]
 
   if (byid == "fylkeid"){
     ## columns for fylkeid og mapID
@@ -75,8 +75,8 @@ preCount <- function(x, y, byid = "fylkeid"){
   tabName <- c("Case", "Populasjon", "pr.10000", "pr.100")
   setnames(preDT, tabCol, tabName)
 
-  preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
-    .SDcols = tabName]
+  ## preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
+  ##   .SDcols = tabName]
   
   if (byid == "fylkeid"){
     preDT[is.na(mapID), mapID := 50] #for Trøndelag
@@ -400,25 +400,11 @@ output[["kartDT"]] <- renderLeaflet({
   ## mapview(kartDT, zcol = "pr100")@map
   ## kartDT <- mapData()
 
-
-    ## if (input$valg_data == 2) {
-      mapUt <- mapview(kartDT_ut(), zcol = "pr.100",
-        popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.100", "Case", "Populasjon"),
-          feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
-    ## } 
-
-    ## if (input$valg_data == 1) {
-    ##   mapUt <- mapview(kartDT_ut(), zcol = "pr.100",
-    ##     popup = leafpop::popupTable(kartDT_ut(), zcol = c("rhfNavn", "pr.100", "Case", "Populasjon"),
-    ##       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
-    ## }
-
-    
-    mapUt
- 
-  ## observeEvent(input$go, {mapUt})
-
-    ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
+  
+  mapview(kartDT_ut(), zcol = "pr.100",
+    popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.100", "Case", "Populasjon"),
+      feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
+      
   
 })
 
