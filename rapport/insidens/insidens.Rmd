@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALS
 
 ```{r}
 list.of.packages <- c("data.table", "stringr", "lubridate", "shiny", "flexdashboard",
-                      "leaflet","ggplot2","dplyr","sf","ggrepel", "tmap", "mapview")
+                      "leaflet","ggplot2","dplyr","sf","ggrepel", "tmap", "mapview", "ggrepel")
 
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
@@ -44,6 +44,16 @@ Disse datasetter er den endelige:
 mapssb <- readRDS("Data_withID_MapSSB.rds")
 dt2018 <- readRDS("dt2018.rds")
 norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
+
+## load data med HF
+mapssb <- readRDS("SSBmedHFogKartID.rds")
+dt2018 <- readRDS("DTannonHF.rds")
+norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
+fylkeID <- readRDS("FylkeID.rds")
+kartHF <- readRDS("KartHF.rds")
+hfID <- readRDS("hfIDList.rds")
+
+
 ```
 
 
@@ -634,6 +644,60 @@ dd[, age := floor(alder)] # ikke runder av f.eks 4.9 til 5 men til 4.
 
 ```
 
+# Statis kart
+
+Lager vanlig kart som pdf eller png.
+
+
+
+```{r}
+
+## add point
+kart_centroid <- norgeMapFylke %>% sf::st_centroid() #create point
+kart_centroid #her vises geometry som POINT
+
+## g3 <- g2 + geom_sf(data = kart_centroid, aes(fill = region), colour = "red")
+
+## get coordinate for fylke dvs. X og Y for å lage text
+## dvs. verdi i geometry for lat og long delest til X og Y
+## for at man kan brukes til å defenere i geom_aes
+fylkeco <- cbind(kart_centroid, st_coordinates(st_centroid(norgeMapFylke)))
+fylkeco #her ser man X og Y tilsvarer verdi i geometry
+
+g2 <- ggplot(norgeMapFylke) +
+  aes(fill = region) +
+  scale_fill_viridis_d() + #viridis c for contineous
+  geom_sf() + 
+  geom_text(data = fylkeco, aes(X, Y, label = region), size = 8)  #legger text senere så det kan vises
+
+
+g2
+
+
+```
+
+TEXT ikke oppe hverandre
+
+
+```{r}
+
+## For at tekstene ikke legges oppe hverandre, kan bruke ggrepel pakke
+library(ggrepel)
+utNavn <- c(12, 2, 1) #velge fykle Oslo, Akerhus, Østfold og Vestfold
+vest <- 19
+
+g2 +
+  geom_text_repel(data = subset(fylkeco, ID_1 %in% utNavn), aes(X, Y, label=fylke), size=3,
+                  nudge_x = c(2, 3, 4), #spesifere hvor tekst starter på x-aksen. 2 for Østfold mens 4 for Oslo dvs. reverse som på utNavn rekkefølge
+                  direction = "y", #spesifisere at tekst fordeles langs y-aksen
+                  force = 2) + #forstår ikke hvordan force funker
+  geom_text_repel(data = subset(fylkeco, ID_1 == 19), aes(X, Y, label = fylke), size = 3,
+    nudge_y = -1, #direction downwards 1 y-scale
+    direction = "x") +
+  geom_point(data = subset(fylkeco, ID_1 %in% c(utNavn, 19)), aes(X, Y), color = "red", size = 1) +
+  coord_sf()
+
+```
 
 
 
