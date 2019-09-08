@@ -388,8 +388,8 @@ output[["kartDT"]] <- renderLeaflet({
   txtLeg <- paste0(valgTxt, " (", input$valg_age[1], " - ", input$valg_age[2], " år)")
 
   ## Bulid kart
-  n <- 10000
-  withProgress(message = 'Restrukturer kart', value = 0, {
+  n <- 5000
+  withProgress(message = 'Restrukturerer kart', value = 0, {
 
   mapUT <- mapview(kartDT_ut(), zcol = "pr.100",
     popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.100", "Case", "Populasjon"),
@@ -493,8 +493,8 @@ output[["kartDT2"]] <- renderLeaflet({
 
 
   ## Bulid kart
-  n <- 10000
-  withProgress(message = 'Restrukturer kart', value = 0, {
+  n <- 5000
+  withProgress(message = 'Restrukturerer kart', value = 0, {
 
   mapUT <- mapview(kartDT_ut(), zcol = "pr.10000",
     popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.10000", "Case", "Populasjon"),
