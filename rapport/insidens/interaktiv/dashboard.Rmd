@@ -386,7 +386,11 @@ Row
 
 output[["kartDT"]] <- renderLeaflet({
 
+  ## Sjekk hvis tallet til fordelinger dvs. pr.100 eller pr.10000 er ikke like
+  ikkeUnik = sum(!duplicated(kartDT_ut()$pr.100))
+  yesLeg = ifelse(ikkeUnik == 1, FALSE, TRUE)
   
+  ## Legend title
   valgTxt = ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
   txtLeg <- paste0(valgTxt, " (", input$valg_age[1], " - ", input$valg_age[2], " år)")
   
@@ -397,13 +401,13 @@ output[["kartDT"]] <- renderLeaflet({
   if (input$valg_data == 2) {
   mapview(kartDT_ut(), zcol = "pr.100",
     popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.100", "Case", "Populasjon"),
-      feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
+      feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg, legend = yesLeg)@map
   }
 
   if (input$valg_data == 1) {
   mapview(kartDT_ut(), zcol = "pr.100",
     popup = leafpop::popupTable(kartDT_ut(), zcol = c("helsereg", "pr.100", "Case", "Populasjon"),
-      feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
+      feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg, legend = yesLeg)@map
   }
   
     ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
@@ -560,13 +564,31 @@ DT::renderDT({
 Informasjon
 ===================================
 
-<h3> **Data** </h3> 
+Row
+-----------------------------------
 
-Datagrunnlagt er for barn mellom 0 til 14 år som er registeret i BDR.
+### 
+
+  **Om denne nettside**
+  
+  - Denne nettside er en beta-versjon. Kommentar og forslag til forbedring er
+    velkommen og kan sends til [Yusman Kamaleri](mailto:ybkamaleri@gmail.com).
+
+  **Data**
+
+  - Datagrunnlaget inkluderer KUN barn mellom 0 til 14 år som er registeret i BDR.
+  - Diabetes pasienter som ikke er registered i BDR blir ikke inkludert i
+    analysen. Men med 98% dekningsgrad i BDR i 2018 antar vi at aktuelle tallene
+    ikke skal være stor forskjelle med de tallene som er presentert på denne nettside.
+  
+  
+  **Kontakt**
+  
+  - Ta kontakt med [BDR][bdr] for mer informasjon.
 
 
 
-
+[bdr]:https://bdreg.github.io/06_kontakt.html
 
 
 
