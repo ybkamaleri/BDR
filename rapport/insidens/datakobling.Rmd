@@ -46,6 +46,7 @@ DT2018 <- readRDS(file.path(dataSti, "alleDiabetes2018_med_fylkeid.Rds"))
 
 #Annonym pasientlister
 DTannon <- readRDS("dtAnnonym.rds")
+DTAnoHF <- readRDS("DTannonHF.rds") #med HF
 #Norges befolkning
 ssbKart <- readRDS("SSBmedMapID.Rds")
 #Kart med fylkeID som i SSB
@@ -350,6 +351,7 @@ ssbKart <- readRDS("SSBmedMapID.Rds")
 
 ## Legger helseforetaket
 
+### Legge HF i kart data.
 
 ```{r}
 
@@ -381,6 +383,28 @@ kart_sf <- kart_sf %>%
                          ifelse(fylke == 3, 98, 97))))
 
 ```
+
+### Legger HF i BDR annonym data 
+
+
+```{r}
+
+dt1 <- DTannon
+
+#Helse Foretaket
+dt1[hospID  %in% c(22, 1, 25, 13, 18, 20, 21, 19, 16, 15, 14), rhf := 1] #Hels S-Ø
+dt1[hospID  %in% c(11, 17, 26, 7, 8, 9), rhf := 2] #Helse Midt
+dt1[hospID %in% c(12, 3, 4, 2), rhf := 3] #Helse Vest
+dt1[hospID  %in% c(10, 23, 6, 5, 24), rhf := 4]
+
+rhfNavn <- c("Helse Sør-Øst", "Helse-Midt", "Helse-Vest", "Helse-Nord")
+dt1[.(rhf = 1:4, to = rhfNavn), on = "rhf", rhfNavn := i.to]
+
+
+## saveRDS(dt1, "DTannonHF.rds")
+
+```
+
 
 
 # Antall barn i Norge
