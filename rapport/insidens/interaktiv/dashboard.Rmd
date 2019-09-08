@@ -42,7 +42,7 @@ pdf(NULL)
 ## load data med HF
 mapssb <- readRDS("SSBmedHFogKartID.rds")
 dt2018 <- readRDS("DTannonHF.rds")
-norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
+norgeMapFylke <- readRDS("NorgeFylkeHF_id.Rds") #med mapID og RHF (helsereg)
 fylkeID <- readRDS("FylkeID.rds")
 kartHF <- readRDS("KartHF.rds")
 hfID <- readRDS("hfIDList.rds")

@@ -55,6 +55,8 @@ NorgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
 #Kart med helseregion
 NorgeHFReg <- readRDS("KartHF.rds")
 
+rhfID <- readRDS("hfIDList.rds")
+
 ```
 
 
@@ -366,18 +368,18 @@ hsn <- c("Finnmark", "Nordland", "Troms")
 
 
 NorgeHF <- norgeMapFylkeNY %>%
-  mutate(region, helsereg = ifelse(region %in% hso, 1, ifelse(region %in% hsv, 2, ifelse(region %in% hsm, 3, 4))))
+  mutate(region, helsereg = ifelse(region %in% hso, 1, ifelse(region %in% hsm, 2, ifelse(region %in% hsv, 3, 4))))
 
 ## Kart med helseforetaket
-## saveRDS(NorgeHF, "NorgeMapInt.Rds")
+## saveRDS(NorgeHF, "NorgeFylkeHF_id.Rds")
 
 
 ## dekningsgrad BDR
 kart_sf <- kart_sf %>%
   mutate(helsereg, helsenavn =
                      ifelse(fylke == 1, "Helse Sør-Øst",
-                       ifelse(fylke == 2, "Helse Vest",
-                         ifelse(fylke == 3, "Helse Midt", "Helse Nord")))) %>%
+                       ifelse(fylke == 3, "Helse Vest",
+                         ifelse(fylke == 2, "Helse Midt", "Helse Nord")))) %>%
   mutate(helsereg, dekning =
                      ifelse(fylke == 1, 99,
                        ifelse(fylke == 2, 98,
@@ -385,7 +387,7 @@ kart_sf <- kart_sf %>%
 
 
 ## Merge kart på HF
-kartmHF <- NorgeFylkReg %>%
+kartmHF <- NorgeHF %>%
   group_by(helsereg) %>%
   summarise()
 
