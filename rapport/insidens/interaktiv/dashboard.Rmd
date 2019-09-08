@@ -221,7 +221,7 @@ sliderInput("valg_age",
 
 
 checkboxGroupInput("valg_kjonn",
-                   "Kjønn:",
+                   "Kjønn:", 
                    choices = list("Gutter" = 1,
                                   "Jenter" = 2
                                   ),
@@ -465,6 +465,21 @@ DT::renderDT({
 })
 
 ```
+
+
+Informasjon
+===================================
+
+<h3> **Data** </h3> 
+
+Datagrunnlagt er for barn mellom 0 til 14 år som er registeret i BDR.
+
+
+
+
+
+
+
 
 
 
