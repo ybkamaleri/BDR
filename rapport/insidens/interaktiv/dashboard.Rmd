@@ -174,8 +174,10 @@ preData_ut <- reactive({
     if (input$valg_inspre == 1) {
       preNorge <- pop_ut()[, .(N = sum(N, na.rm = TRUE)), keyby = .(rhf)][N != 0, ][]
       preDiab <- diab_ut()[, .N, keyby = .(rhf)]
-      utDataKart <- preCount(preDiab, preNorge, byid = "rhf")
-
+      utDataHF <- preCount(preDiab, preNorge, byid = "rhf")
+      utDataKart = merge(utDataHF, hfID, by = 'rhf')
+      setnames(utDataKart, "rhfNavn", "region")
+      
     } else {
 
       #pasienter
@@ -195,13 +197,15 @@ preData_ut <- reactive({
 
       tabName <- c("Case", "Populasjon", "pr.10000", "pr.100")
       setnames(tabIns, c("n", "denom", "ins10", "ins"), tabName)
-      utDataKart = tabIns
+      utDataKart = merge(tabIns, hfID, by = "rhf")
+      setnames(utDataKart, "rhfNavn", "region")
+      utDataKart
       
     }
   }
 
   
-  return(utDataKart)
+  utDataKart
   
 })
 
@@ -219,7 +223,7 @@ pre_ut <- reactive({
   preTall = c(pre1, pre10)
 
 
-  return(preTall)
+  preTall
 })
 
 
@@ -234,10 +238,11 @@ kartDT_ut <- eventReactive(input$go, {
   
   if (input$valg_data == 1){
     req(input$valg_inspre)
+    
     kartUT = kartHF %>% left_join(preData_ut(),  by=c("helsereg"="rhf"))
   }
   
-  return(kartUT)
+  kartUT
 })
 
 ```
@@ -386,10 +391,7 @@ Row
 
 output[["kartDT"]] <- renderLeaflet({
 
-  ## Sjekk hvis tallet til fordelinger dvs. pr.100 eller pr.10000 er ikke like
-  ikkeUnik = sum(!duplicated(kartDT_ut()$pr.100))
-  yesLeg = ifelse(ikkeUnik == 1, FALSE, TRUE)
-  
+
   ## Legend title
   valgTxt = ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
   txtLeg <- paste0(valgTxt, " (", input$valg_age[1], " - ", input$valg_age[2], " år)")
@@ -398,23 +400,28 @@ output[["kartDT"]] <- renderLeaflet({
   ## mapview(kartDT, zcol = "pr100")@map
   ## kartDT <- mapData()
 
-  if (input$valg_data == 2) {
-  mapview(kartDT_ut(), zcol = "pr.100",
-    popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.100", "Case", "Populasjon"),
-      feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg, legend = yesLeg)@map
-  }
 
-  if (input$valg_data == 1) {
-  mapview(kartDT_ut(), zcol = "pr.100",
-    popup = leafpop::popupTable(kartDT_ut(), zcol = c("helsereg", "pr.100", "Case", "Populasjon"),
-      feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg, legend = yesLeg)@map
-  }
-  
+    ## if (input$valg_data == 2) {
+      mapUt <- mapview(kartDT_ut(), zcol = "pr.100",
+        popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.100", "Case", "Populasjon"),
+          feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
+    ## } 
+
+    ## if (input$valg_data == 1) {
+    ##   mapUt <- mapview(kartDT_ut(), zcol = "pr.100",
+    ##     popup = leafpop::popupTable(kartDT_ut(), zcol = c("rhfNavn", "pr.100", "Case", "Populasjon"),
+    ##       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
+    ## }
+
+    
+    mapUt
+ 
+  ## observeEvent(input$go, {mapUt})
+
     ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
   
 })
 
-## leafletOutput("kartDT") %>% shinycssloaders::withSpinner()
 leafletOutput("kartDT")
 
 ```
@@ -546,8 +553,9 @@ DT::renderDT({
     
   if (input$valg_data == 1){
     utTabell <- merge(preData_ut(), hfID, by = "rhf")
-    utTabell[, rhf := NULL]
-    setnames(utTabell, "rhfNavn", "RHF")
+    utTabell[, rhf := NULL] %>%
+      .[, rhfNavn := NULL]
+    setnames(utTabell, "region", "RHF")
 
     if(input$valg_inspre == 2){
       setnames(utTabell, c("Case", "ut", "pop", "Populasjon"), c("Ny pas.", "Allede med diab.", "Populasjon", "'Friske' pop."))
@@ -593,6 +601,17 @@ Row
 
 
 
+TEST
+===================================
+
+
+```{r}
+renderPrint({
+
+preData_ut()
+
+})
+```
 
 
 
