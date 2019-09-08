@@ -44,7 +44,7 @@ mapssb <- readRDS("SSBmedHFogKartID.rds")
 dt2018 <- readRDS("DTannonHF.rds")
 norgeMapFylke <- readRDS("NorgeFylkeHF_id.Rds") #med mapID og RHF (helsereg)
 fylkeID <- readRDS("FylkeID.rds")
-kartHF <- readRDS("KartHF.rds")
+kartHF <- readRDS("kartHF.rds")
 hfID <- readRDS("hfIDList.rds")
 
 
@@ -54,8 +54,6 @@ dt2018[, diab12  :=  dbtype] %>%
 
 
 ## function
-
-
 preCount <- function(x, y, byid = "fylkeid"){
   
   ## x = DB data
