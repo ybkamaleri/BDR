@@ -381,31 +381,28 @@ Row
 
 ```{r}
 
-## mapData <- eventReactive(input$go, {
-
-##   kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
-
-## })
-
-
-
 output[["kartDT"]] <- renderLeaflet({
-
 
   ## Legend title
   valgTxt = ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
   txtLeg <- paste0(valgTxt, " (", input$valg_age[1], " - ", input$valg_age[2], " år)")
-  
-  ## kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
-  ## mapview(kartDT, zcol = "pr100")@map
-  ## kartDT <- mapData()
 
-  
-  mapview(kartDT_ut(), zcol = "pr.100",
+  ## Bulid kart
+  n <- 5000
+  withProgress(message = 'Restrukturer kart', value = 0, {
+
+  mapUT <- mapview(kartDT_ut(), zcol = "pr.100",
     popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.100", "Case", "Populasjon"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
       
-  
+      for (i in 1:n) {
+        # Increment the progress bar, and update the detail text.
+        incProgress(1/n, detail = paste("Percent computed ", i, " %"))
+      }
+      
+   mapUT
+    
+  })
 })
 
 leafletOutput("kartDT")
@@ -490,20 +487,27 @@ Row
 
 output[["kartDT2"]] <- renderLeaflet({
 
-  
+     
   valgTxt = ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
   txtLeg <- paste0(valgTxt, " (", input$valg_age[1], " - ", input$valg_age[2], " år)")
 
-  ## kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
-  ## kartDT <- norgeMapFylke %>% left_join(preData_ut(), by = "mapID")
-  
-  ## mapview(kartDT, zcol = "pr100")@map
-  ## kartDT <- mapData()
-  mapview(kartDT_ut(), zcol = "pr.10000",
+
+  ## Bulid kart
+  n <- 5000
+  withProgress(message = 'Restrukturer kart', value = 0, {
+
+  mapUT <- mapview(kartDT_ut(), zcol = "pr.10000",
     popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.10000", "Case", "Populasjon"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
-  
-    ## mapview(kartDT, zcol = "pr.100", popup = leafpop::popupTable(kartDT, zcol = 1:2, feature.id = FALSE, row.number = FALSE))@map
+      
+      for (i in 1:n) {
+        # Increment the progress bar, and update the detail text.
+        incProgress(1/n, detail = paste("Percent computed ", i, " %"))
+      }
+      
+   mapUT
+    
+  })
   
 })
 
