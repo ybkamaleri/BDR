@@ -5,6 +5,7 @@ output:
   flexdashboard::flex_dashboard:
     orientation: row
     vertical_layout: fill
+    favicon: logoliten.png
     includes:
       after_body: "busy.html"
 ---
@@ -312,12 +313,11 @@ actionButton("go", " Oppdatere kart", icon("refresh"),
 
 <sub> Klikk på kartet for mer informasjon</sub>
 
-
 [Tilbake til BDR hjemmeside](https://bdreg.github.io)
 
 
 
-Pr. 100 personer (%)
+Pr. 100 personer (%) {data-icon='fa-user'}
 ===================================
 
 
@@ -412,7 +412,7 @@ leafletOutput("kartDT")
 
 
 
-Pr. 10,000 personer
+Pr. 10,000 personer {data-icon='fa-user'}
 ===================================
 
 
@@ -517,7 +517,7 @@ leafletOutput("kartDT2")
 ```
 
 
-Tabell
+Tabell {data-icon='fa fa-table'}
 ===================================
 
 <h3>Tabell for basis tall</h3>
@@ -559,7 +559,7 @@ DT::renderDT({
 ```
 
 
-Informasjon
+Informasjon {data-icon='fa-info-circle'}
 ===================================
 
 Row
