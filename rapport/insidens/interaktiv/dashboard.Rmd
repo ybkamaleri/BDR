@@ -258,7 +258,7 @@ Sidebar {.sidebar}
 selectInput("valg_data",
             "Valg nivå: ",
             choices = list(
-              "HF" = 1,
+              "RHF" = 1,
               "Fylke" = 2),
             selected =  2)
 
@@ -387,22 +387,22 @@ output[["kartDT"]] <- renderLeaflet({
   valgTxt = ifelse(input$valg_inspre == 1, "Prevalens", "Insidens")
   txtLeg <- paste0(valgTxt, " (", input$valg_age[1], " - ", input$valg_age[2], " år)")
 
-  ## Bulid kart
-  n <- 5000
-  withProgress(message = 'Restrukturerer kart', value = 0, {
+  ## ## Bulid kart
+  ## n <- 5000
+  ## withProgress(message = 'Restrukturerer kart', value = 0, {
 
   mapUT <- mapview(kartDT_ut(), zcol = "pr.100",
     popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.100", "Case", "Populasjon"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
       
-      for (i in 1:n) {
-        # Increment the progress bar, and update the detail text.
-        incProgress(1/n, detail = paste("Percent computed ", i, " %"))
-      }
+      ## for (i in 1:n) {
+      ##   # Increment the progress bar, and update the detail text.
+      ##   incProgress(1/n, detail = paste("Percent computed ", i, " %"))
+      ## }
       
    mapUT
     
-  })
+  ## })
 })
 
 leafletOutput("kartDT")
@@ -492,22 +492,22 @@ output[["kartDT2"]] <- renderLeaflet({
   txtLeg <- paste0(valgTxt, " (", input$valg_age[1], " - ", input$valg_age[2], " år)")
 
 
-  ## Bulid kart
-  n <- 5000
-  withProgress(message = 'Restrukturerer kart', value = 0, {
+  ## ## Bulid kart
+  ## n <- 5000
+  ## withProgress(message = 'Restrukturerer kart', value = 0, {
 
   mapUT <- mapview(kartDT_ut(), zcol = "pr.10000",
     popup = leafpop::popupTable(kartDT_ut(), zcol = c("region", "pr.10000", "Case", "Populasjon"),
       feature.id = FALSE, row.numbers = FALSE), layer.name = txtLeg)@map
       
-      for (i in 1:n) {
-        # Increment the progress bar, and update the detail text.
-        incProgress(1/n, detail = paste("Percent computed ", i, " %"))
-      }
+      ## for (i in 1:n) {
+      ##   # Increment the progress bar, and update the detail text.
+      ##   incProgress(1/n, detail = paste("Percent computed ", i, " %"))
+      ## }
       
    mapUT
     
-  })
+  ## })
   
 })
 
