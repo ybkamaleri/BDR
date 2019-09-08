@@ -39,9 +39,9 @@ pdf(NULL)
 
 ```{r load_data, include=FALSE}
 ## load data med HF
-mapssb <- readRDS("SSBmedMapID.Rds")
+mapssb <- readRDS("SSBmedHFogKartID.rds")
 dt2018 <- readRDS("DTannonHF.rds")
-norgeMapFylke <- readRDS("NorgeMapInt.Rds")
+norgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
 fylkeID <- readRDS("FylkeID.rds")
 
 
@@ -57,7 +57,7 @@ preCount <- function(x, y){
   
   ## x = DB data
   ## y = fylke data
-  preDT <- x[y, on = c(fylkeid = "fylkeID")]
+  preDT <- x[y, on = "fylkeid"]
 
   preDT[, ins10 := N / i.N * 10000] %>%
     .[, ins := N / i.N * 100]
@@ -89,7 +89,7 @@ pop_ut <- reactive({
   dt <- mapssb[kjonn %in% input$valg_kjonn, ] %>%
       .[age >= as.integer(input$valg_age[1]) & age <= as.integer(input$valg_age[2]), ]
 
-    popDT <- dt[, .(N = sum(N)), keyby = .(fylkeID, mapID)]
+    popDT <- dt[, .(N = sum(N)), keyby = .(fylkeid, mapID)]
 
   return(popDT)
     
@@ -118,7 +118,7 @@ diab_ut <- reactive({
 preData_ut <- reactive({
   
   if (input$valg_inspre == 1) {
-    preNorge <- pop_ut()[, .(N = sum(N, na.rm = TRUE)), keyby = .(fylkeID, mapID)][N != 0, ][]
+    preNorge <- pop_ut()[, .(N = sum(N, na.rm = TRUE)), keyby = .(fylkeid, mapID)][N != 0, ][]
     preDiab <- diab_ut()[, .N, keyby = .(fylkeid)]
     utDataKart <- preCount(preDiab, preNorge)
 
@@ -130,9 +130,9 @@ preData_ut <- reactive({
     insDT = merge(insPas, sykPas, by = "fylkeid", all = TRUE)
 
     #norges populasjon
-    insPop = pop_ut()[, .(pop = sum(N, na.rm = T)), keyby = .(fylkeID, mapID)]
+    insPop = pop_ut()[, .(pop = sum(N, na.rm = T)), keyby = .(fylkeid, mapID)]
     
-    insLand = merge(insDT, insPop, by.x = "fylkeid", by.y = "fylkeID", all.y = TRUE)
+    insLand = merge(insDT, insPop, by.x = "fylkeid", by.y = "fylkeid", all.y = TRUE)
     
     tabIns = insLand[pop != 0, ]
     tabIns[is.na(mapID), mapID := 50]
@@ -184,17 +184,22 @@ kartDT_ut <- eventReactive(input$go, {
 Sidebar {.sidebar}
 ===================================
 
+```{r input1}
+selectInput("valg_data",
+            "Valg nivå: ",
+            choices = list(
+              "HF" = 1,
+              "Fylke" = 2),
+            selected =  2)
+
+```
+
+
 
 
 ```{r inspre}
 
-checkboxGroupInput("valg_data",
-                   "Valg nivå: ",
-                   choices = list("HF" = 1,
-                                  "Fylke" = 2
-                                  ),
-                   selected =  2,
-                   inline = TRUE)
+
 
 selectInput("valg_inspre",
             "Valg data:",
@@ -202,6 +207,7 @@ selectInput("valg_inspre",
                            "Insidens" = 2),
             selected = 1)
 ```
+
 
 
 ```{r typeDiab}
@@ -234,10 +240,8 @@ actionButton("go", " Oppdatere kart", icon("refresh"),
 
 ```
 
-<sub>Kart oppdatering kan ta litt tid før fremvisning</sub>
-<sub> Klikk valgte fylke for mer informasjon</sub>
+<sub> Klikk på kartet for mer informasjon</sub>
 
-<hr/>
 
 [Tilbake til BDR hjemmeside](https://bdreg.github.io)
 
