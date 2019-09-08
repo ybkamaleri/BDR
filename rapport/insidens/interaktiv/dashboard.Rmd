@@ -388,7 +388,7 @@ output[["kartDT"]] <- renderLeaflet({
   txtLeg <- paste0(valgTxt, " (", input$valg_age[1], " - ", input$valg_age[2], " år)")
 
   ## Bulid kart
-  n <- 5000
+  n <- 10000
   withProgress(message = 'Restrukturer kart', value = 0, {
 
   mapUT <- mapview(kartDT_ut(), zcol = "pr.100",
@@ -493,7 +493,7 @@ output[["kartDT2"]] <- renderLeaflet({
 
 
   ## Bulid kart
-  n <- 5000
+  n <- 10000
   withProgress(message = 'Restrukturer kart', value = 0, {
 
   mapUT <- mapview(kartDT_ut(), zcol = "pr.10000",
