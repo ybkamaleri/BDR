@@ -573,9 +573,9 @@ Row
   **Data**
 
   - Datagrunnlaget inkluderer KUN barn mellom 0 til 14 år som er registeret i BDR.
-  - Diabetes pasienter som ikke er registered i BDR blir ikke inkludert i
-    analysen. Men med 98% dekningsgrad i BDR i 2018 antar vi at aktuelle tallene
-    ikke skal være stor forskjelle med de tallene som er presentert på denne nettside.
+  - Diabetespasienter som ikke er registered i BDR blir ikke inkludert i
+    analysen. Men med 98% dekningsgrad i BDR i 2018 antar vi at de aktuelle tallene
+    ikke skal vise store forskjeller med de tallene som er presentert på denne nettside.
   
   
   **Kontakt**
