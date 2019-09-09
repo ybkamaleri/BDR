@@ -58,6 +58,7 @@ NorgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
 NorgeHFReg <- readRDS("kartHF.rds")
 
 rhfID <- readRDS("hfIDList.rds")
+fylID <- readRDS("FylkeID.rds")
 
 ```
 
@@ -499,12 +500,13 @@ fylkeList <- readRDS("FylkeogKartID.Rds")
 fylkeList[, .N, by = .(fylke, kartID, mixID)]
 
 # prevalens
-preCount <- function(x, y, per = 100, col = "prev"){
+preCount <- function(x, y, per = 100, col = "prev", digit = 2){
 
   ##per: per 100 person osv.
   ## x = DB data
   ## y = fylke data
   ## col: colnavn for prevalense eller insidens
+  ## digit: for round digits
   
   preDT <- x[y, on = c(fylkeid = "fylkeID")]
 
@@ -517,7 +519,7 @@ preCount <- function(x, y, per = 100, col = "prev"){
   tabName <- c("Case", "Populasjon", col)
   setnames(preDT, tabCol, tabName)
 
-  preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 2)),
+  preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = digit)),
     .SDcols = tabName]
 
   preDT[is.na(mapID), mapID := 50] #for Trøndelag
@@ -644,9 +646,38 @@ NokBF <- ssbKart[, .(N = sum(N, na.rm = TRUE)),
 dt1FD <- DTannon[dbtype == 1, .N, keyby = fylkeid]
 
 ## Tabell
-tabT1D <- preCount(dt1FD, NokBF, per = 10000)
+tabT1D <- preCount(dt1FD, NokBF, per = 10000, col = "prev", digit = 1)
 tabT1D[]
 
+## gir fylkesnavn
+tab1fyl <- merge(fylID, tabT1D, by = "mapID")
+tab1fyl
+
+## Gir text columns
+tab1fyl[, txt := paste0(region, " (", prev, ")")]
+
+## tar bort col region siden det finnes på kartet allerede
+tab1fyl[, region := NULL]
+
+## convert to tbl_df
+library(tibble)
+tab1TB <- as_tibble(tab1fyl)
+tab1TB
+
+```
+
+## Koble dataene til kart
+
+
+
+```{r}
+# merge kart og data
+kartT1D <- NorgeMapFylke %>% left_join(tab1fyl, by = "mapID")
+kartT1D
+
+library(ggplot2)
+tk1 <- ggplot(kartT1D, aes(fill = region)) + geom_sf()
+tk1
 
 ```
 
