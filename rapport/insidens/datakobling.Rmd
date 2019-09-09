@@ -642,8 +642,11 @@ utKart
 NokBF <- ssbKart[, .(N = sum(N, na.rm = TRUE)),
                  keyby = .(fylkeID, mapID)][N != 0, ][]
 
-## Type 1
-dt1FD <- DTannon[dbtype == 1, .N, keyby = fylkeid]
+## Type 1 for bare 0-14 år
+dt14 <- subset(DTannon, age < 15)
+dt14[, .N, keyby = age]
+dt1FD <- dt14[dbtype == 1, .N, keyby = fylkeid]
+
 
 ## Tabell
 tabT1D <- preCount(dt1FD, NokBF, per = 10000, col = "prev", digit = 1)
@@ -675,9 +678,74 @@ tab1TB
 kartT1D <- NorgeMapFylke %>% left_join(tab1fyl, by = "mapID")
 kartT1D
 
+## basic map
 library(ggplot2)
 tk1 <- ggplot(kartT1D, aes(fill = region)) + geom_sf()
 tk1
+
+## with added features
+tk2 <- tk1 +
+  scale_fill_viridis_d() + #for viridis discrete data
+  coord_sf(crs = 4326, datum = sf::st_crs(4326)) + #legger CRS coordinate for å korrigere kart
+  ggtitle("Prevalens T1D pr. 10,000 barn mellom 0-14 år") +
+  theme(title = element_text(size = 16))
+
+tk2
+
+## add points for kart
+kart_centroid <- kartT1D %>% sf::st_centroid() #create point
+kart_centroid
+
+tk2 + geom_sf(data = kart_centroid, aes(fill = region), colour = "red")
+
+# get coordinate for fylke dvs. X og Y for å lage text
+fylKord <- cbind(kart_centroid, st_coordinates(st_centroid(kartT1D)))
+fylKord
+
+
+
+
+
+
+## unngår tekst overlapper
+library(ggrepel)
+
+tk2 + geom_text_repel(data = fylKord, aes(X, Y, label = txt),
+  size = 5, nudge_x = -2 - -8, direction = "y") +
+  coord_sf()
+
+## alternativ
+
+## de skal være i riktig rekkefølge!!
+nordned = c(5, 10, 17, 50) # Finnmark, Nordland, Troms, Trøndelag
+vest = c(7, 8, 13, 15) # Hordaland, Møre, Rogaland,Sogn
+ssor = c(3, 16, 18, 19) # Aust-Agd, Telemark, Vest-Agder, Vestfold
+sopp = c(4, 6, 11) #Buskerud, Hedemark, Oppland
+oslo = c(1, 2, 12) # ØStfold, Akershus, Oslo
+
+d1tKart <- tk2 +
+  geom_text_repel(data = subset(fylKord, mapID  %in% nordned), aes(X, Y, label = txt),
+    fontface = "bold", size = 4, nudge_x = c(2, 2, 2, -3), nudge_y = c(-1.5, -1.5, -1.5, 1)) +
+  geom_text_repel(data = subset(fylKord, mapID  %in% vest), aes(X, Y, label = txt),
+    size = 4,  fontface = "bold", nudge_x = c(-3.5, -3, -3, -8), nudge_y = c(0.25, 0.5, 0.25, 1)) +
+  geom_text_repel(data = subset(fylKord, mapID  %in% ssor), aes(X, Y, label = txt),
+    size = 4,  fontface = "bold", nudge_x = c(2, 4, -3, 1), nudge_y = c(-1, -1, -0.15, -1)) +
+  geom_text_repel(data = subset(fylKord, mapID  %in% sopp), aes(X, Y, label = txt),
+    size = 4,  fontface = "bold", nudge_x = c(5.5, 3, 5), nudge_y = c(0.5, 0.25, 1.5)) +
+  geom_text_repel(data = subset(fylKord, mapID  %in% oslo), aes(X, Y, label = txt),
+    size = 4,  fontface = "bold", nudge_x = c(2.5, 4, 3), nudge_y = c(-0.1, 0.25, -0.2)) +
+  coord_sf(xlim = c(0, 35), ylim = c(56, 73), expand = FALSE) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.text = element_blank(),
+    axis.title = element_blank()
+    )
+
+## ggsave("kartT1D0til14.png")
+ggsave("kartDiab1for0Til14.png", plot = d1tKart)
 
 ```
 
