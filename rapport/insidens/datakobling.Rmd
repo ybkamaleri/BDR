@@ -710,23 +710,23 @@ preCountHF <- function(x, y, per = 100, col = "prev", digit = 2){
 
 
 ## Tabell
-tabT1D <- preCountHF(dt1FDrhf, NokBFrhf, per = 10000, col = "prev", digit = 1)
-tabT1D[]
+tabT1Drhf <- preCountHF(dt1FDrhf, NokBFrhf, per = 10000, col = "prev", digit = 1)
+tabT1Drhf[]
 
-## gir fylkesnavn
-tab1fyl <- merge(fylID, tabT1D, by = "mapID")
-tab1fyl
+## Landets prevalens
+n = tabT1Drhf[, sum(Case)]
+N = tabT1Drhf[, sum(Populasjon)]
+
+n / N * 10000
+
 
 ## Gir text columns
-tab1fyl[, txt := paste0(region, " (", prev, ")")]
-
-## tar bort col region siden det finnes på kartet allerede
-tab1fyl[, region := NULL]
+tabT1Drhf[, txt := paste0(rhfNavn, " (", prev, ")")]
 
 ## convert to tbl_df
 library(tibble)
-tab1TB <- as_tibble(tab1fyl)
-tab1TB
+tab1TBrhf <- as_tibble(tabT1Drhf)
+tab1TBrhf
 
 ```
 
@@ -735,6 +735,9 @@ tab1TB
 
 
 ```{r}
+
+## FYLKE
+## ---------
 # merge kart og data
 kartT1D <- NorgeMapFylke %>% left_join(tab1fyl, by = "mapID")
 kartT1D
@@ -830,6 +833,56 @@ d1tKart
 ## ggsave("kartT1D0til14.png")
 ggsave("kartDiab1for0Til14.png", plot = d1tKart)
 ggsave("kartDiab1for0Til14.pdf", plot = d1tKart)
+
+
+## --------
+## RHF
+## --------
+# merge kart og data
+kartT1Drhf <- NorgeHFReg %>% left_join(tab1TBrhf, by = c("helsereg" = "rhf"))
+kartT1Drhf
+
+## Lage POINT istedenfor POLYGON
+kart_centHF <- kartT1Drhf %>% sf::st_centroid() #create point
+kart_centHF
+
+# get coordinate X og Y for å lage text
+fylKordRHF <- cbind(kart_centHF, st_coordinates(st_centroid(kartT1Drhf)))
+fylKordRHF
+
+
+## Lager kart
+(d1tKartRHF <- ggplot(kartT1Drhf, aes(fill = rhfNavn)) + geom_sf() + 
+   ## scale_color_brewer(palette = "Dark2") +
+   ## scale_fill_gradient(low = "#99CCFF", high = "#CC0033") +
+   scale_fill_viridis_d() + #for viridis discrete data
+   ## geom_sf(data = kart_centHF, aes(fill = rhfNavn), colour = "#CC0033") + 
+   geom_text_repel(data = fylKordRHF, aes(X, Y, label = txt),
+     fontface = "bold", size = 4,
+     nudge_x = c(7.5, 6, -5, 0),
+     nudge_y = c(0.5, -0.5, -0.5, -1.5),
+     segment.color = NA) +
+   coord_sf(xlim = c(-5, 35), ylim = c(56, 73), expand = FALSE) +
+   theme_minimal() +
+   annotate("text", x = 5, y = 68, size = 4, 
+     label = "Prevalens T1D pr.10,000 barn \nmellom 0-14 år i 2018 \n(For hele landet er 24 barn \npr. 10,000 barn)") + 
+   ## guides(fill = guide_legend(title = "Prevalens T1D \npr.10,000 barn \nmellom 0-14 år \n(2018)")) +
+   ## ggtitle("Prevalens T1D pr. 10,000 barn mellom 0-14 år") +
+   theme(
+     legend.position = "none",
+     panel.grid = element_blank(),
+     panel.border = element_blank(),
+     axis.text = element_blank(),
+     axis.title = element_blank(),
+     title = element_text(size = 18)
+     ## legend.position = c(.75, .4)
+   )
+)
+
+d1tKartRHF
+## ggsave("kartT1D0til14.png")
+ggsave("kartDiabHF0Til14.png", plot = d1tKartRHF)
+ggsave("kartDiabHFfor0Til14.pdf", plot = d1tKartRHF)
 
 ```
 
