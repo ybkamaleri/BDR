@@ -45,15 +45,17 @@ dataSti <- "~/avid/bdr"
 DT2018 <- readRDS(file.path(dataSti, "alleDiabetes2018_med_fylkeid.Rds"))
 
 #Annonym pasientlister
-DTannon <- readRDS("dtAnnonym.rds")
-DTAnoHF <- readRDS("DTannonHF.rds") #med HF
+## DTannon <- readRDS("dtAnnonym.rds")
+DTannon <- readRDS("DTannonHF.rds") #med HF
+
 #Norges befolkning
-ssbKart <- readRDS("SSBmedMapID.Rds")
-ssbKartHF <- readRDS( "SSBmedHFogKartID.rds")
+## ssbKart <- readRDS("SSBmedMapID.Rds")
+ssbKart <- readRDS( "SSBmedHFogKartID.rds")
+
 #Kart med fylkeID som i SSB
 NorgeMapFylke <- readRDS("NorgeMapFylkeID.Rds")
 #Kart med helseregion
-NorgeHFReg <- readRDS("KartHF.rds")
+NorgeHFReg <- readRDS("kartHF.rds")
 
 rhfID <- readRDS("hfIDList.rds")
 
@@ -521,7 +523,47 @@ preCount <- function(x, y, by = 100){
   return(preDT)
 }
 
+
 ```
+
+## Funksjon med byid som brukes i interaktiv
+
+```{r}
+
+## function
+preCount <- function(x, y, byid = "fylkeid"){
+  
+  ## x = DB data
+  ## y = fylke data
+  preDT <- merge(x, y, by = byid)
+
+  preDT[, ins10 := round(N.x / N.y * 10000, digits = 1)] %>%
+    .[, ins := round(N.x / N.y * 100, digits = 3)]
+
+  if (byid == "fylkeid"){
+    ## columns for fylkeid og mapID
+    utCol <- grep("id$", names(preDT), ignore.case = TRUE)
+    tabCol <- names(preDT)[-utCol]
+  }
+
+  if (byid == "rhf"){ tabCol = names(preDT)[-1]}
+
+  tabName <- c("Case", "Populasjon", "pr.10000", "pr.100")
+  setnames(preDT, tabCol, tabName)
+
+  ## preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 1)),
+  ##   .SDcols = tabName]
+  
+  if (byid == "fylkeid"){
+    preDT[is.na(mapID), mapID := 50] #for Trøndelag
+  }
+
+  return(preDT)
+}
+
+```
+
+
 
 ## Alle typer
 
