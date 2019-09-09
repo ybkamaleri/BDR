@@ -881,7 +881,7 @@ fylKordRHF
 
 d1tKartRHF
 ## ggsave("kartT1D0til14.png")
-ggsave("kartDiabHF0Til14.png", plot = d1tKartRHF)
+ggsave("kartDiabHFfor0Til14.png", plot = d1tKartRHF)
 ggsave("kartDiabHFfor0Til14.pdf", plot = d1tKartRHF)
 
 ```
