@@ -637,7 +637,10 @@ utKart
 # Kart: Prevalens og Insidens T1D
 
 
+
 ```{r}
+## Fylker
+## -------------
 ## Antall i befolkning
 NokBF <- ssbKart[, .(N = sum(N, na.rm = TRUE)),
                  keyby = .(fylkeID, mapID)][N != 0, ][]
@@ -650,6 +653,64 @@ dt1FD <- dt14[dbtype == 1, .N, keyby = fylkeid]
 
 ## Tabell
 tabT1D <- preCount(dt1FD, NokBF, per = 10000, col = "prev", digit = 1)
+tabT1D[]
+
+## gir fylkesnavn
+tab1fyl <- merge(fylID, tabT1D, by = "mapID")
+tab1fyl
+
+## Gir text columns
+tab1fyl[, txt := paste0(region, " (", prev, ")")]
+
+## tar bort col region siden det finnes på kartet allerede
+tab1fyl[, region := NULL]
+
+## convert to tbl_df
+library(tibble)
+tab1TB <- as_tibble(tab1fyl)
+tab1TB
+
+## RHF
+## -------------
+## Antall i befolkning
+NokBFrhf <- ssbKart[, .(N = sum(N, na.rm = TRUE)),
+                 keyby = .(rhf, rhfNavn)][N != 0, ][]
+
+## Type 1 for bare 0-14 år
+dt14 <- subset(DTannon, age < 15)
+dt14[, .N, keyby = rhf]
+dt1FDrhf <- dt14[dbtype == 1, .N, keyby = rhf]
+
+
+# prevalens HF
+preCountHF <- function(x, y, per = 100, col = "prev", digit = 2){
+
+  ##per: per 100 person osv.
+  ## x = DB data
+  ## y = HF data
+  ## col: colnavn for prevalense eller insidens
+  ## digit: for round digits
+  
+  preDT <- x[y, on = "rhf"]
+
+  preDT[, ins  := N / i.N * per]
+
+  ## columns for fylkeid og mapID
+  utCol <- grep("N$", names(preDT), value = T)
+
+  ## tabCol <- names(preDT)[-utCol]
+  tabName <- c("Case", "Populasjon", col)
+  setnames(preDT, c(utCol, "ins"), tabName)
+
+  preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = digit)),
+    .SDcols = tabName]
+
+  return(preDT)
+}
+
+
+## Tabell
+tabT1D <- preCountHF(dt1FDrhf, NokBFrhf, per = 10000, col = "prev", digit = 1)
 tabT1D[]
 
 ## gir fylkesnavn
