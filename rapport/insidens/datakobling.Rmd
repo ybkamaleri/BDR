@@ -435,19 +435,19 @@ MapSsb <- ssbKart[, .(fylkeID, mapID, age, kjonn, N = get(nbf))]
 ## saveRDS(MapSsb, "Data_withID_MapSSB.rds")
 
 
-NokBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
+NokBF <- ssbKart[, .(N = sum(N, na.rm = TRUE)),
                  keyby = .(fylkeID, mapID)][N != 0, ][]
 
 ## Antall per kjønn
-KjonnBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
+KjonnBF <- ssbKart[, .(N = sum(N, na.rm = TRUE)),
                    keyby = .(kjonn, fylkeID, mapID)][N != 0, ][]
 
 ## Antall per alder
-AgeBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
+AgeBF <- ssbKart[, .(N = sum(N, na.rm = TRUE)),
                  keyby = .(age, fylkeID, mapID)][N != 0, ][]
 
 ## Antall per alder og kjonn
-AgeKjonnBF <- ssbKart[, .(N = sum(get(nbf), na.rm = TRUE)),
+AgeKjonnBF <- ssbKart[, .(N = sum(N, na.rm = TRUE)),
                       keyby = .(kjonn, age, fylkeID, mapID)][N != 0, ][]
 
 
@@ -499,21 +499,22 @@ fylkeList <- readRDS("FylkeogKartID.Rds")
 fylkeList[, .N, by = .(fylke, kartID, mixID)]
 
 # prevalens
-preCount <- function(x, y, by = 100){
+preCount <- function(x, y, per = 100, col = "prev"){
 
-  ##by: per 100 person osv.
+  ##per: per 100 person osv.
   ## x = DB data
   ## y = fylke data
+  ## col: colnavn for prevalense eller insidens
   
   preDT <- x[y, on = c(fylkeid = "fylkeID")]
 
-  preDT[, ins  := N / i.N * by]
+  preDT[, ins  := N / i.N * per]
 
   ## columns for fylkeid og mapID
   utCol <- grep("id$", names(preDT), ignore.case = TRUE)
 
   tabCol <- names(preDT)[-utCol]
-  tabName <- c("Case", "Ins", "Populasjon")
+  tabName <- c("Case", "Populasjon", col)
   setnames(preDT, tabCol, tabName)
 
   preDT[, (tabName) := lapply(.SD, function(x1) round(x1, digits = 2)),
@@ -531,7 +532,7 @@ preCount <- function(x, y, by = 100){
 ```{r}
 
 ## function
-preCount <- function(x, y, byid = "fylkeid"){
+preCountID <- function(x, y, byid = "fylkeid"){
   
   ## x = DB data
   ## y = fylke data
@@ -631,6 +632,23 @@ utKart
 ```
 
 
+# Kart: Prevalens og Insidens T1D
+
+
+```{r}
+## Antall i befolkning
+NokBF <- ssbKart[, .(N = sum(N, na.rm = TRUE)),
+                 keyby = .(fylkeID, mapID)][N != 0, ][]
+
+## Type 1
+dt1FD <- DTannon[dbtype == 1, .N, keyby = fylkeid]
+
+## Tabell
+tabT1D <- preCount(dt1FD, NokBF, per = 10000)
+tabT1D[]
+
+
+```
 
 
 
