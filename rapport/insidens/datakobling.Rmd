@@ -680,6 +680,177 @@ kartT1D
 
 ## basic map
 library(ggplot2)
+tk1 <- ggplot(kartT1D, aes(fill = prev)) +
+   ## scale_color_brewer(palette = "Dark2") +
+  scale_fill_gradient(low = "#99CCFF", high = "#000033") + 
+  geom_sf()
+
+tk1
+
+
+## with added features
+tk2 <- tk1 +
+  ## scale_color_brewer(palette = "Dark2") +
+  ## scale_color_gradient(low = "white", high = "darkblue") + 
+  ## scale_fill_viridis_c() + #for viridis discrete data
+  coord_sf(crs = 4326, datum = sf::st_crs(4326)) + #legger CRS coordinate for å korrigere kart
+  ggtitle("Prevalens T1D pr. 10,000 barn mellom 0-14 år") +
+  theme(title = element_text(size = 18))
+
+tk2
+
+## scale_fill_brewer - for discrete
+## scale_color_brewer - for contineous
+
+
+## add points for kart
+kart_centroid <- kartT1D %>% sf::st_centroid() #create point
+kart_centroid
+
+## legger point på kartet hvis ønskelig
+tk2 + geom_sf(data = kart_centroid, aes(fill = prev), colour = "#CC0033")
+
+
+# get coordinate for fylke dvs. X og Y for å lage text
+fylKord <- cbind(kart_centroid, st_coordinates(st_centroid(kartT1D)))
+fylKord
+
+
+
+
+
+
+## unngår tekst overlapper
+library(ggrepel)
+
+## tk2 + geom_text_repel(data = fylKord, aes(X, Y, label = txt),
+##   size = 5, nudge_x = -2 - -8, direction = "y") +
+##   coord_sf()
+
+## alternativ
+
+## de skal være i riktig rekkefølge!!
+nordned = c(5, 10, 17, 50) # Finnmark, Nordland, Troms, Trøndelag
+vest = c(7, 8, 13, 15) # Hordaland, Møre, Rogaland,Sogn
+ssor = c(3, 16, 18, 19) # Aust-Agd, Telemark, Vest-Agder, Vestfold
+sopp = c(4, 6, 11) #Buskerud, Hedemark, Oppland
+oslo = c(1, 2, 12) # ØStfold, Akershus, Oslo
+
+(d1tKart <- ggplot(kartT1D, aes(fill = prev)) + geom_sf() + 
+   ## scale_color_brewer(palette = "Dark2") +
+   scale_fill_gradient(low = "#99CCFF", high = "#000033") + 
+   geom_sf(data = kart_centroid, aes(fill = prev), colour = "#CC0033") + 
+   geom_text_repel(data = subset(fylKord, mapID  %in% nordned), aes(X, Y, label = txt),
+     fontface = "bold", size = 4, nudge_x = c(2, 3, 2, -3), nudge_y = c(-1.2, -0.5, -1.5, 1)) +
+   geom_text_repel(data = subset(fylKord, mapID  %in% vest), aes(X, Y, label = txt),
+     size = 4,  fontface = "bold", nudge_x = c(-3.5, -3, -3, -5.5), nudge_y = c(0.2, 0.5, 0.25, 0.8)) +
+   geom_text_repel(data = subset(fylKord, mapID  %in% ssor), aes(X, Y, label = txt),
+     size = 4,  fontface = "bold", nudge_x = c(2, 4, -3, 1), nudge_y = c(-1, -1, -0.15, -1)) +
+   geom_text_repel(data = subset(fylKord, mapID  %in% sopp), aes(X, Y, label = txt),
+     size = 4,  fontface = "bold", nudge_x = c(5.5, 3, 5), nudge_y = c(0.5, 0.25, 1.5)) +
+   geom_text_repel(data = subset(fylKord, mapID  %in% oslo), aes(X, Y, label = txt),
+     size = 4,  fontface = "bold", nudge_x = c(2.5, 4, 3), nudge_y = c(-0.1, 0.25, -0.2)) +
+   coord_sf(xlim = c(0, 35), ylim = c(56, 73), expand = FALSE) +
+   theme_minimal() +
+   guides(fill = guide_legend(title = "Prevalens T1D \npr.10,000 barn \nmellom 0-14 år \n(2018)")) +
+   ## ggtitle("Prevalens T1D pr. 10,000 barn mellom 0-14 år") +
+   theme(
+     ## legend.position = "none",
+     panel.grid = element_blank(),
+     panel.border = element_blank(),
+     axis.text = element_blank(),
+     axis.title = element_blank(),
+     title = element_text(size = 18),
+     legend.position = c(.75, .4)
+   )
+)
+
+d1tKart
+## ggsave("kartT1D0til14.png")
+ggsave("kartDiab1for0Til14.png", plot = d1tKart)
+ggsave("kartDiab1for0Til14.pdf", plot = d1tKart)
+
+```
+
+
+
+
+
+# Kart: Insidens T1D
+
+
+```{r}
+
+
+insPas <- DTannon[valg == 2, .(n = .N), keyby = .(fylkeid)]
+sykPas <- DTannon[valg == 1, .(ut = .N), keyby = .(fylkeid)]
+sykPas
+insPas
+
+insDT <- merge(insPas, sykPas, by = "fylkeid", all = TRUE)
+
+ssbDT <- ssbKart[, .(pop = sum(N, na.rm = T)), keyby = .(fylkeID, mapID)]
+ssbDT
+
+insLand <- merge(insDT, ssbDT, by.x = "fylkeid", by.y = "fylkeID", all.y = TRUE)
+insLand
+tabIns <- insLand[pop != 0, ]
+tabIns[is.na(mapID), mapID := 50]
+tabIns[, denom := pop - ut]
+tabIns[, `:=`(ins = n / denom * 100, ins10 = n / denom * 10000), by = fylkeid]
+tabIns
+
+n = tabIns[, sum(n, na.rm = T)]
+N = tabIns[, sum(denom, na.rm = T)]
+
+n / N * 100000
+
+
+## Antall i befolkning
+NokBF <- ssbKart[, .(N = sum(N, na.rm = TRUE)),
+                 keyby = .(fylkeID, mapID)][N != 0, ][]
+
+## Type 1 for bare 0-14 år
+dt14 <- subset(DTannon, age < 15)
+dt14[, .N, keyby = age]
+dt1FD <- dt14[dbtype == 1, .N, keyby = fylkeid]
+
+
+## Tabell
+tabT1D <- preCount(dt1FD, NokBF, per = 10000, col = "prev", digit = 1)
+tabT1D[]
+
+## gir fylkesnavn
+tab1fyl <- merge(fylID, tabT1D, by = "mapID")
+tab1fyl
+
+## Gir text columns
+tab1fyl[, txt := paste0(region, " (", prev, ")")]
+
+## tar bort col region siden det finnes på kartet allerede
+tab1fyl[, region := NULL]
+
+## convert to tbl_df
+library(tibble)
+tab1TB <- as_tibble(tab1fyl)
+tab1TB
+
+```
+
+## Koble dataene til kart
+
+
+
+```{r}
+
+
+
+# merge kart og data
+kartT1D <- NorgeMapFylke %>% left_join(tab1fyl, by = "mapID")
+kartT1D
+
+## basic map
+library(ggplot2)
 tk1 <- ggplot(kartT1D, aes(fill = region)) + geom_sf()
 tk1
 
@@ -748,6 +919,9 @@ d1tKart <- tk2 +
 ggsave("kartDiab1for0Til14.png", plot = d1tKart)
 
 ```
+
+
+
 
 
 
