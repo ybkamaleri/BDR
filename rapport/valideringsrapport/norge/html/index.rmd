@@ -1,5 +1,5 @@
 ---
-title: "BDR: Nasjonale tall"
+title: "Barnediabetesregisteret (BDR)"
 author: "https://bdreg.github.io"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 subtitle: "Årskontroller for data innsamlet i 2018 for hele landet"
@@ -25,7 +25,6 @@ header-includes:
 - \usepackage[utf8]{inputenc}
 - \renewcommand{\figurename}{Figur}
 - \renewcommand{\tablename}{Tabell}
-- \renewcommand{\contentsname}{BDR Nasjonale tall}
 - \usepackage{titling}
 - \pretitle{\begin{center}\LARGE\includegraphics[width=6cm]{logo.png}\\[\bigskipamount]}
 - \posttitle{\end{center}}
@@ -279,8 +278,8 @@ source("./analyseNorge/ispadguide.R")
 ```
 
 Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelines
-(2014) som spesifiserer at pasienter som er 10 år eller eldre med 2 års
-diabetesvarighet eller yngre enn 10 år med 5 års diabetesvarighet (N = `r ispadN`).
+(2014) og i denne analysen spesifiseres det at pasienter skal være 10 år eller
+eldre med 5 års eller mer diabetesvarighet (N = `r ispadN`).
 
 ```{r}
 width(isp.htab) <- 0.7

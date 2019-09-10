@@ -1,7 +1,9 @@
 ---
-title: "Norge"
+title: |
+ | Barnediabetesregisteret (BDR) 
+ | \normalsize Årskontroller for data innsamlet i 2018 for hele landet
+author: "https://bdreg.github.io"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-subtitle: "Årskontroller for data innsamlet i 2018 for hele landet"
 documentclass: book
 site: bookdown::bookdown_site
 header-includes:
@@ -22,15 +24,19 @@ header-includes:
 - \usepackage{geometry}
 - \geometry{a4paper, total={6in,8in},}
 - \usepackage[utf8]{inputenc}
+- \renewcommand{\contentsname}{BDR Nasjonale tall}
 - \renewcommand{\figurename}{Figur}
 - \renewcommand{\tablename}{Tabell}
+- \usepackage{titling}
+- \pretitle{\begin{center}\LARGE\includegraphics[width=6cm]{logo.png}\\[\bigskipamount]}
+- \posttitle{\end{center}}
 ---
 
 
 ```{r setup-main, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.pos = 'H')
 
-## upload functions
+# upload functions
 source("./analyseNorge/funksjon.R")
 ```
 
@@ -90,6 +96,7 @@ lok2018dt1 <- subset(ars2018, hospID != 5 & diabetes_Type1 == "Ja")
 
 
 ```{r test, eval=F, include=F }
+
 ## Tilgang til K sensitivt
 inspak <- function(pkg){
   nypkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
@@ -115,8 +122,9 @@ ars2018 <- readRDS(file.path(dataSti, "validert_arskontroll2018.rds", fsep = "\\
 antall.pas <- dim(ars2018)[1]
 ```
 
-## Typer diabetes {-}
+\newpage
 
+## Diabetes typer {-}
 
 ```{r}
 source("./analyseNorge/type_diabetes.R")
@@ -167,6 +175,9 @@ avd. Sandessjøen har bare en pasient til årskontroll og er også tatt ut fra v
 analyser (n = `r dim(lok2018dt1)[1]`)***
 
 
+\newpage
+
+
 ## HbA1c {-}
 
 ```{r include=FALSE}
@@ -183,6 +194,9 @@ if (knitr::is_latex_output()) plotHbc
 if (knitr::is_html_output()) plotHbcWidget
 
 ```
+
+
+
 
 ## HbA1c og alder {-}
 
@@ -218,11 +232,11 @@ width(kar.htab) <- 0.6
 kar.htab
 ```
 
-## Nasjonalitet {-}
+## Etnisitet {-}
 
-Nasjonalitet er definert etter hvor barnets foreldre er født. Er en eller begge
+Etnisitet er definert etter hvor barnets foreldre er født. Er en eller begge
 foreldrene født i et av de nordiske landene kategoriseres barnet som Nordisk. I det
-tilfelle hvor informasjon om nasjonalitet ikke finnes blir dette kategorisert som
+tilfelle hvor informasjon om etnisitet ikke finnes blir dette kategorisert som
 *ukjent*. Antall og andel for nasjonalitet delt på kjønn er som følgende:
 
 
@@ -244,6 +258,8 @@ utTabell
 ## nas.htab
 ```
 
+\newpage
+
 ## Kompletthet {-}
 
 Figuren viser antall og andel kompletthet av noen utvalgte variabler. For *fysisk
@@ -253,6 +269,7 @@ aktivitet* regner vi kompletthet på alle pasienter fra og med 6 år og eldre.
 source("./analyseNorge/kompletthet.R")
 fig.komp
 ```
+\newpage
 
 ## Undersøkelser utført {-}
 
@@ -263,6 +280,8 @@ source("./analyseNorge/undersokelse.R")
 und.htab
 ```
 
+
+
 ## ISPAD guidelines {-}
 
 ```{r}
@@ -270,13 +289,16 @@ source("./analyseNorge/ispadguide.R")
 ```
 
 Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelines
-(2014) som spesifiserer at pasienter som er 10 år eller eldre med 2 års
-diabetesvarighet eller yngre enn 10 år med 5 års diabetesvarighet (N = `r ispadN`).
+(2014) og i denne analysen spesifiseres det at pasienter skal være 10 år eller
+eldre med 5 års eller mer diabetesvarighet (N = `r ispadN`).
 
 ```{r}
 width(isp.htab) <- 0.7
 isp.htab
 ```
+
+\newpage
+
 
 ## Blodtrykk {-}
 
@@ -327,7 +349,7 @@ lip.htab
 
 ```
 
-\newpage
+
 
 ## Diabetes ketoacidose (DKA) {-}
 
@@ -339,6 +361,9 @@ source("./analyseNorge/dka.R")
 latex_float(dkaTabell) <- "!h"
 dkaTabell
 ```
+
+\newpage
+
 
 ## Insulinsjokk {-}
 
@@ -361,6 +386,7 @@ folTabell
 
 \newpage
 
+
 ## Helsetjenester {-}
 
 Tabellen viser gjennomsnittlig bruk av helsetjenester i 2018. I tillegg viser det
@@ -373,6 +399,8 @@ source("./analyseNorge/helsetjeneste.R")
 left_border(utTabell)[, 6] <- 0.4
 utTabell
 ```
+
+\newpage
 
 ## Insulinbehandling {-}
 
@@ -389,6 +417,8 @@ Totalt pasienter som har data på insulinbehandling er `r behNtot`. Av disse bru
 if (knitr::is_html_output()) utPieHtml
 if (knitr::is_latex_output()) utPieLtx
 ```
+
+\newpage
 
 ## Insulindose {-}
 
@@ -409,6 +439,7 @@ $x_i$ = Antall enheter insulin
 
 $kg$ = Kroppsvekt (pr.kg/døgn)
 
+\newpage
 
 ## Type pumpe {-}
 
@@ -443,6 +474,7 @@ source("./analyseNorge/annenbeh.R")
 latex_float(outTab) <- "H"
 outTab
 ```
+
 
 
 ## Andre kjente sykdommer {-}

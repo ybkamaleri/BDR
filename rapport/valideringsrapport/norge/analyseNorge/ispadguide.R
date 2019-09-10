@@ -4,9 +4,13 @@
 ## Datakilde
 ispDT <- lok2018dt1
 
+## ispDT[, ispad := 0] %>%
+##   .[alder >= 10 & diagVar >= 2, ispad  := 1] %>%
+##   .[alder < 10 & diagVar >= 5, ispad := 1]
+
 ispDT[, ispad := 0] %>%
-  .[alder >= 10 & diagVar >= 2, ispad  := 1] %>%
-  .[alder < 10 & diagVar >= 5, ispad := 1]
+  .[alder >= 10 & diagVar >= 5, ispad  := 1]
+
 
 ## Antall kvalifisert til ISPAD definisjon
 ispadN <- ispDT[ispad == 1, .N]
