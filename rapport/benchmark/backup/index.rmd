@@ -306,12 +306,11 @@ tabOut
 ```
 
 
-
-# Øye- og urinundersøkelse iht. ISPAD Guidelines
+# Øye- og urinundersøkelse iht. ISPAD Guidelines (2014)
 
 Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelines
-(2014) som spesifiserer at pasienter som er 10 år eller eldre med 2 års
-sykdomsvarighet eller yngre enn 10 år med 5 års sykdomsvarighet.
+(2014). I denne analysen spesifiseres det at pasienter er 10 år eller eldre med 5 års
+eller mer sykdomsvarighet.
 
 
 ```{r ispadTab}
@@ -406,7 +405,4 @@ tabOut
 
                                                                          
                                                                          
-
-
-<!--chapter:end:index.rmd-->
 

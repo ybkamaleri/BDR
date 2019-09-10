@@ -1,6 +1,6 @@
 ## Etnisitet
 
-dt1 <- copy(DT)
+dt1
 
 ## Nordiske land
 nordLand <- c("Norge", "Danmark", "Finland", "Sverige", "Island")

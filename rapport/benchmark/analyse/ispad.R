@@ -1,17 +1,19 @@
 ## ISPAD guideline for øye og urin
 
-dt1[, ispad := 0] %>%
-  .[alder >= 10 & diagVar >= 2, ispad  := 1]
+ispDTraw <- copy(dt1)
+
+ispDTraw[, ispad := 0] %>%
+  .[alder >= 10 & diagVar >= 5, ispad  := 1]
 
 ## %>%
 ##   .[alder < 10 & diagVar >= 5, ispad := 1]
 
 
 ## Antall kvalifisert til ISPAD definisjon hele landet
-ispadN <- dt1[ispad == 1, .N]
+ispadN <- ispDTraw[ispad == 1, .N]
 
 
-ispDT <- rollup(dt1[ispad == 1, ],
+ispDT <- rollup(ispDTraw[ispad == 1, ],
   j = .(
     neye = sum(und_Oye == 'Ja', na.rm = TRUE),
     nurin = sum(!is.na(lab_res_1prove)),
@@ -37,7 +39,11 @@ tabRaw <- ispDT[, {
 nyNavn <- c("", "Øye", "Urin", "Totalt")
 setnames(tabRaw, names(tabRaw), nyNavn)
 
-tabOut <- exp.tabel(tabRaw, "Undersøkelse utført: n(%)", ncol = 4, size = 0.9, total = 2, rowHeight = 0.025, mixCol = 2:3, valgCol = 2:3, valgAlign = "right")
+tabOut <- exp.tabel(tabRaw, "Undersøkelse utført: n(%)",
+  ncol = 4, size = 0.9,
+  total = 2, rowHeight = 0.025,
+  mixCol = 2:3, valgCol = 2:3,
+  valgAlign = "right")
 
 
 ## quick_pdf(tabOut, file = "ispad.pdf")

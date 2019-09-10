@@ -89,8 +89,8 @@ pdfTitle <- "Norge"
 ## Norge
 lokal2018 <- ars2018
 
-## diabetes Type 1
-lok2018dt1 <- subset(ars2018, hospID != 5 & diabetes_Type1 == "Ja")
+## ## diabetes Type 1
+## lok2018dt1 <- subset(ars2018, hospID != 5 & diabetes_Type1 == "Ja")
 
 ```
 
