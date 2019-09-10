@@ -8,6 +8,6 @@ bookdown::gitbook:
     toc:
       collapse: subsection
       before: |
-        <li><a href="http://bdreg.github.io/bdrbenchmark"><strong>Hjem</strong></a></li>
+        <li><a href="http://bdreg.github.io/rapport"><strong>Hjem</strong></a></li>
       after: |
         <li><a href="https://bdreg.github.io" target="blank"><em>Til BDR startside</em></a></li>
