@@ -36,9 +36,9 @@ output:
       toc:
         collapse: subsection
         before: |
-          <li><a href="http://bdreg.github.io"><strong>Hjem</strong></a></li>
+          <li><a href="http://bdreg.github.io/update"><strong>Hjem</strong></a></li>
         after: |
-          <li><a href="https://bdreg.github.io/rapport" target="blank"><em>Tilbake til sykehusliste</em></a></li>
+          <li><a href="https://bdreg.github.io" target="blank"><em>Tilbake til sykehusliste</em></a></li>
   bookdown::pdf_document2:
     keep_tex: no
     toc: no
@@ -229,8 +229,8 @@ source("./analyse/ispadguide.R")
 ```
 
 Tabellen viser antall og andel pasienter undersøkt i henhold til ISPAD guidelines
-(2014) som spesifiserer at pasienter som er 10 år eller eldre med 2 års
-diabetesvarighet eller yngre enn 10 år med 5 års diabetesvarighet (N = `r ispadN`).
+(2014). I denne analysen spesifiseres det at pasienter er 10 år eller eldre med 5 års
+eller mer sykdomsvarighet (N = `r ispadN`).
 
 ```{r ispad201}
 width(isp.htab) <- 0.7
