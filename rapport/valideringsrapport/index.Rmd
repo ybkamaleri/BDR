@@ -28,6 +28,7 @@ header-includes:
 - \usepackage[utf8]{inputenc}
 - \renewcommand{\figurename}{Figur}
 - \renewcommand{\tablename}{Tabell}
+
 output:
   bookdown::gitbook:
     split_by: section

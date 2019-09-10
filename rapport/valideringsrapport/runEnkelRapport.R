@@ -86,7 +86,7 @@ valgCol <- sequential_hcl(4, "Blues 3")
 # 
 
 ## ## For testing
-## hospKoder = c(8, 14, 22)
+## hospKoder = c(8)
 
 ## Dato
 valgDato <- Sys.Date()
@@ -163,7 +163,7 @@ for (hosp in hospKoder) {
     params = list(
       nyTitle = hospTitle,
       nyDate =  format(valgDato, '%d %B %Y'),
-      nySubTitle = "Årskontroller for data innsamlet i 2018"
+      nySubTitle = "BDR årskontroller for data innsamlet i 2018"
     )
   )
 
