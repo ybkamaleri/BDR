@@ -1,0 +1,13 @@
+bookdown::pdf_document2:
+  keep_tex: no
+  toc: yes
+bookdown::gitbook:
+  split_by: section
+  download: ["pdf"]
+  config:
+    toc:
+      collapse: subsection
+      before: |
+        <li><a href="http://bdreg.github.io/rapport"><strong>Hjem</strong></a></li>
+      after: |
+        <li><a href="https://bdreg.github.io" target="blank"><em>Til BDR startside</em></a></li>
